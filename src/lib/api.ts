@@ -2,7 +2,7 @@
  * Centralized API client for making requests to our Next.js API routes
  */
 
-import type { WooProduct, WooCategory, WooVariation, WooOrder, CartResponse } from './types';
+import type { WooProduct, WooCategory, WooVariation, WooOrder } from './types';
 
 interface ApiOptions {
   endpoint: string;
@@ -29,34 +29,32 @@ export async function apiClient<T = any>({ endpoint, payload, params }: ApiOptio
   });
 
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || 'API request failed');
+    try {
+      const error = await response.json();
+      throw new Error(error.message || 'API request failed');
+    } catch (parseError) {
+      throw new Error(response.statusText || 'API request failed');
+    }
   }
 
-  return response.json();
+  try {
+    return await response.json();
+  } catch (parseError) {
+    throw new Error('Failed to parse response');
+  }
 }
 
 // Typed API methods for better developer experience
 export const api = {
-  cart: {
-    add: (payload: any) => 
-      apiClient<CartResponse>({ endpoint: 'cart.add', payload }),
-    update: (payload: any) => 
-      apiClient<CartResponse>({ endpoint: 'cart.update', payload }),
-    remove: (payload: any) => 
-      apiClient<CartResponse>({ endpoint: 'cart.remove', payload }),
-    applyCoupon: (cartKey: string, couponCode: string) => 
-      apiClient<CartResponse>({ endpoint: 'cart.applyCoupon', payload: { cartKey, couponCode } }),
-  },
   products: {
-    list: (params: Record<string, any> = {}) =>
+    list: (params: Record<string, any> = {}) => 
       apiClient<WooProduct[]>({ endpoint: 'products.list', params }),
-    get: (id: number) =>
+    get: (id: number) => 
       apiClient<WooProduct>({ endpoint: 'products.get', params: { id: id.toString() } }),
     variations: (productId: string) => 
-      apiClient<WooVariation[]>({ endpoint: 'products.variations', params: { productId } }),
+      apiClient<WooVariation[]>({ endpoint: 'products.variations', params: { id: productId } }),
     variation: (productId: string, variationId: string) => 
-      apiClient<WooVariation>({ endpoint: 'products.variation', params: { productId, variationId } }),
+      apiClient<WooVariation>({ endpoint: 'products.variation', params: { id: productId, variation_id: variationId } }),
   },
   categories: {
     list: () => 
@@ -65,11 +63,11 @@ export const api = {
   orders: {
     create: (payload: Partial<WooOrder>) => 
       apiClient<WooOrder>({ endpoint: 'orders.create', payload }),
-    update: (orderId: string, payload: any) =>
-      apiClient<WooOrder>({ endpoint: 'orders.update', payload, params: { orderId } }),
+    update: (orderId: string, payload: any) => 
+      apiClient<WooOrder>({ endpoint: 'orders.update', payload: { id: orderId, ...payload } }),
   },
   payment: {
-    createIntent: (amount: number, currency?: string) => 
+    createIntent: (amount: number, currency: string = 'USD') => 
       apiClient<{ clientSecret: string }>({ endpoint: 'payment.createIntent', payload: { amount, currency } }),
   },
 };

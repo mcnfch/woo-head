@@ -2,24 +2,25 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { draftMode } from 'next/headers';
 
-import { getCategories } from '@/lib/woocommerce';
+import { categoryCache } from '@/lib/cache/categoryCache';
 import { productCache } from '@/lib/cache/productCache';
 import ProductGrid from '@/components/product/ProductGrid';
 import { CategoryHero } from '@/components/category/CategoryHero';
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { slug } = params;
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
   
   // Only handle categories in this route
-  const categories = await getCategories();
+  const categories = await categoryCache.getAllCategories();
   const category = categories.find(cat => cat.slug === slug);
   if (category) {
     return {
@@ -34,10 +35,11 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: PageProps) {
-  const { slug } = params;
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
   
   try {
-    const categories = await getCategories();
+    const categories = await categoryCache.getAllCategories();
     const category = categories.find(cat => cat.slug === slug);
     
     if (!category) {

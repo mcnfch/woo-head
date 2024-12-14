@@ -5,7 +5,9 @@ import Image from 'next/image';
 import type { WooProduct, ProductVariation, ProductAttribute } from '@/lib/types';
 import { useCart } from '@/context/CartContext';
 import { AddToCartButton } from './AddToCartButton';
-import { CartSlideOver } from './CartSlideOver';
+import { CartSlideOver } from '../cart/CartSlideOver';
+import { QuickAddModal } from '../cart/QuickAddModal';
+import { woocommerce } from '@/lib/woocommerce';
 
 interface ProductDetailsProps {
   product: WooProduct;
@@ -21,6 +23,9 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(null);
   const [isAddToCartEnabled, setIsAddToCartEnabled] = useState(false);
   const [cartSlideOverOpen, setCartSlideOverOpen] = useState(false);
+  const [relatedProducts, setRelatedProducts] = useState<WooProduct[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<WooProduct | null>(null);
+  const [quickAddModalOpen, setQuickAddModalOpen] = useState(false);
 
   // Check if all required attributes are selected
   useEffect(() => {
@@ -36,6 +41,29 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 
     setIsAddToCartEnabled(hasAllRequired);
   }, [product.attributes, selectedAttributes]);
+
+  // Fetch random products for "Frequently Bought Together"
+  useEffect(() => {
+    async function fetchRandomProducts() {
+      try {
+        const response = await woocommerce.get('products', {
+          per_page: 10, // Get 10 products to randomly select from
+          exclude: [product.id]
+        });
+        
+        // Randomly select 3 products
+        const shuffled = response.data
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 3);
+        
+        setRelatedProducts(shuffled);
+      } catch (error) {
+        console.error('Error fetching related products:', error);
+      }
+    }
+
+    fetchRandomProducts();
+  }, [product.id]);
 
   const handleAttributeChange = (attributeName: string, value: string) => {
     setSelectedAttributes(prev => ({
@@ -62,6 +90,40 @@ export function ProductDetails({ product }: ProductDetailsProps) {
       setCartSlideOverOpen(true);
     } catch (error) {
       console.error('Error adding to cart:', error);
+    }
+  };
+
+  const handleAddAllToCart = async () => {
+    try {
+      // Add current product
+      await addToCart({
+        product_id: product.id,
+        name: product.name,
+        price: parseFloat(product.price),
+        quantity: 1,
+        image: product.images[0]?.src,
+        variation_id: selectedVariation?.id,
+        attributes: Object.entries(selectedAttributes).map(([name, option]) => ({
+          id: product.attributes?.find(attr => attr.name === name)?.id || 0,
+          name,
+          option
+        }))
+      });
+
+      // Add related products
+      for (const relatedProduct of relatedProducts) {
+        await addToCart({
+          product_id: relatedProduct.id,
+          name: relatedProduct.name,
+          price: parseFloat(relatedProduct.price),
+          quantity: 1,
+          image: relatedProduct.images[0]?.src
+        });
+      }
+
+      setCartSlideOverOpen(true);
+    } catch (error) {
+      console.error('Error adding products to cart:', error);
     }
   };
 
@@ -96,8 +158,8 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           {/* Product Attributes/Variations */}
           {product.attributes && product.attributes.length > 0 && (
             <div className="space-y-4">
-              {product.attributes.filter(attr => attr.variation).map((attribute) => (
-                <div key={attribute.id} className="space-y-2">
+              {product.attributes.filter(attr => attr.variation).map((attribute, attrIndex) => (
+                <div key={`${product.id}-attr-${attrIndex}-${attribute.id}`} className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
                     {attribute.name}
                   </label>
@@ -107,8 +169,8 @@ export function ProductDetails({ product }: ProductDetailsProps) {
                     className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md"
                   >
                     <option value="">Select {attribute.name}</option>
-                    {attribute.options?.map((option) => (
-                      <option key={option} value={option}>
+                    {attribute.options?.map((option, optIndex) => (
+                      <option key={`${product.id}-attr-${attrIndex}-opt-${optIndex}`} value={option}>
                         {option}
                       </option>
                     ))}
@@ -145,6 +207,75 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           </button>
         </div>
       </div>
+
+      {/* Frequently Bought Together */}
+      {relatedProducts.length > 0 && (
+        <div className="mt-16 bg-white p-6 rounded-lg shadow-sm">
+          <h2 className="text-2xl font-bold mb-6">Frequently Bought Together</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {relatedProducts.map((relatedProduct) => (
+              <div key={`related-${relatedProduct.id}`} className="flex flex-col items-center relative h-full">
+                <div className="flex flex-col items-center flex-grow w-full" style={{ minHeight: '300px' }}>
+                  <div className="relative w-40 h-40 mb-4">
+                    <Image
+                      src={relatedProduct.images[0]?.src || '/placeholder.jpg'}
+                      alt={relatedProduct.name}
+                      fill
+                      className="object-cover rounded-lg"
+                    />
+                  </div>
+                  <div className="flex flex-col items-center flex-grow">
+                    <h3 className="text-sm font-medium text-center mb-3 line-clamp-2 h-10">
+                      {relatedProduct.name}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-3">${parseFloat(relatedProduct.price).toFixed(2)}</p>
+                  </div>
+                </div>
+                <div className="mt-auto">
+                  <button
+                    onClick={() => {
+                      setSelectedProduct(relatedProduct);
+                      setQuickAddModalOpen(true);
+                    }}
+                    className="bg-purple-600 text-white px-4 py-2 rounded-md text-sm hover:bg-purple-700 transition-colors"
+                  >
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Add All Section */}
+          <div className="mt-8 flex flex-col items-center border-t pt-6">
+            <p className="text-lg font-medium mb-4">
+              Bundle Price: ${(
+                parseFloat(product.price) +
+                relatedProducts.reduce((sum, p) => sum + parseFloat(p.price), 0)
+              ).toFixed(2)}
+            </p>
+            <button
+              onClick={handleAddAllToCart}
+              className="bg-purple-600 text-white px-8 py-3 rounded-md hover:bg-purple-700 transition-colors"
+            >
+              Add All to Cart
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* QuickAddModal for related products */}
+      {selectedProduct && (
+        <QuickAddModal
+          isOpen={quickAddModalOpen}
+          setIsOpen={setQuickAddModalOpen}
+          product={selectedProduct}
+          onAddToCart={() => {
+            setQuickAddModalOpen(false);
+            setCartSlideOverOpen(true);
+          }}
+        />
+      )}
 
       {/* Cart Slide Over */}
       <CartSlideOver

@@ -3,7 +3,8 @@
 import { memo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCart } from '@/context/CartContext';
+import { AddToCartButton } from './AddToCartButton';
+import type { WooProduct } from '@/lib/types';
 
 export interface ProductCardProps {
   id: number;
@@ -14,6 +15,7 @@ export interface ProductCardProps {
   shortDescription?: string;
   sku?: string;
   slug: string;
+  attributes?: WooProduct['attributes'];
 }
 
 function ProductCardComponent({ 
@@ -25,18 +27,21 @@ function ProductCardComponent({
   shortDescription = '',
   sku: _sku = '',
   slug,
+  attributes = [],
 }: ProductCardProps) {
-  const { addToCart } = useCart();
   const [imageError, setImageError] = useState(false);
 
-  const handleAddToCart = () => {
-    addToCart({
-      product_id: id,
-      name,
-      price: parseFloat(price),
-      quantity: 1,
-      image: image || '/placeholder.jpg'
-    });
+  // Create a product object that matches WooProduct interface
+  const product: WooProduct = {
+    id,
+    name,
+    price,
+    images: image ? [{ src: image }] : [],
+    stock_status: stockStatus,
+    short_description: shortDescription,
+    description: shortDescription,
+    attributes: attributes,
+    slug,
   };
 
   return (
@@ -49,37 +54,32 @@ function ProductCardComponent({
               alt={name}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover object-center group-hover:opacity-75"
+              className="object-cover group-hover:scale-105 transition-transform duration-200"
               onError={() => setImageError(true)}
+              priority={false}
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
               <span className="text-gray-400">No image</span>
             </div>
           )}
         </div>
-        <div className="flex flex-col flex-grow p-4">
-          <h3 className="text-sm font-medium text-gray-900">{name}</h3>
-          <div className="mt-1 flex-grow">
-            <p className="text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: shortDescription }} />
-          </div>
-          <div className="mt-2">
-            <p className="text-sm font-medium text-gray-900">${parseFloat(price).toFixed(2)}</p>
-          </div>
+
+        <div className="p-4">
+          <h3 className="text-sm font-medium text-gray-900 group-hover:text-purple-600 transition-colors">
+            {name}
+          </h3>
+          <p className="mt-1 text-sm font-medium text-purple-600">
+            ${parseFloat(price).toFixed(2)}
+          </p>
         </div>
       </Link>
-      <div className="p-4 pt-0">
-        <button
-          onClick={handleAddToCart}
-          disabled={stockStatus !== 'instock'}
-          className={`w-full rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm ${
-            stockStatus === 'instock'
-              ? 'bg-indigo-600 hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-              : 'bg-gray-400 cursor-not-allowed'
-          }`}
-        >
-          {stockStatus === 'instock' ? 'Add to Cart' : 'Out of Stock'}
-        </button>
+
+      <div className="p-4 pt-0 mt-auto">
+        <AddToCartButton
+          product={product}
+          className="w-full py-2 text-sm font-medium text-white rounded-md transition-colors"
+        />
       </div>
     </div>
   );

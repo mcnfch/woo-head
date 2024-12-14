@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useCallback } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
@@ -21,8 +21,15 @@ interface HeaderProps {
 }
 
 export function Header({ categories }: HeaderProps) {
-  const { cartCount } = useCart();
+  const { cart } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const cartCount = cart?.items?.length || 0;
+
+  const handleCartClick = useCallback(() => {
+    setIsCartOpen(!isCartOpen);
+  }, [isCartOpen]);
 
   return (
     <header className="w-full">
@@ -58,8 +65,12 @@ export function Header({ categories }: HeaderProps) {
         </div>
 
         {/* Cart Icon */}
-        <div className="absolute right-4" style={{ top: '10px' }}>
-          <CartIcon count={cartCount} />
+        <div className="absolute right-8" style={{ top: '10px' }}>
+          <CartIcon 
+            count={cartCount} 
+            isCartOpen={isCartOpen}
+            onCartClick={handleCartClick}
+          />
         </div>
 
         {/* Mobile Menu Button */}

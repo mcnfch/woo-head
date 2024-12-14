@@ -6,6 +6,17 @@ import Image from 'next/image';
 export default async function BlogPage() {
   const posts = await getBlogPosts();
 
+  if (!posts || posts.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-8 max-w-5xl">
+        <h1 className="text-3xl font-bold mb-8 text-center">Blog</h1>
+        <div className="text-center text-gray-600">
+          No blog posts found. Check back later for new content!
+        </div>
+      </div>
+    );
+  }
+
   const renderPost = (post: BlogPost) => (
     <article key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden">
       {post.featured_media && post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? (

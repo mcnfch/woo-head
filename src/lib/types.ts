@@ -74,7 +74,9 @@ export interface CartItem {
   price?: number;
   image?: string;
   variation_id?: number;
-  attributes?: { option: string }[];
+  attributes?: WooVariantAttribute[];
+  optionsRequired: boolean;
+  optionsSelected: boolean;
 }
 
 export interface CartState {

@@ -12,16 +12,25 @@ function isWooCommerceError(error: unknown): error is WooCommerceError {
 }
 
 if (!process.env.NEXT_PUBLIC_WOOCOMMERCE_URL) {
+  console.error('NEXT_PUBLIC_WOOCOMMERCE_URL is missing');
   throw new Error('NEXT_PUBLIC_WOOCOMMERCE_URL is not defined');
 }
 
 if (!process.env.NEXT_PUBLIC_WOOCOMMERCE_KEY) {
+  console.error('NEXT_PUBLIC_WOOCOMMERCE_KEY is missing');
   throw new Error('NEXT_PUBLIC_WOOCOMMERCE_KEY is not defined');
 }
 
 if (!process.env.NEXT_PUBLIC_WOOCOMMERCE_SECRET) {
+  console.error('NEXT_PUBLIC_WOOCOMMERCE_SECRET is missing');
   throw new Error('NEXT_PUBLIC_WOOCOMMERCE_SECRET is not defined');
 }
+
+console.log('[WooCommerce] API Configuration:', {
+  url: process.env.NEXT_PUBLIC_WOOCOMMERCE_URL,
+  hasKey: !!process.env.NEXT_PUBLIC_WOOCOMMERCE_KEY,
+  hasSecret: !!process.env.NEXT_PUBLIC_WOOCOMMERCE_SECRET
+});
 
 console.log(`[WooCommerce] Initializing API with URL: ${process.env.NEXT_PUBLIC_WOOCOMMERCE_URL}`);
 
@@ -204,19 +213,19 @@ export async function getPages(): Promise<WooPage[]> {
 // Function to get blog posts
 export async function getPosts(): Promise<WooPost[]> {
   try {
-    console.log('[WooCommerce] Fetching blog posts');
-    const response = await fetch(`${process.env.NEXT_PUBLIC_WOOCOMMERCE_URL}/wp-json/wp/v2/posts`);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_WOOCOMMERCE_URL}/wp-json/wp/v2/posts?_embed`);
     if (!response.ok) {
-      throw new Error('Failed to fetch posts');
+      throw new Error(`Failed to fetch posts: ${response.statusText}`);
     }
-    const posts = await response.json();
-    console.log(`[WooCommerce] Successfully fetched ${posts.length} posts`);
-    return posts;
+    return response.json();
   } catch (error) {
     console.error('[WooCommerce] Error fetching posts:', error);
     return [];
   }
 }
+
+// Alias for getPosts to maintain compatibility
+export const getBlogPosts = getPosts;
 
 export async function testConnection() {
   try {

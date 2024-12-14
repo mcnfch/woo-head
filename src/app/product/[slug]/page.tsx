@@ -16,7 +16,7 @@ export const viewport = {
 export async function generateMetadata(
   { params }: GenerateMetadataProps
 ): Promise<Metadata> {
-  const slug = params?.slug;
+  const slug = await Promise.resolve(params.slug);
   if (!slug) {
     return {
       title: 'Product Not Found',
@@ -44,7 +44,7 @@ type PageProps = {
 };
 
 export default async function ProductPage({ params }: PageProps) {
-  const slug = params?.slug;
+  const slug = await Promise.resolve(params.slug);
   if (!slug) {
     console.log(`[ProductPage] No slug provided`);
     notFound();
@@ -60,9 +60,13 @@ export default async function ProductPage({ params }: PageProps) {
     }
 
     console.log(`[ProductPage] Found product: ${product.name}`);
-    return <ProductDetails product={product} />;
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <ProductDetails product={product} />
+      </div>
+    );
   } catch (error) {
-    console.error(`[ProductPage] Error loading product:`, error);
+    console.error(`[ProductPage] Error loading product: ${error}`);
     notFound();
   }
 }

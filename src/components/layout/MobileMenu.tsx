@@ -1,10 +1,24 @@
 'use client';
 
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import type { WooCategory } from '@/lib/types';
+import menuItems from '@/config/menu.json';
+
+interface MenuItem {
+  title: string;
+  type: string;
+  visible: boolean;
+  order: number;
+  slug?: string;
+}
+
+const menuConfig = menuItems.menuItems.reduce((acc, item) => {
+  acc[item.title.toLowerCase()] = item.order;
+  return acc;
+}, {} as Record<string, number>);
 
 export interface MobileMenuProps {
   categories: WooCategory[];
@@ -12,12 +26,14 @@ export interface MobileMenuProps {
 }
 
 export function MobileMenu({ categories, onClose }: MobileMenuProps) {
-  // Build a map of parent categories to their children
   const categoryMap = new Map<number, WooCategory[]>();
   const rootCategories: WooCategory[] = [];
-  
-  // First, organize all categories by their relationships
+  const [expandedCategories, setExpandedCategories] = useState<Set<number>>(new Set());
+
+  // Filter out 'Uncategorized' and organize categories by relationships
   categories.forEach(category => {
+    if (category.name.toLowerCase() === 'uncategorized') return;
+    
     if (category.parent === 0) {
       rootCategories.push(category);
     } else {
@@ -27,107 +43,134 @@ export function MobileMenu({ categories, onClose }: MobileMenuProps) {
     }
   });
 
+  // Sort root categories based on menu configuration order
+  rootCategories.sort((a, b) => {
+    const aOrder = menuConfig[a.name.toLowerCase()] || 999;
+    const bOrder = menuConfig[b.name.toLowerCase()] || 999;
+    return aOrder - bOrder;
+  });
+
+  const toggleCategory = (categoryId: number) => {
+    setExpandedCategories(prev => {
+      const next = new Set(prev);
+      if (next.has(categoryId)) {
+        next.delete(categoryId);
+      } else {
+        next.add(categoryId);
+      }
+      return next;
+    });
+  };
+
   return (
     <Transition.Root show={true} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={onClose}>
+      <Dialog as="div" className="relative z-50 lg:hidden" onClose={onClose}>
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
+          enter="ease-in-out duration-300"
           enterFrom="opacity-0"
           enterTo="opacity-100"
-          leave="ease-in duration-200"
+          leave="ease-in-out duration-300"
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-50 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
-            <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            >
-              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
-                <div className="absolute right-0 top-0 pr-4 pt-4">
-                  <button
-                    type="button"
-                    className="rounded-md bg-white text-gray-400 hover:text-gray-500"
-                    onClick={onClose}
-                  >
-                    <span className="sr-only">Close</span>
-                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                  </button>
-                </div>
-                <div className="mt-3 text-center sm:mt-5">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-base font-semibold leading-6 text-gray-900"
-                  >
-                    Menu
-                  </Dialog.Title>
-                  <div className="mt-2">
-                    <nav className="flex flex-col space-y-4">
-                      <Link
-                        href="/"
-                        className="text-gray-600 hover:text-gray-900"
-                        onClick={onClose}
-                      >
-                        Home
-                      </Link>
-                      <Link
-                        href="/shop"
-                        className="text-gray-600 hover:text-gray-900"
-                        onClick={onClose}
-                      >
-                        Shop
-                      </Link>
-                      {rootCategories.map((category) => {
-                        const children = categoryMap.get(category.id) || [];
-                        return (
-                          <div key={category.id} className="space-y-2">
-                            <Link
-                              href={`/${category.slug}`}
-                              className="block text-lg font-medium text-gray-900 hover:text-purple-600"
-                              onClick={onClose}
+        <div className="fixed inset-0 z-50 flex">
+          <Transition.Child
+            as={Fragment}
+            enter="transform transition ease-in-out duration-300"
+            enterFrom="-translate-x-full"
+            enterTo="translate-x-0"
+            leave="transform transition ease-in-out duration-300"
+            leaveFrom="translate-x-0"
+            leaveTo="-translate-x-full"
+          >
+            <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
+              <div className="flex justify-end px-4 pt-5">
+                <button
+                  type="button"
+                  className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                  onClick={onClose}
+                >
+                  <span className="sr-only">Close menu</span>
+                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
+              </div>
+
+              {/* Categories */}
+              <div className="mt-2 px-4">
+                <Dialog.Title className="text-lg font-medium text-gray-900">
+                  Categories
+                </Dialog.Title>
+                <ul className="mt-3 space-y-3">
+                  {rootCategories.map((category) => {
+                    const children = categoryMap.get(category.id) || [];
+                    return (
+                      <li key={category.id} className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <Link
+                            href={`/${category.slug}`}
+                            className="text-base text-gray-900 hover:text-purple-600"
+                            onClick={onClose}
+                          >
+                            {category.name}
+                          </Link>
+                          {children.length > 0 && (
+                            <button
+                              className="p-1 text-gray-400"
+                              onClick={() => toggleCategory(category.id)}
                             >
-                              {category.name}
-                            </Link>
-                            {children.length > 0 && (
-                              <div className="pl-4 space-y-2">
-                                {children.map((child) => (
-                                  <Link
-                                    key={child.id}
-                                    href={`/${child.slug}`}
-                                    className="block text-gray-600 hover:text-purple-600"
-                                    onClick={onClose}
-                                  >
-                                    {child.name}
-                                  </Link>
-                                ))}
-                              </div>
-                            )}
-                          </div>
-                        );
-                      })}
-                      <Link
-                        href="/cart"
-                        className="text-gray-600 hover:text-gray-900"
-                        onClick={onClose}
-                      >
-                        Cart
-                      </Link>
-                    </nav>
-                  </div>
-                </div>
-              </Dialog.Panel>
-            </Transition.Child>
-          </div>
+                              <span className="text-xl">{expandedCategories.has(category.id) ? '-' : '+'}</span>
+                            </button>
+                          )}
+                        </div>
+                        {children.length > 0 && expandedCategories.has(category.id) && (
+                          <ul className="pl-4 space-y-2">
+                            {children.map((child) => (
+                              <li key={child.id}>
+                                <Link
+                                  href={`/${child.slug}`}
+                                  className="text-sm text-gray-600 hover:text-purple-600"
+                                  onClick={onClose}
+                                >
+                                  {child.name}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+
+              {/* Quick Links */}
+              <div className="mt-8 px-4">
+                <Dialog.Title className="text-lg font-medium text-gray-900">
+                  Quick Links
+                </Dialog.Title>
+                <ul className="mt-3 space-y-3">
+                  {menuItems.menuItems
+                    .filter(item => item.type === 'non-product' && item.visible)
+                    .sort((a, b) => a.order - b.order)
+                    .map(item => (
+                      <li key={item.title}>
+                        <Link 
+                          href={`/${item.slug}`} 
+                          className="text-base text-gray-900 hover:text-purple-600"
+                          onClick={onClose}
+                        >
+                          {item.title}
+                        </Link>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </Dialog.Panel>
+          </Transition.Child>
         </div>
       </Dialog>
     </Transition.Root>

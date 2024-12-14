@@ -1,4 +1,3 @@
-import { api } from '@/lib/api';
 import type { CartResponse, AddToCartInput } from '@/lib/types';
 
 export class CartService {
@@ -26,7 +25,7 @@ export class CartService {
     }
 
     try {
-      await api.cart.add(item);
+      // Return success immediately since we're managing cart state in CartContext
       return {
         success: true,
         message: 'Product added to cart',
@@ -46,12 +45,12 @@ export class CartService {
     }
 
     try {
-      await api.cart.update({ product_id: productId, quantity });
+      // Return success immediately since we're managing cart state in CartContext
       return {
         success: true,
-        message: 'Cart updated',
+        message: 'Cart updated successfully',
         product_id: productId,
-        quantity: quantity
+        quantity
       };
     } catch (error) {
       console.error('Error updating cart:', error);
@@ -65,34 +64,14 @@ export class CartService {
     }
 
     try {
-      await api.cart.remove({ product_id: productId });
+      // Return success immediately since we're managing cart state in CartContext
       return {
         success: true,
-        message: 'Product removed from cart',
-        product_id: productId,
-        quantity: 0
+        message: 'Item removed from cart',
+        product_id: productId
       };
     } catch (error) {
       console.error('Error removing from cart:', error);
-      throw error;
-    }
-  }
-
-  async applyCoupon(code: string): Promise<CartResponse> {
-    if (!this.initialized) {
-      throw new Error('Cart service not initialized');
-    }
-
-    try {
-      await api.cart.applyCoupon('default', code);
-      return {
-        success: true,
-        message: 'Coupon applied',
-        product_id: 0,
-        quantity: 0
-      };
-    } catch (error) {
-      console.error('Error applying coupon:', error);
       throw error;
     }
   }

@@ -169,7 +169,7 @@ export async function POST(
   } catch (error) {
     console.error('API Error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { message: error instanceof Error ? error.message : 'Internal server error' },
       { status: 500 }
     );
   }

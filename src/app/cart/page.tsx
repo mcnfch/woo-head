@@ -27,13 +27,21 @@ export default function CartPage() {
       try {
         // Fetch product details
         const productResponse = await woocommerce.get(`products/${productId}`);
-        setProductDetails(prev => ({ ...prev, [productId]: productResponse.data }));
+        const productData = productResponse.data as WooProduct;
+        setProductDetails(prev => ({
+          ...prev,
+          [productId]: productData
+        }));
 
         // If it's a variable product, fetch variations
-        if (productResponse.data.type === 'variable') {
+        if (productData.type === 'variable') {
           setLoadingVariations(prev => ({ ...prev, [productId]: true }));
           const variationsResponse = await woocommerce.get(`products/${productId}/variations`);
-          setProductVariations(prev => ({ ...prev, [productId]: variationsResponse.data }));
+          const variationsData = variationsResponse.data as WooVariation[];
+          setProductVariations(prev => ({
+            ...prev,
+            [productId]: variationsData
+          }));
           setLoadingVariations(prev => ({ ...prev, [productId]: false }));
         }
       } catch (error) {
@@ -98,175 +106,195 @@ export default function CartPage() {
     }
   };
 
+  const handleQuantityChange = (productId: number, quantity: number) => {
+    updateQuantity(productId, quantity);
+  };
+
+  const handleRemoveItem = (productId: number) => {
+    removeItem(productId);
+  };
+
   const handleCheckout = () => {
     // Implement checkout logic here
   };
 
   if (loading) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin mx-auto text-gray-400" />
-          <p className="mt-4 text-gray-600">Loading your cart...</p>
-        </div>
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="w-8 h-8 animate-spin" />
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-[50vh] flex flex-col items-center justify-center text-center px-4">
-        <ShoppingCart className="w-16 h-16 mb-4 text-gray-400" />
-        <h2 className="text-2xl font-semibold mb-2">Error Loading Cart</h2>
-        <p className="text-gray-600 max-w-md mx-auto">{error}</p>
-        <Link href="/shop" className="mt-6 inline-flex items-center px-6 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primary/90">
-          Return to Shop
-        </Link>
-      </div>
+      <div className="text-red-500 text-center">{error}</div>
     );
   }
 
-  if (!cart || !cart.items || cart.items.length === 0) {
+  if (!cart?.items.length) {
     return (
-      <div className="min-h-[50vh] flex flex-col items-center justify-center text-center px-4">
-        <ShoppingCart className="w-16 h-16 mb-4 text-gray-400" />
-        <h2 className="text-2xl font-semibold mb-2">Your cart is empty</h2>
-        <p className="text-gray-600 mb-6 max-w-md mx-auto">
-          You haven&apos;t added any items to your cart yet.
-          Browse our products and find something you like!
-        </p>
-        <Link href="/shop" className="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primary/90">
-          Browse Products
+      <div className="text-center">
+        <div className="mb-8">
+          <ShoppingCart className="w-16 h-16 mx-auto text-gray-400" />
+          <h2 className="mt-4 text-2xl font-semibold text-gray-900">Your cart is empty</h2>
+          <p className="mt-2 text-gray-500">Looks like you haven't added anything to your cart yet.</p>
+        </div>
+        <Link 
+          href="/" 
+          className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+        >
+          Continue Shopping
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-8">Shopping Cart</h1>
-      
-      <div className="mt-8">
-        <div className="flow-root">
-          <ul role="list" className="-my-6 divide-y divide-gray-200">
-            {cart.items.map((item) => (
-              <li key={item.product_id} className="py-6">
-                <div className="flex items-start space-x-4">
-                  <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                    <Image
-                      src={item.image || '/placeholder.jpg'}
-                      alt={item.name}
-                      fill
-                      className="object-cover object-center"
-                    />
-                  </div>
+    <div className="container mx-auto px-4 py-8 max-w-5xl">
+      <div className="lg:grid lg:grid-cols-12 lg:gap-8">
+        {/* Cart Items Panel - Full width on mobile, 6 cols on desktop */}
+        <div className="lg:col-span-6 mb-8 lg:mb-0">
+          <div className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+            <div className="p-6">
+              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Shopping Cart</h2>
+              <div className="divide-y divide-gray-200">
+                {cart.items.map((item) => {
+                  const product = productDetails[item.product_id];
+                  const isUpdating = updatingItemId === item.product_id;
+                  const isLoadingProduct = loadingProducts[item.product_id];
+                  const isLoadingVariations = loadingVariations[item.product_id];
 
-                  <div className="ml-4 flex-1 flex flex-col">
-                    <div>
-                      <div className="flex justify-between text-base font-medium text-gray-900">
-                        <h3>{item.name}</h3>
-                        <p className="ml-4">
-                          ${typeof item.price === 'number' ? item.price.toFixed(2) : '0.00'}
-                        </p>
-                      </div>
-                      
-                      {/* Product Options Dropdown */}
-                      {productDetails[item.product_id]?.attributes?.map((attribute) => {
-                        const currentValue = item.attributes?.find(attr => attr.name === attribute.name)?.option || '';
-                        const isDefaultSelected = !currentValue;
-                        
-                        return (
-                          <div key={`${item.product_id}-${attribute.id}`} className="mt-4">
-                            <label 
-                              htmlFor={`${item.product_id}-${attribute.name}`}
-                              className="block text-sm font-medium text-gray-700"
-                            >
-                              {attribute.name}
-                            </label>
-                            <select
-                              id={`${item.product_id}-${attribute.name}`}
-                              value={currentValue}
-                              onChange={(e) => handleOptionChange(item.product_id, attribute.name, e.target.value)}
-                              className="mt-1 block w-full rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                            >
-                              <option value="">Select {attribute.name}</option>
-                              {attribute.options?.map((option) => (
-                                <option key={`${item.product_id}-${attribute.id}-${option}`} value={option}>
-                                  {option}
-                                </option>
-                              ))}
-                            </select>
-                            {isDefaultSelected && (
-                              <p className="mt-1 text-sm text-red-600">
-                                Please select a {attribute.name.toLowerCase()}
+                  return (
+                    <div key={`${item.product_id}-${item.variation_id}`} className="py-6 first:pt-0 last:pb-0">
+                      {/* Main product row */}
+                      <div className="flex items-center gap-4">
+                        {/* Product Image */}
+                        <div className="relative h-20 w-20 flex-shrink-0 rounded-lg overflow-hidden">
+                          {product?.images[0]?.src && (
+                            <Image
+                              src={product.images[0].src}
+                              alt={product.name}
+                              fill
+                              className="object-cover"
+                            />
+                          )}
+                        </div>
+
+                        {/* Product Details */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex justify-between items-start gap-4">
+                            <div>
+                              <h3 className="text-base font-medium text-gray-900 truncate">
+                                {isLoadingProduct ? 'Loading...' : product?.name}
+                              </h3>
+                              <p className="mt-1 text-sm text-gray-500">SKU: {item.sku || 'N/A'}</p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-base font-medium text-gray-900">
+                                ${Number(item.price).toFixed(2)}
                               </p>
-                            )}
+                            </div>
                           </div>
-                        );
-                      })}
-                      
-                      <div className="mt-4 flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <button
-                            onClick={() => updateQuantity(item.product_id, Math.max(1, (item.quantity || 1) - 1))}
-                            className="text-gray-500 hover:text-gray-700"
-                          >
-                            −
-                          </button>
-                          <span className="text-gray-700">{item.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(item.product_id, (item.quantity || 1) + 1)}
-                            className="text-gray-500 hover:text-gray-700"
-                          >
-                            +
-                          </button>
-                        </div>
-                        <div className="text-right">
-                          <div className="text-base font-medium text-gray-900">
-                            ${((item.price || 0) * (item.quantity || 1)).toFixed(2)}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            ${item.price?.toFixed(2)} each
+
+                          {/* Quantity and Remove */}
+                          <div className="mt-2 flex items-center gap-4">
+                            <div className="flex items-center rounded-lg border border-gray-300">
+                              <button
+                                onClick={() => handleQuantityChange(item.product_id, Math.max(1, (item.quantity || 1) - 1))}
+                                className="p-1.5 text-gray-600 hover:text-gray-900 transition-colors"
+                                disabled={isUpdating}
+                              >
+                                <Minus className="w-3.5 h-3.5" />
+                              </button>
+                              <span className="w-8 text-center text-sm">{item.quantity}</span>
+                              <button
+                                onClick={() => handleQuantityChange(item.product_id, (item.quantity || 1) + 1)}
+                                className="p-1.5 text-gray-600 hover:text-gray-900 transition-colors"
+                                disabled={isUpdating}
+                              >
+                                <Plus className="w-3.5 h-3.5" />
+                              </button>
+                            </div>
+                            <button
+                              onClick={() => handleRemoveItem(item.product_id)}
+                              className="text-xs text-red-600 hover:text-red-800 transition-colors"
+                              disabled={isUpdating}
+                            >
+                              Remove
+                            </button>
                           </div>
                         </div>
                       </div>
+
+                      {/* Options Section - Below product details */}
+                      {product?.attributes && product.attributes.length > 0 && (
+                        <div className="mt-3 ml-24 space-y-2">
+                          {product.attributes.map((attr) => (
+                            <div key={attr.name} className="flex items-center gap-3">
+                              <label className="text-sm font-medium text-gray-700 min-w-[80px]">
+                                {attr.name}:
+                              </label>
+                              <select
+                                className="flex-1 max-w-[200px] text-sm rounded-md border-gray-300 py-1.5 pl-3 pr-8 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+                                value={item.attributes?.find(a => a.name === attr.name)?.option || ''}
+                                onChange={(e) => handleOptionChange(item.product_id, attr.name, e.target.value)}
+                                disabled={isLoadingVariations}
+                              >
+                                <option value="">Select {attr.name}</option>
+                                {attr.options?.map((option) => (
+                                  <option key={option} value={option}>
+                                    {option}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div className="mt-8">
-          <div className="flex justify-between text-base font-medium text-gray-900">
-            <p>Subtotal</p>
-            <p>${cart.subtotal.toFixed(2)}</p>
-          </div>
-          <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-            
-          <div className="mt-6">
-            <button
-              type="button"
-              onClick={handleCheckout}
-              disabled={!canProceedToCheckout}
-              aria-disabled={!canProceedToCheckout}
-              className={`w-full rounded-md py-3 px-4 text-base font-medium text-white
-                ${canProceedToCheckout 
-                  ? 'bg-purple-600 hover:bg-purple-700' 
-                  : 'bg-gray-300 cursor-not-allowed'}`}
-            >
-              Proceed to Checkout
-            </button>
-          </div>
-
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-500">
-              or{' '}
-              <Link href="/shop" className="font-medium text-purple-600 hover:text-purple-500">
-                Continue Shopping →
+        {/* Summary Panel - Full width on mobile, 6 cols on desktop */}
+        <div className="lg:col-span-6">
+          <div className="bg-white rounded-xl shadow-lg border border-gray-100 p-6 sticky top-4">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4">Order Summary</h2>
+            <div className="space-y-4">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Subtotal</span>
+                <span className="text-gray-900 font-medium">${cart.subtotal.toFixed(2)}</span>
+              </div>
+              <div className="border-t border-gray-200 pt-4">
+                <div className="flex justify-between">
+                  <span className="text-lg font-semibold text-gray-900">Total</span>
+                  <span className="text-lg font-semibold text-gray-900">${cart.total.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-6">
+              <Link
+                href="/checkout"
+                className={`w-full flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white transition-colors ${
+                  canProceedToCheckout
+                    ? 'bg-blue-600 hover:bg-blue-700'
+                    : 'bg-gray-400 cursor-not-allowed'
+                }`}
+                aria-disabled={!canProceedToCheckout}
+              >
+                Proceed to Checkout
               </Link>
-            </p>
+              <Link
+                href="/"
+                className="mt-4 w-full flex items-center justify-center px-6 py-3 border border-gray-300 rounded-md shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+              >
+                Continue Shopping
+              </Link>
+            </div>
           </div>
         </div>
       </div>

@@ -18,7 +18,7 @@ interface UpdateItemOptionsInput {
 }
 
 interface CartContextType {
-  cart: CartState | null;
+  cart?: CartState | null;
   loading: boolean;
   error: string | null;
   addToCart: (input: AddToCartInput) => Promise<void>;
@@ -32,11 +32,7 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, setCart] = useState<CartState | null>({
-    items: [],
-    subtotal: 0,
-    total: 0
-  });
+  const [cart, setCart] = useState<CartState | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [canProceedToCheckout, setCanProceedToCheckout] = useState(true);
@@ -66,9 +62,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (!productDetails[item.product_id]) {
         try {
           const response = await woocommerce.get(`products/${item.product_id}`);
+          const productData = response.data as WooProduct;
           setProductDetails(prev => ({
             ...prev,
-            [item.product_id]: response.data
+            [item.product_id]: productData
           }));
         } catch (error) {
           console.error('Error fetching product details:', error);
@@ -107,47 +104,55 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
       const cartItem: CartItem = {
         product_id: input.product_id,
-        quantity: input.quantity,
-        name: input.name || '',
+        quantity: input.quantity || 1,
+        name: input.name,
         price: input.price,
         image: input.image,
         variation_id: input.variation_id,
         attributes: input.attributes || [],
-        optionsRequired: Boolean(input.product?.attributes?.length > 0),
-        optionsSelected: Boolean(input.attributes?.length > 0)
+        optionsRequired: Boolean((input.product?.attributes || []).length > 0),
+        optionsSelected: Boolean((input.attributes || []).length > 0),
+        sku: input.sku
       };
 
       setCart(prevCart => {
-        if (!prevCart) {
-          return {
-            items: [cartItem],
-            subtotal: input.price * input.quantity,
-            total: input.price * input.quantity
-          };
-        }
+        // Initialize cart if it doesn't exist
+        const currentCart = prevCart || {
+          items: [],
+          subtotal: 0,
+          total: 0
+        };
 
-        const existingItemIndex = prevCart.items.findIndex(
-          item => item.product_id === input.product_id &&
-                 item.variation_id === input.variation_id
+        // Check if item with same attributes exists
+        const existingItemIndex = currentCart.items.findIndex(item =>
+          item.product_id === cartItem.product_id &&
+          item.variation_id === cartItem.variation_id &&
+          JSON.stringify(item.attributes) === JSON.stringify(cartItem.attributes)
         );
 
-        if (existingItemIndex > -1) {
-          const updatedItems = [...prevCart.items];
-          updatedItems[existingItemIndex].quantity += input.quantity;
+        // Create a new array of items
+        const updatedItems = [...currentCart.items];
 
-          const newSubtotal = prevCart.subtotal + (input.price * input.quantity);
-          return {
-            ...prevCart,
-            items: updatedItems,
-            subtotal: newSubtotal,
-            total: newSubtotal
+        // Update existing item or add new one
+        if (existingItemIndex !== -1) {
+          // Add the new quantity to the existing quantity
+          updatedItems[existingItemIndex] = {
+            ...updatedItems[existingItemIndex],
+            quantity: updatedItems[existingItemIndex].quantity + cartItem.quantity
           };
+        } else {
+          // Add as new item
+          updatedItems.push(cartItem);
         }
 
-        const newSubtotal = prevCart.subtotal + (input.price * input.quantity);
+        // Calculate new totals
+        const newSubtotal = updatedItems.reduce((total, item) => {
+          return total + ((item.price || 0) * item.quantity);
+        }, 0);
+
+        // Return updated cart
         return {
-          ...prevCart,
-          items: [...prevCart.items, cartItem],
+          items: updatedItems,
           subtotal: newSubtotal,
           total: newSubtotal
         };
@@ -194,30 +199,27 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
       const updatedItems = prevCart.items.map(item => {
         if (item.product_id === productId) {
-          const updatedItem = {
+          const updatedItem: CartItem = {
             ...item,
             attributes: input.attributes,
-            // Only mark as selected if we have attributes and a variation ID
+            variation_id: input.variation_id,
+            price: input.price ? parseFloat(input.price) : (item.price || 0),
+            sku: input.sku,
             optionsSelected: input.attributes.length > 0 && !!input.variation_id
           };
-
-          if (input.variation_id) {
-            updatedItem.variation_id = input.variation_id;
-          }
-          if (input.price) {
-            updatedItem.price = parseFloat(input.price);
-          }
-          if (input.sku) {
-            updatedItem.sku = input.sku;
-          }
-
           return updatedItem;
         }
         return item;
       });
 
       // Recalculate cart totals
-      const newSubtotal = updatedItems.reduce((total, item) => total + (item.price || 0) * item.quantity, 0);
+      const newSubtotal = updatedItems.reduce((total, item) => {
+        if (item && item.price !== undefined) {
+          return total + item.price * item.quantity;
+        } else {
+          return total;
+        }
+      }, 0);
 
       return {
         ...prevCart,
@@ -231,8 +233,24 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const removeItem = useCallback((productId: number) => {
     setCart(prevCart => {
       if (!prevCart) return null;
-      const updatedItems = prevCart.items.filter(item => item.product_id !== productId);
-      const newSubtotal = updatedItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+
+      const itemIndex = prevCart.items.findIndex(item => item.product_id === productId);
+      if (itemIndex === -1) return prevCart;
+
+      // Create new array without the removed item
+      const updatedItems = [
+        ...prevCart.items.slice(0, itemIndex),
+        ...prevCart.items.slice(itemIndex + 1)
+      ];
+
+      // Calculate new total
+      const newSubtotal = updatedItems.reduce((total, item) => {
+        const price = item.price || 0;
+        const quantity = item.quantity || 1;
+        return total + (price * quantity);
+      }, 0);
+
+      // Return updated cart
       return {
         ...prevCart,
         items: updatedItems,

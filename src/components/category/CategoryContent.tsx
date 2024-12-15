@@ -14,9 +14,9 @@ export default function CategoryContent({ products, categoryName }: CategoryCont
   if (!Array.isArray(products)) {
     console.error('Products is not an array:', products);
     return (
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">{categoryName}</h1>
-        <div className="text-center text-gray-600">
+      <div className="page-section">
+        <h1 className="page-header">{categoryName}</h1>
+        <div className="content-container text-center">
           No products found
         </div>
       </div>
@@ -25,9 +25,9 @@ export default function CategoryContent({ products, categoryName }: CategoryCont
 
   if (products.length === 0) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">{categoryName}</h1>
-        <div className="text-center text-gray-600">
+      <div className="page-section">
+        <h1 className="page-header">{categoryName}</h1>
+        <div className="content-container text-center">
           No products found
         </div>
       </div>
@@ -35,10 +35,10 @@ export default function CategoryContent({ products, categoryName }: CategoryCont
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">{categoryName}</h1>
-      <Suspense fallback={<ProductListSkeleton id={categoryName.toLowerCase()} />}>
-        <ProductList initialProducts={products} />
+    <div className="page-section">
+      <h1 className="page-header">{categoryName}</h1>
+      <Suspense fallback={<ProductListSkeleton />}>
+        <ProductList products={products} categoryName={categoryName} />
       </Suspense>
     </div>
   );

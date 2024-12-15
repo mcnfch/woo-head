@@ -27,7 +27,7 @@ function Dropdown({ title, items }: DropdownProps) {
 
   return (
     <div className="group relative inline-block">
-      <button className="text-white hover:text-purple-200 transition-colors px-3 py-2 text-sm font-medium inline-flex items-center">
+      <button className="text-black hover:text-purple-200 transition-colors px-3 py-2 text-sm font-medium inline-flex items-center">
         {title}
         <svg
           className="ml-1 h-4 w-4"
@@ -57,7 +57,7 @@ function Dropdown({ title, items }: DropdownProps) {
 
 function StaticLink({ title, href }: { title: string; href: string }) {
   return (
-    <Link href={href} className="text-white hover:text-purple-200 transition-colors px-3 py-2 text-sm font-medium">
+    <Link href={href} className="text-black hover:text-purple-200 transition-colors px-3 py-2 text-sm font-medium">
       {title}
     </Link>
   );
@@ -88,7 +88,7 @@ export function Navigation({ categories }: NavigationProps) {
     .sort((a, b) => a.order - b.order);
 
   return (
-    <nav className="bg-[#32143e] w-full">
+    <nav className="bg-gray-light text-black bg-[url('/patterns/subtle-pattern.png')] bg-repeat">
       <div className="container mx-auto">
         <div className="flex justify-center items-center h-12">
           <div className="flex space-x-8">

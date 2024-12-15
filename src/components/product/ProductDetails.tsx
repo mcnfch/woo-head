@@ -1,12 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import type { WooProduct, ProductVariation, ProductAttribute } from '@/lib/types';
+import { ProductGallery } from './ProductGallery';
+import type { WooProduct, WooVariation, WooVariantAttribute } from '@/lib/types';
 import { useCart } from '@/context/CartContext';
 import { AddToCartButton } from './AddToCartButton';
-import { CartSlideOver } from '../cart/CartSlideOver';
-import { QuickAddModal } from '../cart/QuickAddModal';
+import SlideOutCart from '../cart/SlideOutCart';
 import { woocommerce } from '@/lib/woocommerce';
 
 interface ProductDetailsProps {
@@ -20,12 +19,31 @@ interface SelectedAttributes {
 export function ProductDetails({ product }: ProductDetailsProps) {
   const { addToCart } = useCart();
   const [selectedAttributes, setSelectedAttributes] = useState<SelectedAttributes>({});
-  const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(null);
+  const [selectedVariation, setSelectedVariation] = useState<WooVariation | null>(null);
   const [isAddToCartEnabled, setIsAddToCartEnabled] = useState(false);
   const [cartSlideOverOpen, setCartSlideOverOpen] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState<WooProduct[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<WooProduct | null>(null);
-  const [quickAddModalOpen, setQuickAddModalOpen] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+
+  // Fetch variations when component mounts
+  const [variations, setVariations] = useState<WooVariation[]>([]);
+  
+  useEffect(() => {
+    async function fetchVariations() {
+      try {
+        const response = await woocommerce.get(`products/${product.id}/variations`, {
+          per_page: 100
+        });
+        setVariations(response.data);
+      } catch (error) {
+        console.error('Error fetching variations:', error);
+      }
+    }
+    
+    if (product.type === 'variable') {
+      fetchVariations();
+    }
+  }, [product.id, product.type]);
 
   // Check if all required attributes are selected
   useEffect(() => {
@@ -40,23 +58,35 @@ export function ProductDetails({ product }: ProductDetailsProps) {
     );
 
     setIsAddToCartEnabled(hasAllRequired);
-  }, [product.attributes, selectedAttributes]);
+
+    // Find matching variation
+    if (hasAllRequired && variations.length > 0) {
+      const matchingVariation = variations.find(variation => 
+        variation.attributes.every(attr => 
+          selectedAttributes[attr.name] === attr.option
+        )
+      );
+      setSelectedVariation(matchingVariation || null);
+    } else {
+      setSelectedVariation(null);
+    }
+  }, [product.attributes, selectedAttributes, variations]);
 
   // Fetch random products for "Frequently Bought Together"
   useEffect(() => {
     async function fetchRandomProducts() {
       try {
         const response = await woocommerce.get('products', {
-          per_page: 10, // Get 10 products to randomly select from
+          per_page: 10,
           exclude: [product.id]
         });
         
-        // Randomly select 3 products
-        const shuffled = response.data
+        const shuffled = response.data as WooProduct[];
+        const selectedProducts = shuffled
           .sort(() => 0.5 - Math.random())
           .slice(0, 3);
         
-        setRelatedProducts(shuffled);
+        setRelatedProducts(selectedProducts);
       } catch (error) {
         console.error('Error fetching related products:', error);
       }
@@ -77,9 +107,9 @@ export function ProductDetails({ product }: ProductDetailsProps) {
       await addToCart({
         product_id: product.id,
         name: product.name,
-        price: parseFloat(product.price),
-        quantity: 1,
-        image: product.images[0]?.src,
+        price: parseFloat(selectedVariation?.price || product.price),
+        quantity: quantity,
+        image: selectedVariation?.image?.src || product.images[0]?.src,
         variation_id: selectedVariation?.id,
         attributes: Object.entries(selectedAttributes).map(([name, option]) => ({
           id: product.attributes?.find(attr => attr.name === name)?.id || 0,
@@ -89,35 +119,24 @@ export function ProductDetails({ product }: ProductDetailsProps) {
       });
       setCartSlideOverOpen(true);
     } catch (error) {
-      console.error('Error adding to cart:', error);
+      console.error('Error adding product to cart:', error);
     }
   };
 
   const handleAddAllToCart = async () => {
     try {
-      // Add current product
-      await addToCart({
-        product_id: product.id,
-        name: product.name,
-        price: parseFloat(product.price),
-        quantity: 1,
-        image: product.images[0]?.src,
-        variation_id: selectedVariation?.id,
-        attributes: Object.entries(selectedAttributes).map(([name, option]) => ({
-          id: product.attributes?.find(attr => attr.name === name)?.id || 0,
-          name,
-          option
-        }))
-      });
+      // Add current product with current quantity
+      await handleAddToCart();
 
-      // Add related products
+      // Add related products with quantity 1
       for (const relatedProduct of relatedProducts) {
         await addToCart({
           product_id: relatedProduct.id,
           name: relatedProduct.name,
           price: parseFloat(relatedProduct.price),
           quantity: 1,
-          image: relatedProduct.images[0]?.src
+          image: relatedProduct.images[0]?.src,
+          attributes: []
         });
       }
 
@@ -128,160 +147,130 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Product Image */}
-        <div className="relative aspect-square">
-          <Image
-            src={product.images[0]?.src || '/placeholder.jpg'}
-            alt={product.name}
-            fill
-            className="object-cover rounded-lg"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            priority
-          />
-        </div>
+    <div className="bg-white w-[1024px] mx-auto">
+      <div className="px-[10px] py-8">
+        <div className="bg-white shadow-sm rounded-lg overflow-hidden">
+          {/* Main Product Section */}
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {/* Product Image */}
+              <div className="relative">
+                <ProductGallery 
+                  images={product.images} 
+                  variantImage={selectedVariation?.image || null}
+                />
+              </div>
 
-        {/* Product Info */}
-        <div className="space-y-6">
-          <h1 className="text-3xl font-bold">{product.name}</h1>
-          
-          <div className="text-2xl font-semibold text-purple-600">
-            ${parseFloat(product.price).toFixed(2)}
-          </div>
-          
-          <div 
-            className="prose prose-sm"
-            dangerouslySetInnerHTML={{ __html: product.description }}
-          />
-          
-          {/* Product Attributes/Variations */}
-          {product.attributes && product.attributes.length > 0 && (
-            <div className="space-y-4">
-              {product.attributes.filter(attr => attr.variation).map((attribute, attrIndex) => (
-                <div key={`${product.id}-attr-${attrIndex}-${attribute.id}`} className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    {attribute.name}
+              {/* Product Info */}
+              <div className="space-y-6">
+                <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
+                
+                <div className="text-2xl font-semibold text-purple-600">
+                  ${parseFloat(selectedVariation?.price || product.price).toFixed(2)}
+                </div>
+
+                <div className="flex items-center space-x-2 text-sm">
+                  <span className="font-semibold">Stock Status:</span>
+                  <span className={product.stock_status === 'instock' ? 'text-green-600' : 'text-red-600'}>
+                    {product.stock_status === 'instock' ? 'In Stock' : 'Out of Stock'}
+                  </span>
+                </div>
+                
+                <div 
+                  className="prose prose-sm text-gray-700"
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
+                
+                {/* Product Attributes/Variations */}
+                {product.attributes && product.attributes.length > 0 && (
+                  <div className="space-y-4">
+                    {product.attributes.filter(attr => attr.variation).map((attribute, attrIndex) => (
+                      <div key={`${product.id}-${attribute.name}-${attrIndex}`}>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          {attribute.name}
+                        </label>
+                        <select
+                          value={selectedAttributes[attribute.name] || ''}
+                          onChange={(e) => handleAttributeChange(attribute.name, e.target.value)}
+                          className="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                        >
+                          <option value="">Select {attribute.name}</option>
+                          {attribute.options.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Quantity Selector */}
+                <div className="flex items-center space-x-4">
+                  <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
+                    Quantity
                   </label>
                   <select
-                    value={selectedAttributes[attribute.name] || ''}
-                    onChange={(e) => handleAttributeChange(attribute.name, e.target.value)}
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md"
+                    id="quantity"
+                    value={quantity}
+                    onChange={(e) => setQuantity(parseInt(e.target.value))}
+                    className="rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                   >
-                    <option value="">Select {attribute.name}</option>
-                    {attribute.options?.map((option, optIndex) => (
-                      <option key={`${product.id}-attr-${attrIndex}-opt-${optIndex}`} value={option}>
-                        {option}
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+                      <option key={num} value={num}>
+                        {num}
                       </option>
                     ))}
                   </select>
                 </div>
-              ))}
-            </div>
-          )}
-          
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <span className="font-semibold">SKU:</span>
-              <span>{product.sku}</span>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <span className="font-semibold">Stock Status:</span>
-              <span className={product.stock_status === 'instock' ? 'text-green-600' : 'text-red-600'}>
-                {product.stock_status === 'instock' ? 'In Stock' : 'Out of Stock'}
-              </span>
+
+                <button
+                  onClick={handleAddToCart}
+                  disabled={!isAddToCartEnabled}
+                  className={`w-full py-3 px-4 rounded-md text-white font-medium ${
+                    !isAddToCartEnabled 
+                      ? 'bg-gray-400 cursor-not-allowed' 
+                      : 'bg-purple-600 hover:bg-purple-700'
+                  } transition-colors`}
+                >
+                  Add to Cart
+                </button>
+              </div>
             </div>
           </div>
 
-          <button
-            onClick={handleAddToCart}
-            disabled={!isAddToCartEnabled || product.stock_status !== 'instock'}
-            className={`w-full py-3 px-4 rounded-md text-white font-medium transition-colors ${
-              isAddToCartEnabled && product.stock_status === 'instock'
-                ? 'bg-purple-600 hover:bg-purple-700'
-                : 'bg-gray-400 cursor-not-allowed'
-            }`}
-          >
-            {!isAddToCartEnabled ? 'Select Options' : product.stock_status === 'instock' ? 'Add to Cart' : 'Out of Stock'}
-          </button>
-        </div>
-      </div>
-
-      {/* Frequently Bought Together */}
-      {relatedProducts.length > 0 && (
-        <div className="mt-16 bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-2xl font-bold mb-6">Frequently Bought Together</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {relatedProducts.map((relatedProduct) => (
-              <div key={`related-${relatedProduct.id}`} className="flex flex-col items-center relative h-full">
-                <div className="flex flex-col items-center flex-grow w-full" style={{ minHeight: '300px' }}>
-                  <div className="relative w-40 h-40 mb-4">
-                    <Image
-                      src={relatedProduct.images[0]?.src || '/placeholder.jpg'}
-                      alt={relatedProduct.name}
-                      fill
-                      className="object-cover rounded-lg"
-                    />
-                  </div>
-                  <div className="flex flex-col items-center flex-grow">
-                    <h3 className="text-sm font-medium text-center mb-3 line-clamp-2 h-10">
-                      {relatedProduct.name}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-3">${parseFloat(relatedProduct.price).toFixed(2)}</p>
-                  </div>
-                </div>
-                <div className="mt-auto">
-                  <button
-                    onClick={() => {
-                      setSelectedProduct(relatedProduct);
-                      setQuickAddModalOpen(true);
-                    }}
-                    className="bg-purple-600 text-white px-4 py-2 rounded-md text-sm hover:bg-purple-700 transition-colors"
-                  >
-                    Add to Cart
-                  </button>
+          {/* Frequently Bought Together Section */}
+          {relatedProducts.length > 0 && (
+            <div className="border-t border-gray-200">
+              <div className="p-6">
+                <h2 className="text-xl font-bold text-gray-900 mb-6">Frequently Bought Together</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {relatedProducts.map((relatedProduct) => (
+                    <div key={`related-${relatedProduct.id}`} className="flex flex-col bg-white rounded-lg shadow-sm overflow-hidden">
+                      <div className="p-4">
+                        <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200">
+                          <img
+                            src={relatedProduct.images[0]?.src || '/placeholder.jpg'}
+                            alt={relatedProduct.name}
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="mt-4">
+                          <h3 className="text-sm font-medium text-gray-900">{relatedProduct.name}</h3>
+                          <p className="mt-1 text-sm font-medium text-purple-600">
+                            ${parseFloat(relatedProduct.price).toFixed(2)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
-
-          {/* Add All Section */}
-          <div className="mt-8 flex flex-col items-center border-t pt-6">
-            <p className="text-lg font-medium mb-4">
-              Bundle Price: ${(
-                parseFloat(product.price) +
-                relatedProducts.reduce((sum, p) => sum + parseFloat(p.price), 0)
-              ).toFixed(2)}
-            </p>
-            <button
-              onClick={handleAddAllToCart}
-              className="bg-purple-600 text-white px-8 py-3 rounded-md hover:bg-purple-700 transition-colors"
-            >
-              Add All to Cart
-            </button>
-          </div>
+            </div>
+          )}
         </div>
-      )}
-
-      {/* QuickAddModal for related products */}
-      {selectedProduct && (
-        <QuickAddModal
-          isOpen={quickAddModalOpen}
-          setIsOpen={setQuickAddModalOpen}
-          product={selectedProduct}
-          onAddToCart={() => {
-            setQuickAddModalOpen(false);
-            setCartSlideOverOpen(true);
-          }}
-        />
-      )}
-
-      {/* Cart Slide Over */}
-      <CartSlideOver
-        isOpen={cartSlideOverOpen}
-        onClose={() => setCartSlideOverOpen(false)}
-      />
+      </div>
     </div>
   );
 }

@@ -100,6 +100,10 @@ export default function ProductList({ initialProducts, categorySlug, sortBy = 'd
     }
   });
 
+  const chunk = (arr, size) => {
+    return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) => arr.slice(i * size, (i + 1) * size));
+  };
+
   // Show loading state
   if (isLoading) {
     return <ProductListSkeleton id="product-list" />;
@@ -124,40 +128,41 @@ export default function ProductList({ initialProducts, categorySlug, sortBy = 'd
   }
 
   return (
-    <div className="max-w-[1920px] mx-auto px-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
-        {sortedProducts.map((product) => (
-          <div key={product.id} className="transform transition-transform duration-200 hover:scale-[1.02]">
-            <ProductCard
-              id={product.id}
-              name={product.name}
-              price={product.price}
-              image={product.images[0]?.src || '/placeholder.jpg'}
-              stockStatus={product.stock_status}
-              shortDescription={product.short_description}
-              sku={product.sku}
-            />
+    <div className="page-section space-y-8">
+      {/* Group products into rows */}
+      {chunk(sortedProducts, 4).map((row, rowIndex) => (
+        <div 
+          key={rowIndex} 
+          className="content-container"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {row.map((product) => (
+              <div key={product.id} className="card-container">
+                <ProductCard
+                  id={product.id}
+                  name={product.name}
+                  price={product.price}
+                  image={product.images[0]?.src || '/placeholder.jpg'}
+                  stockStatus={product.stock_status}
+                  shortDescription={product.short_description}
+                  sku={product.sku}
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
       
       {hasMore && (
         <div 
           ref={loadMoreRef}
-          className="h-20 flex items-center justify-center mt-8"
+          className="h-20 flex items-center justify-center"
         >
           {loading ? (
             <div className="animate-pulse space-y-4">
               <div className="h-12 w-12 bg-gray-200 rounded-full"></div>
             </div>
-          ) : (
-            <button 
-              onClick={loadMoreProducts}
-              className="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700"
-            >
-              Load More Products
-            </button>
-          )}
+          ) : null}
         </div>
       )}
     </div>

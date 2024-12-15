@@ -77,6 +77,7 @@ export interface CartItem {
   attributes?: WooVariantAttribute[];
   optionsRequired: boolean;
   optionsSelected: boolean;
+  sku?: string;
 }
 
 export interface CartState {
@@ -96,11 +97,13 @@ export interface CartResponse {
 export interface AddToCartInput {
   product_id: number;
   quantity: number;
-  variation_id?: number;
-  name?: string;
+  name: string;
   price?: number;
   image?: string;
+  variation_id?: number;
   attributes?: WooVariantAttribute[];
+  sku?: string;
+  product?: WooProduct;
 }
 
 export interface CartContextType {

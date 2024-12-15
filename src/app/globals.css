@@ -3,17 +3,64 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-rgb: 255, 255, 255;
+  /* Primary Colors */
+  --color-gray-dark: #545151;
+  --color-gray-light: #b8afaf;
+  --color-lavender: #B85EFF;
+  --color-lavender-hover: #A346FF;
+
+  /* Text Colors */
+  --color-text-primary: var(--color-gray-dark);
+  --color-text-secondary: #666666;
+  --color-text-disabled: #9E9E9E;
+  --color-text-on-dark: #FFFFFF;
+  --color-text-on-light: var(--color-gray-dark);
+
+  /* Background Colors */
+  --color-bg-main: #FFFFFF;
+  --color-bg-paper: var(--color-gray-light);
+  --color-bg-elevated: #FFFFFF;
+
+  /* Border Colors */
+  --color-border-light: var(--color-gray-light);
+  --color-border-medium: #8c8585;
+  --color-border-dark: var(--color-gray-dark);
+
+  /* UI State Colors */
+  --color-success: #4CAF50;
+  --color-error: #FF5252;
+  --color-warning: #FFC107;
+  --color-info: #2196F3;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  background: url('/images/pattern-neon-circuit.png') fixed repeat;
+}
+
+/* Content container styles */
+.content-container {
+  @apply bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-6 my-4;
+}
+
+/* Page section styles */
+.page-section {
+  @apply container mx-auto px-4 py-8;
+}
+
+/* Header styles */
+.page-header {
+  @apply text-3xl font-bold mb-8 text-white drop-shadow-lg;
+}
+
+/* Card container styles */
+.card-container {
+  @apply bg-white/90 backdrop-blur-sm rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-[1.02];
 }
 
 .header-main {
-  @apply relative bg-white border-b;
+  @apply relative bg-white border-b border-border-light;
 }
 
 /* Add more custom styles as needed */

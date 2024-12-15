@@ -101,9 +101,40 @@ Note: The menu configuration only controls visibility and order. Product categor
 
 ## Key Components
 
+### Product Page Components
+- **ProductDetails**: Main product display component with:
+  - Dynamic variant selection
+  - Image gallery with variant-specific images
+  - Quantity selection
+  - Add to cart functionality
+  - Frequently bought together section
+- **ProductGallery**: Handles product images with:
+  - Main image display
+  - Thumbnail navigation
+  - Variant image switching
+  - Responsive image loading
+  - Image zoom capabilities
+
+### Cart Components
+- **SlideOutCart**: Slide-out cart panel featuring:
+  - Real-time cart updates
+  - Variant selection and modification
+  - Quantity adjustments
+  - Remove item functionality
+  - Checkout button
+- **CartIcon**: Dynamic cart indicator showing:
+  - Current item count
+  - Cart toggle functionality
+  - Badge for item quantity
+- **CartContext**: Global cart state management:
+  - Add/remove items
+  - Update quantities
+  - Modify variants
+  - Calculate totals
+  - Persist cart state
+
 - **CategoryContent**: Handles product listing in category pages
 - **ProductCard**: Reusable product display component
-- **CartContext**: Manages cart state across the application
 - **HeaderWrapper**: Main navigation and cart preview
 - **ProductList**: Handles product grid display with infinite loading
 

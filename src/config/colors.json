@@ -1,0 +1,72 @@
+{
+  "palette": {
+    "primary": {
+      "darkGray": "#545151",
+      "lightGray": "#b8afaf",
+      "vividLavender": "#B85EFF"
+    },
+    "semantic": {
+      "success": "#4CAF50",
+      "error": "#FF5252",
+      "warning": "#FFC107",
+      "info": "#2196F3"
+    },
+    "text": {
+      "primary": "#545151",
+      "secondary": "#666666",
+      "disabled": "#9E9E9E",
+      "onDark": "#FFFFFF",
+      "onLight": "#545151"
+    },
+    "background": {
+      "main": "#FFFFFF",
+      "paper": "#b8afaf",
+      "elevated": "#FFFFFF"
+    },
+    "border": {
+      "light": "#b8afaf",
+      "medium": "#8c8585",
+      "dark": "#545151"
+    },
+    "button": {
+      "primary": "#B85EFF",
+      "primaryHover": "#A346FF",
+      "secondary": "#545151",
+      "secondaryHover": "#403e3e"
+    },
+    "overlay": {
+      "modal": "rgba(84, 81, 81, 0.5)",
+      "drawer": "rgba(84, 81, 81, 0.3)"
+    }
+  },
+  "usage": {
+    "header": {
+      "background": "#545151",
+      "text": "#FFFFFF",
+      "accent": "#B85EFF"
+    },
+    "navigation": {
+      "background": "#b8afaf",
+      "text": "#545151",
+      "activeText": "#B85EFF",
+      "hover": "#a39b9b"
+    },
+    "footer": {
+      "background": "#545151",
+      "text": "#FFFFFF",
+      "accent": "#B85EFF"
+    },
+    "productCard": {
+      "background": "#FFFFFF",
+      "border": "#b8afaf",
+      "priceText": "#B85EFF",
+      "saleTag": "#FF5252"
+    },
+    "buttons": {
+      "addToCart": "#B85EFF",
+      "addToCartHover": "#A346FF",
+      "checkout": "#545151",
+      "checkoutHover": "#403e3e"
+    }
+  }
+}

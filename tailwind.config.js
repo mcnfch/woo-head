@@ -7,6 +7,21 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        'gray': {
+          dark: '#545151',
+          light: '#b8afaf',
+        },
+        'lavender': {
+          DEFAULT: '#B85EFF',
+          hover: '#A346FF',
+        },
+        'border': {
+          light: '#b8afaf',
+          medium: '#8c8585',
+          dark: '#545151',
+        },
+      },
       fontFamily: {
         sans: ['var(--font-geist-sans)'],
         mono: ['var(--font-geist-mono)'],
@@ -28,4 +43,4 @@ module.exports = {
     },
   },
   plugins: [],
-} 
+}

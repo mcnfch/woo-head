@@ -16,13 +16,13 @@ export const viewport = {
 export async function generateMetadata(
   { params }: GenerateMetadataProps
 ): Promise<Metadata> {
-  const slug = await Promise.resolve(params.slug);
-  if (!slug) {
+  if (!params?.slug) {
     return {
       title: 'Product Not Found',
     };
   }
 
+  const slug = params.slug;
   console.log(`[ProductPage] Generating metadata for slug: ${slug}`);
   const product = await productCache.getProductBySlug(slug);
   
@@ -44,12 +44,12 @@ type PageProps = {
 };
 
 export default async function ProductPage({ params }: PageProps) {
-  const slug = await Promise.resolve(params.slug);
-  if (!slug) {
+  if (!params?.slug) {
     console.log(`[ProductPage] No slug provided`);
     notFound();
   }
 
+  const slug = params.slug;
   try {
     console.log(`[ProductPage] Loading product with slug: ${slug}`);
     const product = await productCache.getProductBySlug(slug);

@@ -33,7 +33,7 @@ export function AddToCartButton({ product, className = '', isProductPage = false
       disabled={product.stock_status !== 'instock'}
       className={`${className} ${
         product.stock_status === 'instock'
-          ? 'bg-purple-600 hover:bg-purple-700'
+          ? 'bg-lavender hover:bg-lavender-hover text-white'
           : 'bg-gray-400 cursor-not-allowed'
       }`}
     >

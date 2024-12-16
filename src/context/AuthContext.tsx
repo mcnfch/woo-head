@@ -1,7 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User, UserRegistrationData, UserUpdateData } from '@/lib/types/auth';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import type { User, UserRegistrationData, UserUpdateData } from '@/lib/types/auth';
 import { authApi } from '@/lib/api/authApi';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';

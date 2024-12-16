@@ -1,10 +1,22 @@
 import axios from 'axios';
-import { AuthResponse, User, UserRegistrationData, UserUpdateData } from '../types/auth';
 import Cookies from 'js-cookie';
+import type { AuthResponse, User, UserRegistrationData, UserUpdateData } from '@/lib/types/auth';
+import { woocommerce } from '@/lib/woocommerce';
 
 const API_URL = process.env.NEXT_PUBLIC_WOOCOMMERCE_URL;
 const WC_CONSUMER_KEY = process.env.NEXT_PUBLIC_WC_CONSUMER_KEY;
 const WC_CONSUMER_SECRET = process.env.NEXT_PUBLIC_WC_CONSUMER_SECRET;
+
+interface WPUserResponse {
+  id: number;
+  username: string;
+  name: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  roles: string[];
+  avatar_urls: Record<string, string>;
+}
 
 class AuthAPI {
   private static instance: AuthAPI;
@@ -28,6 +40,18 @@ class AuthAPI {
     return {
       'Content-Type': 'application/json',
       ...(this.token ? { Authorization: `Bearer ${this.token}` } : {}),
+    };
+  }
+
+  private formatUser(wpUser: WPUserResponse): User {
+    return {
+      id: wpUser.id,
+      username: wpUser.username,
+      firstName: wpUser.first_name,
+      lastName: wpUser.last_name,
+      email: wpUser.email,
+      roles: wpUser.roles,
+      avatarUrl: wpUser.avatar_urls['96'] || ''
     };
   }
 
@@ -67,9 +91,10 @@ class AuthAPI {
           id: response.data.user_id,
           email: user_email,
           username: user_nicename,
-          displayName: user_display_name,
           firstName: response.data.first_name || '',
           lastName: response.data.last_name || '',
+          roles: ['customer'],
+          avatarUrl: ''
         }
       };
     } catch (error: any) {
@@ -89,14 +114,7 @@ class AuthAPI {
         { headers: this.getHeaders() }
       );
 
-      return {
-        id: response.data.id,
-        email: response.data.email,
-        username: response.data.username,
-        displayName: response.data.name,
-        firstName: response.data.first_name || '',
-        lastName: response.data.last_name || '',
-      };
+      return this.formatUser(response.data);
     } catch (error: any) {
       console.error('Get profile error:', error.response?.data || error);
       throw new Error(error.response?.data?.message || 'Failed to get profile');
@@ -128,14 +146,7 @@ class AuthAPI {
         { headers: this.getHeaders() }
       );
 
-      return {
-        id: response.data.id,
-        email: response.data.email,
-        username: response.data.username,
-        displayName: response.data.name,
-        firstName: response.data.first_name || '',
-        lastName: response.data.last_name || '',
-      };
+      return this.formatUser(response.data);
     } catch (error: any) {
       console.error('Update profile error:', error.response?.data || error);
       throw new Error(error.response?.data?.message || 'Failed to update profile');

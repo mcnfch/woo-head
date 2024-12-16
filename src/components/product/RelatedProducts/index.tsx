@@ -11,8 +11,8 @@ interface RelatedProductsProps {
 
 export async function RelatedProducts({ categoryId, currentProductId }: RelatedProductsProps) {
   try {
-    const products = await getProducts(categoryId.toString());
-    const relatedProducts = products
+    const response = await getProducts(categoryId.toString());
+    const relatedProducts = response.products
       .filter((product: WooProduct) => product.id !== currentProductId)
       .slice(0, 4);
 
@@ -31,6 +31,10 @@ export async function RelatedProducts({ categoryId, currentProductId }: RelatedP
               name={product.name}
               price={product.price}
               image={product.images[0]?.src || '/placeholder.jpg'}
+              slug={product.slug}
+              stockStatus={product.stock_status}
+              shortDescription={product.short_description}
+              sku={product.sku}
             />
           ))}
         </div>
@@ -42,4 +46,4 @@ export async function RelatedProducts({ categoryId, currentProductId }: RelatedP
   }
 }
 
-export default RelatedProducts; 
+export default RelatedProducts;

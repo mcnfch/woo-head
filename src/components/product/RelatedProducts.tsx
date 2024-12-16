@@ -15,10 +15,7 @@ export function RelatedProducts({
   initialProducts 
 }: RelatedProductsProps) {
   const relatedProducts = initialProducts
-    .filter(product => 
-      product.id !== currentProductId && 
-      product.categories.some(cat => cat.id === categoryId)
-    )
+    .filter(product => product.id !== currentProductId)
     .slice(0, 4);
 
   if (!relatedProducts.length) {
@@ -35,10 +32,15 @@ export function RelatedProducts({
             id={product.id}
             name={product.name}
             price={product.price}
-            image={product.images[0]?.src || '/placeholder.jpg'}
+            image={product.images[0]?.src}
+            stockStatus={product.stock_status}
+            shortDescription={product.short_description}
+            sku={product.sku}
+            slug={product.slug}
+            attributes={product.attributes}
           />
         ))}
       </div>
     </div>
   );
-} 
+}

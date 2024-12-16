@@ -70,8 +70,11 @@ export function Navigation({ categories }: NavigationProps) {
   
   // First, organize all categories by their relationships
   categories.forEach(category => {
+    // Skip uncategorized
+    if (category.name.toLowerCase() === 'uncategorized') return;
+    
     if (category.parent === 0) {
-      rootCategories.set(category.name, category);
+      rootCategories.set(category.name.toLowerCase(), category);
     } else {
       const children = categoryMap.get(category.parent) || [];
       children.push(category);
@@ -81,10 +84,7 @@ export function Navigation({ categories }: NavigationProps) {
 
   // Get menu items and sort by order
   const menuItems = menuConfig.menuItems
-    .filter(item => {
-      if (item.type === 'non-product') return item.visible;
-      return item.visible;
-    })
+    .filter(item => item.visible)
     .sort((a, b) => a.order - b.order);
 
   return (
@@ -94,11 +94,11 @@ export function Navigation({ categories }: NavigationProps) {
           <div className="flex space-x-8">
             {menuItems.map((item) => {
               if (item.type === 'product') {
-                // Find the matching root category by name
-                const rootCategory = rootCategories.get(item.title);
+                // Find the matching root category by name (case-insensitive)
+                const rootCategory = rootCategories.get(item.title.toLowerCase());
                 
                 if (!rootCategory) {
-                  console.log(`No matching category found for menu item: ${item.title}`);
+                  console.log(`[Navigation] No matching category found for menu item: ${item.title}`);
                   return null;
                 }
                 
@@ -109,7 +109,7 @@ export function Navigation({ categories }: NavigationProps) {
                   return (
                     <Dropdown
                       key={rootCategory.slug}
-                      title={rootCategory.name}
+                      title={item.title} // Use menu item title for consistency
                       items={children.sort((a, b) => a.name.localeCompare(b.name))}
                     />
                   );
@@ -118,19 +118,18 @@ export function Navigation({ categories }: NavigationProps) {
                 return (
                   <StaticLink
                     key={rootCategory.slug}
-                    title={rootCategory.name}
-                    href={`/${rootCategory.slug}`}
+                    title={item.title} // Use menu item title for consistency
+                    href={`/category/${rootCategory.slug}`}
                   />
                 );
               }
               
               // For non-product items (like "About", "Contact", etc.)
-              const href = item.type === 'non-product' && 'slug' in item ? `/${item.slug}` : `/${item.title.toLowerCase()}`;
               return (
                 <StaticLink
                   key={item.title}
                   title={item.title}
-                  href={href}
+                  href={`/${item.title.toLowerCase().replace(/\s+/g, '-')}`}
                 />
               );
             })}

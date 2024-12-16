@@ -61,10 +61,19 @@ export const api = {
       apiClient<WooCategory[]>({ endpoint: 'categories.list' }),
   },
   orders: {
-    create: (payload: Partial<WooOrder>) => 
-      apiClient<WooOrder>({ endpoint: 'orders.create', payload }),
-    update: (orderId: string, payload: any) => 
-      apiClient<WooOrder>({ endpoint: 'orders.update', payload: { id: orderId, ...payload } }),
+    create: (orderData: any) => apiClient<WooOrder>({ 
+      endpoint: 'orders.create', 
+      payload: orderData 
+    }),
+    update: (orderId: number, orderData: any) => apiClient<WooOrder>({
+      endpoint: 'orders.update',
+      payload: orderData,
+      params: { orderId: orderId.toString() }
+    }),
+    get: (orderId: string) => apiClient<WooOrder>({
+      endpoint: 'orders.get',
+      params: { orderId }
+    })
   },
   payment: {
     createIntent: (amount: number, currency: string = 'USD') => 

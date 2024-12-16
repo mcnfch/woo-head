@@ -2,7 +2,8 @@
 
 import { useAuth } from '@/context/AuthContext';
 import { useState, useEffect } from 'react';
-import { AddressForm, AddressData } from '@/components/profile/AddressForm';
+import type { AddressData } from '@/lib/types';
+import { AddressForm } from '@/components/profile/AddressForm';
 import { wooCommerceApi } from '@/lib/api/woocommerceApi';
 
 export default function ProfilePage() {
@@ -30,9 +31,9 @@ export default function ProfilePage() {
       const customerData = await wooCommerceApi.getCurrentCustomer();
       setBillingAddress(customerData.billing);
       setShippingAddress(customerData.shipping);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error fetching addresses:', err);
-      setError(err.message || 'Failed to load address information');
+      setError(err instanceof Error ? err.message : 'Failed to load address information');
     }
   };
 
@@ -51,13 +52,13 @@ export default function ProfilePage() {
 
     try {
       await updateProfile({
-        first_name: formData.firstName,
-        last_name: formData.lastName,
+        firstName: formData.firstName,
+        lastName: formData.lastName,
         email: formData.email,
       });
       setUpdateSuccess(true);
-    } catch (err: any) {
-      setError(err.message || 'Failed to update profile');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update profile');
     }
   };
 
@@ -73,8 +74,8 @@ export default function ProfilePage() {
         setShippingAddress(data);
       }
       setUpdateSuccess(true);
-    } catch (err: any) {
-      setError(err.message || 'Failed to update billing address');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update billing address');
     } finally {
       setIsAddressLoading(false);
     }
@@ -89,8 +90,8 @@ export default function ProfilePage() {
       await wooCommerceApi.updateAddress(user?.id || 0, data, false);
       setShippingAddress(data);
       setUpdateSuccess(true);
-    } catch (err: any) {
-      setError(err.message || 'Failed to update shipping address');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to update shipping address');
     } finally {
       setIsAddressLoading(false);
     }

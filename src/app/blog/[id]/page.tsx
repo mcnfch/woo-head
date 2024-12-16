@@ -1,4 +1,4 @@
-import { getBlogPost } from '@/lib/woocommerce';
+import { getBlogPosts } from '@/lib/woocommerce';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 
@@ -12,7 +12,8 @@ export default async function BlogPostPage({
   searchParams: _searchParams
 }: Props) {
   const resolvedParams = await params;
-  const post = await getBlogPost(parseInt(resolvedParams.id));
+  const posts = await getBlogPosts();
+  const post = posts.find(p => p.id === parseInt(resolvedParams.id));
 
   if (!post) {
     notFound();

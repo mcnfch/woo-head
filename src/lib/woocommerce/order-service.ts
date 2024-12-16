@@ -30,7 +30,9 @@ export class OrderService {
         name: item.name,
         price: item.price ? Number(item.price) : 0,
         variation_id: item.variation_id ? Number(item.variation_id) : undefined,
-        attributes: item.attributes
+        attributes: item.attributes,
+        optionsRequired: false,
+        optionsSelected: Boolean(item.attributes?.length)
       }));
 
       return {
@@ -66,7 +68,7 @@ export class OrderService {
         ];
       }
 
-      const response = await api.orders.update(orderId, updateData);
+      const response = await api.orders.update(Number(orderId), updateData);
       
       return {
         success: true,

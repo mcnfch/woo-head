@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { authApi } from './authApi';
-import { AddressData } from '@/components/profile/AddressForm';
+import type { AddressData } from '@/lib/types';
 import Cookies from 'js-cookie';
 import { logger } from '../logger';
 

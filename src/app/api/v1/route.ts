@@ -16,7 +16,9 @@ type Endpoint =
   | 'categories.list'
   | 'navigation.get'
   | 'orders.create'
-  | 'orders.update';
+  | 'orders.update'
+  | 'orders.get'
+  | 'orders.list';
 
 interface ApiRequest {
   endpoint: Endpoint;
@@ -41,21 +43,21 @@ async function handleCartRequests(endpoint: string, payload: Record<string, unkn
       if (!product_id || typeof quantity === 'undefined') {
         throw new Error('Invalid cart update payload');
       }
-      return await service.update(product_id, quantity);
+      return await service.updateQuantity(product_id, quantity);
     }
     case 'cart.remove': {
       const product_id = payload.product_id as number;
       if (!product_id) {
         throw new Error('Invalid cart remove payload');
       }
-      return await service.remove(product_id);
+      return await service.removeItem(product_id);
     }
     case 'cart.applyCoupon': {
       const code = payload.code as string;
       if (!code) {
         throw new Error('Invalid coupon code');
       }
-      return await service.applyCoupon(code);
+      throw new Error('Coupon functionality not implemented');
     }
     default:
       throw new Error('Invalid cart endpoint');
@@ -103,14 +105,42 @@ async function handleNavigationRequests(endpoint: string) {
 }
 
 async function handleOrderRequests(endpoint: string, payload: Record<string, unknown>, params: Record<string, string>) {
-  switch (endpoint) {
-    case 'orders.create':
-      return await woocommerce.post('orders', payload);
-    case 'orders.update':
-      const { orderId } = params;
-      return await woocommerce.put(`orders/${orderId}`, payload);
-    default:
-      throw new Error('Invalid order endpoint');
+  try {
+    switch (endpoint) {
+      case 'orders.create': {
+        const response = await woocommerce.post('orders', payload);
+        return response.data;
+      }
+      case 'orders.update': {
+        const orderId = params.orderId;
+        if (!orderId) {
+          throw new Error('Order ID is required');
+        }
+        const response = await woocommerce.put(`orders/${orderId}`, payload);
+        return response.data;
+      }
+      case 'orders.get': {
+        const orderId = params.orderId;
+        if (!orderId) {
+          throw new Error('Order ID is required');
+        }
+        const response = await woocommerce.get(`orders/${orderId}`);
+        return response.data;
+      }
+      case 'orders.list': {
+        const response = await woocommerce.get('orders', {
+          per_page: 100,
+          orderby: 'date',
+          order: 'desc'
+        });
+        return response.data;
+      }
+      default:
+        throw new Error(`Unknown order endpoint: ${endpoint}`);
+    }
+  } catch (error) {
+    console.error('WooCommerce API Error:', error);
+    throw error;
   }
 }
 
@@ -177,44 +207,35 @@ export async function POST(
 
 export async function GET(
   request: NextRequest
-) {
+): Promise<NextResponse> {
   try {
     const { searchParams } = new URL(request.url);
-    const endpoint = searchParams.get('endpoint');
-    
+    const endpoint = searchParams.get('endpoint')?.toLowerCase();
+    const orderId = searchParams.get('orderId');
+
     if (!endpoint) {
       return NextResponse.json(
-        { error: 'Endpoint parameter is required' },
+        { error: 'Endpoint is required' },
         { status: 400 }
       );
     }
 
-    // Validate WooCommerce configuration
-    if (
-      !process.env.NEXT_PUBLIC_WOOCOMMERCE_KEY ||
-      !process.env.NEXT_PUBLIC_WOOCOMMERCE_SECRET ||
-      !process.env.NEXT_PUBLIC_WOOCOMMERCE_URL
-    ) {
-      return NextResponse.json(
-        { error: 'WooCommerce configuration missing' },
-        { status: 500 }
-      );
-    }
-
     let result;
-    const [domain] = endpoint.split('.');
+    const [resource, action] = endpoint.split('.');
 
-    switch (domain) {
+    switch (resource) {
+      case 'products':
+        const searchParamsObj = Object.fromEntries(searchParams.entries());
+        result = await handleProductRequests(endpoint, searchParamsObj, {});
+        break;
       case 'categories':
         result = await handleCategoryRequests(endpoint);
         break;
-      case 'products':
-        const productParams = Object.fromEntries(searchParams);
-        delete productParams.endpoint;
-        result = await handleProductRequests(endpoint, productParams, {});
-        break;
       case 'navigation':
         result = await handleNavigationRequests(endpoint);
+        break;
+      case 'orders':
+        result = await handleOrderRequests(endpoint, {}, { orderId: orderId || '' });
         break;
       default:
         return NextResponse.json(
@@ -227,7 +248,7 @@ export async function GET(
   } catch (error) {
     console.error('API Error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: error instanceof Error ? error.message : 'Unknown error occurred' },
       { status: 500 }
     );
   }

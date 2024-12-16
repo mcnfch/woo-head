@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ProductCache } from '@/lib/cache/productCache';
+import { productCache } from '@/lib/cache/productCache';
 import crypto from 'crypto';
 
 export const dynamic = 'force-dynamic';
@@ -42,17 +42,17 @@ export async function POST(
       case 'product.created':
       case 'product.updated':
       case 'product.deleted':
-        await ProductCache.invalidateProduct(data.id.toString());
+        await productCache.invalidateProduct(data.id.toString());
         break;
 
       case 'product.restored':
-        await ProductCache.invalidateCache();
+        await productCache.invalidateCache();
         break;
 
       case 'product_cat.created':
       case 'product_cat.updated':
       case 'product_cat.deleted':
-        await ProductCache.invalidateCache();
+        await productCache.invalidateCache();
         break;
 
       default:

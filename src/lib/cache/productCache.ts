@@ -20,40 +20,22 @@ class ProductCache {
   }
 
   private normalizeSlug(slug: string): string {
-    // Remove 'product/' prefix if present
-    slug = slug.replace(/^product\//, '');
-    
-    // URL decode
-    slug = decodeURIComponent(slug);
-    
-    // Convert to lowercase
-    slug = slug.toLowerCase();
-    
-    // Replace apostrophes and special quotes
-    slug = slug.replace(/[''"]/g, '');
-    
-    // Replace spaces with hyphens
-    slug = slug.replace(/\s+/g, '-');
-    
-    // Remove multiple consecutive hyphens
-    slug = slug.replace(/-+/g, '-');
-    
-    // Remove leading/trailing hyphens
-    slug = slug.replace(/^-+|-+$/g, '');
-    
-    // Remove trailing slashes
-    slug = slug.replace(/\/+$/, '');
-
-    console.log(`[ProductCache] Normalized slug: "${slug}"`);
-    return slug;
+    return decodeURIComponent(slug)
+      .toLowerCase()
+      .replace(/[''"]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .replace(/\/+$/, '')
+      .replace(/^product\//, '');
   }
 
   private getProductKey(slug: string): string {
-    return `product:${slug}`;
+    return `product:${this.normalizeSlug(slug)}`;
   }
 
   private getCategoryKey(slug: string): string {
-    return `category:${slug}`;
+    return `category:${this.normalizeSlug(slug)}`;
   }
 
   async getProductBySlug(slug: string): Promise<WooProduct | null> {
@@ -110,66 +92,74 @@ class ProductCache {
       });
 
       if (bestMatch) {
-        console.log(`[ProductCache] Found best match: ${bestMatch.name}`);
+        console.log(`[ProductCache] Found product by search: ${bestMatch.name}`);
         this.cache.set(cacheKey, bestMatch);
         return bestMatch;
       }
 
-      console.log(`[ProductCache] No matching product found for slug: ${normalizedSlug}`);
+      console.log(`[ProductCache] No product found for slug: ${slug}`);
+      this.cache.set(cacheKey, null);
       return null;
     } catch (error) {
-      console.error('[ProductCache] Error fetching product by slug:', error);
+      console.error('[ProductCache] Error fetching product:', error);
       return null;
     }
   }
 
-  async getProductsByCategory(categorySlug: string): Promise<{ products: WooProduct[], totalPages: number }> {
-    console.log(`[ProductCache] Getting products for category: ${categorySlug}`);
-    const cacheKey = this.getCategoryKey(categorySlug);
-    const cachedProducts = this.cache.get<{ products: WooProduct[], totalPages: number }>(cacheKey);
+  async getProductsByCategory(categorySlug?: string, page = 1): Promise<{ products: WooProduct[]; totalPages: number }> {
+    const cacheKey = categorySlug ? this.getCategoryKey(`${categorySlug}:${page}`) : `all:${page}`;
+    const cachedResult = this.cache.get<{ products: WooProduct[]; totalPages: number }>(cacheKey);
 
-    if (cachedProducts) {
-      console.log(`[ProductCache] Found ${cachedProducts.products.length} products in cache for category: ${categorySlug}`);
-      return cachedProducts;
+    if (cachedResult) {
+      return cachedResult;
     }
 
     try {
-      // First, get the category ID from the slug
-      const { data: categories } = await woocommerce.get('products/categories', {
-        slug: categorySlug,
+      const params: Record<string, any> = {
+        per_page: ITEMS_PER_PAGE,
+        page,
         status: 'publish'
-      });
+      };
 
-      if (!categories || categories.length === 0) {
-        console.log(`[ProductCache] No category found for slug: ${categorySlug}`);
-        return { products: [], totalPages: 0 };
+      if (categorySlug) {
+        const categoryResponse = await woocommerce.get('products/categories', {
+          slug: categorySlug
+        });
+
+        const categories = categoryResponse.data;
+        if (categories && categories.length > 0) {
+          params.category = categories[0].id;
+        }
       }
 
-      const categoryId = categories[0].id;
-      console.log(`[ProductCache] Found category ID: ${categoryId} for slug: ${categorySlug}`);
+      const response = await woocommerce.get('products', params);
+      const totalPages = parseInt(response.headers?.['x-wp-totalpages'] || '1', 10);
+      const result = {
+        products: response.data,
+        totalPages
+      };
 
-      // Then get products for this category
-      const { data: products, headers } = await woocommerce.get('products', {
-        category: categoryId,
-        status: 'publish',
-        per_page: ITEMS_PER_PAGE
-      });
-
-      const totalPages = parseInt(headers['x-wp-totalpages'] || '1', 10);
-      const result = { products, totalPages };
-
-      console.log(`[ProductCache] Found ${products.length} products for category: ${categorySlug}`);
       this.cache.set(cacheKey, result);
-
       return result;
     } catch (error) {
-      console.error(`[ProductCache] Error fetching products for category ${categorySlug}:`, error);
+      console.error('[ProductCache] Error fetching products:', error);
+      this.cache.set(cacheKey, { products: [], totalPages: 0 }); // Set cache to empty result on error
       return { products: [], totalPages: 0 };
     }
   }
 
-  clearCache() {
+  clearCache(): void {
     this.cache.flushAll();
+  }
+
+  invalidateProduct(productId: string): void {
+    const keys = this.cache.keys();
+    const productKeys = keys.filter(key => key.includes(productId));
+    productKeys.forEach(key => this.cache.del(key));
+  }
+
+  invalidateCache(): void {
+    this.clearCache();
   }
 }
 

@@ -5,270 +5,255 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Loader2, Minus, Plus, ShoppingCart } from 'lucide-react';
-import { woocommerce } from '@/lib/woocommerce';
-import type { WooVariantAttribute, WooProduct, WooVariation } from '@/lib/types';
+import type { WooVariantAttribute, WooProduct, WooVariation, CartItem } from '@/lib/types';
+import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
   const { cart, loading, error, updateQuantity, removeItem, updateItemOptions, canProceedToCheckout } = useCart();
+  const router = useRouter();
   const [updatingItemId, setUpdatingItemId] = useState<number | null>(null);
-  const [productDetails, setProductDetails] = useState<Record<number, WooProduct>>({});
-  const [productVariations, setProductVariations] = useState<Record<number, WooVariation[]>>({});
-  const [loadingProducts, setLoadingProducts] = useState<Record<number, boolean>>({});
-  const [loadingVariations, setLoadingVariations] = useState<Record<number, boolean>>({});
 
-  // Fetch product details and variations for all cart items
-  useEffect(() => {
-    if (!cart?.items.length) return;
+  const handleQuantityChange = async (productId: number, newQuantity: number) => {
+    setUpdatingItemId(productId);
+    try {
+      await updateQuantity(productId, newQuantity);
+    } finally {
+      setUpdatingItemId(null);
+    }
+  };
 
-    const fetchProductData = async (productId: number) => {
-      if (loadingProducts[productId] || productDetails[productId]) return;
-
-      setLoadingProducts(prev => ({ ...prev, [productId]: true }));
-      try {
-        // Fetch product details
-        const productResponse = await woocommerce.get(`products/${productId}`);
-        setProductDetails(prev => ({ ...prev, [productId]: productResponse.data }));
-
-        // If it's a variable product, fetch variations
-        if (productResponse.data.type === 'variable') {
-          setLoadingVariations(prev => ({ ...prev, [productId]: true }));
-          const variationsResponse = await woocommerce.get(`products/${productId}/variations`);
-          setProductVariations(prev => ({ ...prev, [productId]: variationsResponse.data }));
-          setLoadingVariations(prev => ({ ...prev, [productId]: false }));
-        }
-      } catch (error) {
-        console.error('Error fetching product data:', error);
-      } finally {
-        setLoadingProducts(prev => ({ ...prev, [productId]: false }));
-      }
-    };
-
-    cart.items.forEach(item => {
-      if (!productDetails[item.product_id]) {
-        fetchProductData(item.product_id);
-      }
-    });
-  }, [cart?.items]);
-
-  const findMatchingVariation = (productId: number, selectedAttributes: WooVariantAttribute[]) => {
-    const variations = productVariations[productId] || [];
-    return variations.find(variation => {
-      return variation.attributes.every(varAttr => {
-        const selectedAttr = selectedAttributes.find(attr => attr.name === varAttr.name);
-        return selectedAttr && selectedAttr.option === varAttr.option;
-      });
-    });
+  const handleRemove = async (productId: number) => {
+    setUpdatingItemId(productId);
+    try {
+      await removeItem(productId);
+    } finally {
+      setUpdatingItemId(null);
+    }
   };
 
   const handleOptionChange = async (productId: number, attributeName: string, value: string) => {
     const item = cart?.items.find(i => i.product_id === productId);
-    if (!item) return;
+    if (!item || !item.product) return;
 
-    const product = productDetails[productId];
-    if (!product) return;
-
-    const attribute = product.attributes.find(attr => attr.name === attributeName);
+    const attribute = item.product.attributes?.find(attr => attr.name === attributeName);
     if (!attribute) return;
 
+    // Update the selected attributes while preserving other selections
     const currentAttributes = item.attributes || [];
     const newAttributes: WooVariantAttribute[] = [
       ...currentAttributes.filter(attr => attr.name !== attributeName),
       { id: attribute.id, name: attributeName, option: value }
     ];
 
-    // Find matching variation for the new combination
-    const matchingVariation = findMatchingVariation(productId, newAttributes);
+    // Get all required attributes for this product
+    const requiredAttributes = item.product.attributes?.filter(attr => attr.variation) || [];
     
-    // Only update if a real option is selected (not empty/default)
+    // Check if all required attributes are selected
+    const hasAllRequiredAttributes = requiredAttributes.every(attr => 
+      newAttributes.some(selected => selected.name === attr.name && selected.option)
+    );
+
+    // Only look for variations if all required attributes are selected
+    const variations = item.product.variations || [];
+    let matchingVariation: WooVariation | undefined;
+    
+    if (variations.length > 0 && hasAllRequiredAttributes) {
+      matchingVariation = variations.find(variation => {
+        // A variation matches only if ALL its attributes match our selected attributes
+        return variation.attributes?.every(varAttr => {
+          const selectedAttr = newAttributes.find(attr => attr.name === varAttr.name);
+          return selectedAttr && selectedAttr.option === varAttr.option;
+        });
+      });
+    }
+
+    // Update the item with new attributes and variation (if found)
     if (value && value !== '') {
       updateItemOptions(productId, {
         attributes: newAttributes,
         variation_id: matchingVariation?.id,
-        price: matchingVariation?.price,
-        sku: matchingVariation?.sku
+        price: matchingVariation?.price || item.price?.toString(),
+        sku: matchingVariation?.sku || item.sku
       });
     } else {
-      // If default "Select" option is chosen, clear the selection
+      // If an option is deselected, remove it from attributes
       updateItemOptions(productId, {
         attributes: currentAttributes.filter(attr => attr.name !== attributeName),
         variation_id: undefined,
-        price: item.price?.toString(),
-        sku: item.sku
+        price: item.product.price?.toString(),
+        sku: item.product.sku
       });
     }
   };
 
-  const handleCheckout = () => {
-    // Implement checkout logic here
-  };
-
   if (loading) {
     return (
-      <div className="min-h-[50vh] flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="w-10 h-10 animate-spin mx-auto text-gray-400" />
-          <p className="mt-4 text-gray-600">Loading your cart...</p>
-        </div>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-purple-500"></div>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="min-h-[50vh] flex flex-col items-center justify-center text-center px-4">
-        <ShoppingCart className="w-16 h-16 mb-4 text-gray-400" />
-        <h2 className="text-2xl font-semibold mb-2">Error Loading Cart</h2>
-        <p className="text-gray-600 max-w-md mx-auto">{error}</p>
-        <Link href="/shop" className="mt-6 inline-flex items-center px-6 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primary/90">
-          Return to Shop
-        </Link>
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-red-500">{error}</div>
       </div>
     );
   }
 
-  if (!cart || !cart.items || cart.items.length === 0) {
+  if (!cart?.items.length) {
     return (
-      <div className="min-h-[50vh] flex flex-col items-center justify-center text-center px-4">
-        <ShoppingCart className="w-16 h-16 mb-4 text-gray-400" />
-        <h2 className="text-2xl font-semibold mb-2">Your cart is empty</h2>
-        <p className="text-gray-600 mb-6 max-w-md mx-auto">
-          You haven&apos;t added any items to your cart yet.
-          Browse our products and find something you like!
-        </p>
-        <Link href="/shop" className="inline-flex items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-primary hover:bg-primary/90">
-          Browse Products
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <h2 className="text-2xl font-semibold mb-4">Your cart is empty</h2>
+        <Link
+          href="/"
+          className="text-purple-600 hover:text-purple-700 font-medium"
+        >
+          Continue Shopping
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-8">Shopping Cart</h1>
-      
-      <div className="mt-8">
-        <div className="flow-root">
-          <ul role="list" className="-my-6 divide-y divide-gray-200">
-            {cart.items.map((item) => (
-              <li key={item.product_id} className="py-6">
-                <div className="flex items-start space-x-4">
-                  <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                    <Image
-                      src={item.image || '/placeholder.jpg'}
-                      alt={item.name}
-                      fill
-                      className="object-cover object-center"
-                    />
+    <div className="bg-white">
+      <div className="mx-auto max-w-2xl px-4 pb-24 pt-16 sm:px-6 lg:max-w-7xl lg:px-8">
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Shopping Cart</h1>
+
+        <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+          <section aria-labelledby="cart-heading" className="lg:col-span-7">
+            <h2 id="cart-heading" className="sr-only">
+              Items in your shopping cart
+            </h2>
+
+            <ul role="list" className="divide-y divide-gray-200 border-b border-t border-gray-200">
+              {cart.items.map((item) => (
+                <li key={item.product_id} className="flex py-6 sm:py-10">
+                  <div className="flex-shrink-0">
+                    {item.product?.images && item.product.images.length > 0 && (
+                      <Image
+                        src={item.product.images[0]?.src ?? ''}
+                        alt={item.product.images[0]?.alt ?? item.name}
+                        width={96}
+                        height={96}
+                        className="h-24 w-24 rounded-md object-cover object-center sm:h-48 sm:w-48"
+                      />
+                    )}
                   </div>
 
-                  <div className="ml-4 flex-1 flex flex-col">
+                  <div className="ml-4 flex flex-1 flex-col sm:ml-6">
                     <div>
-                      <div className="flex justify-between text-base font-medium text-gray-900">
-                        <h3>{item.name}</h3>
-                        <p className="ml-4">
-                          ${typeof item.price === 'number' ? item.price.toFixed(2) : '0.00'}
-                        </p>
+                      <div className="flex justify-between">
+                        <h3 className="text-sm">
+                          <Link href={`/product/${item.product?.slug}`} className="font-medium text-gray-700 hover:text-gray-800">
+                            {item.name}
+                          </Link>
+                        </h3>
+                        <p className="ml-4 text-sm font-medium text-gray-900">${item.price}</p>
                       </div>
-                      
-                      {/* Product Options Dropdown */}
-                      {productDetails[item.product_id]?.attributes?.map((attribute) => {
-                        const currentValue = item.attributes?.find(attr => attr.name === attribute.name)?.option || '';
-                        const isDefaultSelected = !currentValue;
-                        
-                        return (
-                          <div key={`${item.product_id}-${attribute.id}`} className="mt-4">
-                            <label 
-                              htmlFor={`${item.product_id}-${attribute.name}`}
-                              className="block text-sm font-medium text-gray-700"
-                            >
-                              {attribute.name}
-                            </label>
-                            <select
-                              id={`${item.product_id}-${attribute.name}`}
-                              value={currentValue}
-                              onChange={(e) => handleOptionChange(item.product_id, attribute.name, e.target.value)}
-                              className="mt-1 block w-full rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
-                            >
-                              <option value="">Select {attribute.name}</option>
-                              {attribute.options?.map((option) => (
-                                <option key={`${item.product_id}-${attribute.id}-${option}`} value={option}>
-                                  {option}
-                                </option>
-                              ))}
-                            </select>
-                            {isDefaultSelected && (
-                              <p className="mt-1 text-sm text-red-600">
-                                Please select a {attribute.name.toLowerCase()}
-                              </p>
-                            )}
-                          </div>
-                        );
-                      })}
-                      
-                      <div className="mt-4 flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                          <button
-                            onClick={() => updateQuantity(item.product_id, Math.max(1, (item.quantity || 1) - 1))}
-                            className="text-gray-500 hover:text-gray-700"
-                          >
-                            −
-                          </button>
-                          <span className="text-gray-700">{item.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(item.product_id, (item.quantity || 1) + 1)}
-                            className="text-gray-500 hover:text-gray-700"
-                          >
-                            +
-                          </button>
+                      {item.product?.attributes && item.product.attributes.length > 0 && (
+                        <div className="mt-4 space-y-3">
+                          {item.product.attributes.map((attribute) => (
+                            <div key={attribute.name} className="flex items-center">
+                              <label htmlFor={`${item.product_id}-${attribute.name}`} className="block text-sm font-medium text-gray-700 mr-2">
+                                {attribute.name}:
+                              </label>
+                              <select
+                                id={`${item.product_id}-${attribute.name}`}
+                                name={attribute.name}
+                                value={item.attributes?.find(attr => attr.name === attribute.name)?.option || ''}
+                                onChange={(e) => handleOptionChange(item.product_id, attribute.name, e.target.value)}
+                                className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-purple-500 focus:outline-none focus:ring-purple-500 sm:text-sm"
+                              >
+                                <option value="">Select {attribute.name}</option>
+                                {attribute.options.map((option) => (
+                                  <option key={option} value={option}>
+                                    {option}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                          ))}
                         </div>
-                        <div className="text-right">
-                          <div className="text-base font-medium text-gray-900">
-                            ${((item.price || 0) * (item.quantity || 1)).toFixed(2)}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            ${item.price?.toFixed(2)} each
-                          </div>
-                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-4 flex items-center">
+                      <div className="flex items-center space-x-3">
+                        <button
+                          type="button"
+                          onClick={() => handleQuantityChange(item.product_id, Math.max(1, (item.quantity || 1) - 1))}
+                          className="rounded-md bg-white p-1 text-gray-400 hover:text-gray-500"
+                        >
+                          <Minus className="h-5 w-5" aria-hidden="true" />
+                        </button>
+                        <span className="text-gray-900">{item.quantity}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleQuantityChange(item.product_id, (item.quantity || 1) + 1)}
+                          className="rounded-md bg-white p-1 text-gray-400 hover:text-gray-500"
+                        >
+                          <Plus className="h-5 w-5" aria-hidden="true" />
+                        </button>
+                      </div>
+
+                      <div className="ml-4">
+                        <button
+                          type="button"
+                          onClick={() => handleRemove(item.product_id)}
+                          className="text-sm font-medium text-purple-600 hover:text-purple-500"
+                        >
+                          {updatingItemId === item.product_id ? (
+                            <Loader2 className="h-5 w-5 animate-spin" />
+                          ) : (
+                            <span>Remove</span>
+                          )}
+                        </button>
                       </div>
                     </div>
                   </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+                </li>
+              ))}
+            </ul>
+          </section>
 
-        <div className="mt-8">
-          <div className="flex justify-between text-base font-medium text-gray-900">
-            <p>Subtotal</p>
-            <p>${cart.subtotal.toFixed(2)}</p>
-          </div>
-          <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-            
-          <div className="mt-6">
-            <button
-              type="button"
-              onClick={handleCheckout}
-              disabled={!canProceedToCheckout}
-              aria-disabled={!canProceedToCheckout}
-              className={`w-full rounded-md py-3 px-4 text-base font-medium text-white
-                ${canProceedToCheckout 
-                  ? 'bg-purple-600 hover:bg-purple-700' 
-                  : 'bg-gray-300 cursor-not-allowed'}`}
-            >
-              Proceed to Checkout
-            </button>
-          </div>
+          {/* Order summary */}
+          <section
+            aria-labelledby="summary-heading"
+            className="mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8"
+          >
+            <h2 id="summary-heading" className="text-lg font-medium text-gray-900">
+              Order summary
+            </h2>
 
-          <div className="mt-6 text-center">
-            <p className="text-sm text-gray-500">
-              or{' '}
-              <Link href="/shop" className="font-medium text-purple-600 hover:text-purple-500">
-                Continue Shopping →
-              </Link>
-            </p>
-          </div>
-        </div>
+            <dl className="mt-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <dt className="text-sm text-gray-600">Subtotal</dt>
+                <dd className="text-sm font-medium text-gray-900">${cart.totals?.subtotal}</dd>
+              </div>
+              <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+                <dt className="text-base font-medium text-gray-900">Order total</dt>
+                <dd className="text-base font-medium text-gray-900">${cart.totals?.total}</dd>
+              </div>
+            </dl>
+
+            <div className="mt-6">
+              <button
+                type="button"
+                onClick={() => router.push('/checkout')}
+                disabled={!canProceedToCheckout}
+                className={`w-full rounded-md border border-transparent px-4 py-3 text-base font-medium text-white shadow-sm ${
+                  canProceedToCheckout
+                    ? 'bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-50'
+                    : 'bg-gray-400 cursor-not-allowed'
+                }`}
+              >
+                Proceed to Checkout
+              </button>
+            </div>
+          </section>
+        </form>
       </div>
     </div>
   );

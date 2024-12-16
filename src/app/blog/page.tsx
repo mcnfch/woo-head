@@ -1,5 +1,5 @@
 import { getBlogPosts } from '@/lib/woocommerce';
-import type { BlogPost } from '@/lib/woocommerce';
+import type { WooPost } from '@/lib/woocommerce';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -17,7 +17,7 @@ export default async function BlogPage() {
     );
   }
 
-  const renderPost = (post: BlogPost) => (
+  const renderPost = (post: WooPost) => (
     <article key={post.id} className="bg-white rounded-lg shadow-md overflow-hidden">
       {post.featured_media && post._embedded?.['wp:featuredmedia']?.[0]?.source_url ? (
         <div className="relative h-64">

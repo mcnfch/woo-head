@@ -35,13 +35,24 @@ function ProductCardComponent({
   const product: WooProduct = {
     id,
     name,
-    price,
-    images: image ? [{ src: image }] : [],
-    stock_status: stockStatus,
-    short_description: shortDescription,
-    description: shortDescription,
-    attributes: attributes,
     slug,
+    price,
+    regular_price: price,
+    sale_price: '',
+    sku: _sku,
+    stock_status: stockStatus as 'instock' | 'outofstock' | 'onbackorder',
+    description: shortDescription,
+    short_description: shortDescription,
+    images: image ? [{
+      id: 0,
+      src: image,
+      name: name,
+      alt: name,
+      date_created: new Date().toISOString(),
+      date_modified: new Date().toISOString()
+    }] : [],
+    attributes: attributes || [],
+    variations: []
   };
 
   return (
@@ -77,7 +88,8 @@ function ProductCardComponent({
 
       <div className="p-4 pt-0 mt-auto">
         <AddToCartButton
-          product={product}
+          productId={id}
+          disabled={stockStatus !== 'instock'}
           className="w-full py-2 text-sm font-medium text-white rounded-md transition-colors"
         />
       </div>

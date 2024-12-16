@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { AddressForm, AddressData } from './AddressForm';
+import type { AddressData } from '@/lib/types';
+import { AddressForm } from './AddressForm';
 import axios from 'axios';
 
 export const ProfilePage: React.FC = () => {

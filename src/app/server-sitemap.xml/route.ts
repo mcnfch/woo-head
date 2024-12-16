@@ -1,8 +1,9 @@
 import { getProducts, getCategories } from '@/lib/woocommerce';
+import type { WooProduct, WooCategory } from '@/lib/types';
 
 export async function GET(): Promise<Response> {
   // Fetch all products and categories
-  const [products, categories] = await Promise.all([
+  const [productsResponse, categories] = await Promise.all([
     getProducts(),
     getCategories(),
   ]);
@@ -16,14 +17,14 @@ export async function GET(): Promise<Response> {
       priority: 1.0,
     },
     // Products
-    ...products.map((product) => ({
+    ...productsResponse.products.map((product: WooProduct) => ({
       url: `${process.env.SITE_URL}/product/${product.id}`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.8,
     })),
     // Categories
-    ...categories.map((category) => ({
+    ...categories.map((category: WooCategory) => ({
       url: `${process.env.SITE_URL}/category/${category.id}`,
       lastModified: new Date(),
       changeFrequency: 'weekly',

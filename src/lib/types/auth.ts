@@ -1,12 +1,11 @@
 export interface User {
   id: number;
   username: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  avatar_urls: {
-    [key: string]: string;
-  };
   roles: string[];
+  avatarUrl: string;
 }
 
 export interface AuthResponse {
@@ -26,5 +25,4 @@ export interface UserUpdateData {
   firstName?: string;
   lastName?: string;
   email?: string;
-  password?: string;
 }

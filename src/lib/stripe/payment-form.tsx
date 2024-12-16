@@ -50,8 +50,9 @@ export function PaymentForm({ clientSecret, onPaymentSuccess, onPaymentError }: 
         });
       }
     } catch (err) {
-      setError((err as Error).message);
-      onPaymentError((err as Error).message);
+      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred';
+      setError(errorMessage);
+      onPaymentError(errorMessage);
     } finally {
       setProcessing(false);
     }

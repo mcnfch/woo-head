@@ -14,8 +14,8 @@ export default function ShopPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const fetchedProducts = await getProducts();
-        setProducts(fetchedProducts);
+        const response = await getProducts();
+        setProducts(response.products);
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching products:', error);
@@ -81,6 +81,7 @@ export default function ShopPage() {
               stockStatus={product.stock_status}
               shortDescription={product.short_description}
               sku={product.sku}
+              slug={product.slug}
             />
           ))}
         </div>

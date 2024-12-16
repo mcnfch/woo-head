@@ -30,6 +30,10 @@ export default function ProductList({ initialProducts, categorySlug, sortBy = 'd
   const [error, setError] = useState<string | null>(null);
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    setProducts(initialProducts);
+  }, [initialProducts]);
+
   const loadMoreProducts = useCallback(async () => {
     if (loading || !hasMore) return;
     
@@ -39,7 +43,7 @@ export default function ProductList({ initialProducts, categorySlug, sortBy = 'd
       const result = await productCache.getProductsByCategory(categorySlug, nextPage);
       
       if (result.products.length > 0) {
-        setProducts(prev => [...prev, ...result.products]);
+        setProducts(prevProducts => [...prevProducts, ...result.products]);
         setCurrentPage(nextPage);
         setHasMore(nextPage < result.totalPages);
       } else {
@@ -51,14 +55,6 @@ export default function ProductList({ initialProducts, categorySlug, sortBy = 'd
       setLoading(false);
     }
   }, [loading, hasMore, currentPage, categorySlug]);
-
-  useEffect(() => {
-    if (initialProducts) {
-      setIsLoading(true);
-      setProducts(initialProducts);
-      setIsLoading(false);
-    }
-  }, [initialProducts]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -87,9 +83,9 @@ export default function ProductList({ initialProducts, categorySlug, sortBy = 'd
     product && typeof product.price === 'string' && typeof product.name === 'string'
   ).sort((a, b) => {
     switch (sortBy) {
-      case 'price-asc':
+      case 'price-low-high':
         return parseFloat(a.price) - parseFloat(b.price);
-      case 'price-desc':
+      case 'price-high-low':
         return parseFloat(b.price) - parseFloat(a.price);
       case 'name-asc':
         return a.name.localeCompare(b.name);
@@ -132,10 +128,12 @@ export default function ProductList({ initialProducts, categorySlug, sortBy = 'd
               id={product.id}
               name={product.name}
               price={product.price}
-              image={product.images[0]?.src || '/placeholder.jpg'}
+              image={product.images[0]?.src}
               stockStatus={product.stock_status}
               shortDescription={product.short_description}
               sku={product.sku}
+              slug={product.slug}
+              attributes={product.attributes}
             />
           </div>
         ))}
@@ -151,11 +149,11 @@ export default function ProductList({ initialProducts, categorySlug, sortBy = 'd
               <div className="h-12 w-12 bg-gray-200 rounded-full"></div>
             </div>
           ) : (
-            <button 
+            <button
               onClick={loadMoreProducts}
-              className="bg-purple-600 text-white px-6 py-3 rounded-md hover:bg-purple-700"
+              className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
             >
-              Load More Products
+              Load More
             </button>
           )}
         </div>

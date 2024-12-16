@@ -3,31 +3,19 @@ import { ProductDetails } from '@/components/product/ProductDetails';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
-type GenerateMetadataProps = {
+interface PageProps {
   params: { slug: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
+}
 
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
 };
 
-export async function generateMetadata(
-  { params }: GenerateMetadataProps
-): Promise<Metadata> {
-  const slug = await Promise.resolve(params.slug);
-  if (!slug) {
-    return {
-      title: 'Product Not Found',
-    };
-  }
-
-  console.log(`[ProductPage] Generating metadata for slug: ${slug}`);
-  const product = await productCache.getProductBySlug(slug);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const product = await productCache.getProductBySlug(params.slug);
   
   if (!product) {
-    console.log(`[ProductPage] Product not found for metadata: ${slug}`);
     return {
       title: 'Product Not Found',
     };
@@ -39,34 +27,12 @@ export async function generateMetadata(
   };
 }
 
-type PageProps = {
-  params: { slug: string };
-};
-
 export default async function ProductPage({ params }: PageProps) {
-  const slug = await Promise.resolve(params.slug);
-  if (!slug) {
-    console.log(`[ProductPage] No slug provided`);
+  const product = await productCache.getProductBySlug(params.slug);
+
+  if (!product) {
     notFound();
   }
 
-  try {
-    console.log(`[ProductPage] Loading product with slug: ${slug}`);
-    const product = await productCache.getProductBySlug(slug);
-
-    if (!product) {
-      console.log(`[ProductPage] Product not found: ${slug}`);
-      notFound();
-    }
-
-    console.log(`[ProductPage] Found product: ${product.name}`);
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <ProductDetails product={product} />
-      </div>
-    );
-  } catch (error) {
-    console.error(`[ProductPage] Error loading product: ${error}`);
-    notFound();
-  }
+  return <ProductDetails product={product} />;
 }

@@ -1,5 +1,11 @@
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
-import type { WooProduct, WooCategory, WooCommerceError } from './types';
+import type { 
+  WooProduct, 
+  WooCategory, 
+  WooCommerceError 
+} from './types';
+import type { WooCommerceApiResponse } from './types/api';
+import type { CreateDraftOrderRequest, WooOrder } from './types/order';
 import { productCache } from './cache/productCache';
 import { categoryCache } from './cache/categoryCache';
 
@@ -13,17 +19,17 @@ function isWooCommerceError(error: unknown): error is WooCommerceError {
 
 if (!process.env.NEXT_PUBLIC_WOOCOMMERCE_URL) {
   console.error('NEXT_PUBLIC_WOOCOMMERCE_URL is missing');
-  throw new Error('NEXT_PUBLIC_WOOCOMMERCE_URL is not defined');
+  throw new Error('NEXT_PUBLIC_WOOCOMMERCE_URL is required');
 }
 
 if (!process.env.NEXT_PUBLIC_WOOCOMMERCE_KEY) {
   console.error('NEXT_PUBLIC_WOOCOMMERCE_KEY is missing');
-  throw new Error('NEXT_PUBLIC_WOOCOMMERCE_KEY is not defined');
+  throw new Error('NEXT_PUBLIC_WOOCOMMERCE_KEY is required');
 }
 
 if (!process.env.NEXT_PUBLIC_WOOCOMMERCE_SECRET) {
   console.error('NEXT_PUBLIC_WOOCOMMERCE_SECRET is missing');
-  throw new Error('NEXT_PUBLIC_WOOCOMMERCE_SECRET is not defined');
+  throw new Error('NEXT_PUBLIC_WOOCOMMERCE_SECRET is required');
 }
 
 console.log('[WooCommerce] API Configuration:', {
@@ -40,37 +46,36 @@ export const woocommerce = new WooCommerceRestApi({
   consumerSecret: process.env.NEXT_PUBLIC_WOOCOMMERCE_SECRET,
   version: 'wc/v3',
   queryStringAuth: true,
+  axiosConfig: {
+    headers: {
+      'Accept': 'application/json'
+    }
+  }
 });
 
-// Custom fetch function with error handling
-async function customFetch<T>(endpoint: string, options = {}): Promise<T | null> {
+async function customFetch<T>(endpoint: string, options: Record<string, any> = {}): Promise<T | null> {
   try {
-    console.log(`[WooCommerce] Fetching ${endpoint} with options:`, options);
-    const response = await woocommerce.get<T>(endpoint, options);
-    console.log(`[WooCommerce] Successfully fetched ${endpoint}`);
+    const response = await woocommerce.get(endpoint, options);
     return response.data;
   } catch (error) {
     if (isWooCommerceError(error)) {
-      console.error(`[WooCommerce] API Error for ${endpoint}:`, error.message);
-      if (error.data?.status === 404) {
-        return null;
-      }
+      console.error(`WooCommerce API Error: ${error.message}`);
     } else {
-      console.error(`[WooCommerce] Unknown error for ${endpoint}:`, error);
+      console.error('Unknown API Error:', error);
     }
-    throw error;
+    return null;
   }
 }
 
 export async function getCategories(): Promise<WooCategory[]> {
   try {
     console.log('[WooCommerce] Fetching categories...');
-    const response = await woocommerce.get<WooCategory[]>('products/categories', {
+    const response = await customFetch<WooCategory[]>('products/categories', {
       per_page: 100,
       hide_empty: false
     });
-    console.log(`[WooCommerce] Successfully fetched ${response.data.length} categories`);
-    return response.data;
+    console.log(`[WooCommerce] Successfully fetched ${response?.length || 0} categories`);
+    return response || [];
   } catch (error) {
     console.error('[WooCommerce] Error fetching categories:', error);
     return [];
@@ -82,28 +87,33 @@ export async function getProduct(slug: string): Promise<WooProduct | null> {
     console.log(`[WooCommerce] Looking up product with slug: ${slug}`);
     
     // Try direct slug lookup first
-    const response = await woocommerce.get<WooProduct[]>('products', {
+    const products = await customFetch<WooProduct[]>('products', {
       slug: decodeURIComponent(slug),
       status: 'publish'
     });
 
-    if (response.data && response.data.length > 0) {
-      console.log(`[WooCommerce] Found product by slug: ${response.data[0].name}`);
-      return response.data[0];
+    if (products && products.length > 0) {
+      const product = products[0];
+      if (product) {
+        console.log(`[WooCommerce] Found product by slug: ${product.name}`);
+        return product;
+      }
     }
 
     // If not found, try searching
     console.log(`[WooCommerce] Product not found by slug, trying search...`);
-    const searchResponse = await woocommerce.get<WooProduct[]>('products', {
+    const searchProducts = await customFetch<WooProduct[]>('products', {
       search: slug.replace(/-/g, ' '),
       status: 'publish',
       per_page: 100
     });
 
-    const matchingProduct = searchResponse.data.find(p => p.slug === slug);
-    if (matchingProduct) {
-      console.log(`[WooCommerce] Found product by search: ${matchingProduct.name}`);
-      return matchingProduct;
+    if (searchProducts && searchProducts.length > 0) {
+      const matchingProduct = searchProducts.find((p: WooProduct) => p.slug === slug);
+      if (matchingProduct) {
+        console.log(`[WooCommerce] Found product by search: ${matchingProduct.name}`);
+        return matchingProduct;
+      }
     }
 
     console.log(`[WooCommerce] No product found for slug: ${slug}`);
@@ -117,25 +127,31 @@ export async function getProduct(slug: string): Promise<WooProduct | null> {
 export async function getProducts(categorySlug?: string): Promise<{ products: WooProduct[], totalPages: number }> {
   try {
     console.log(`[WooCommerce] Fetching products for category: ${categorySlug || 'all'}`);
-    const params: any = {
+    const params: Record<string, any> = {
       per_page: 100,
       status: 'publish'
     };
 
     if (categorySlug) {
-      const categories = await getCategories();
-      const category = categories.find(cat => cat.slug === categorySlug);
-      if (category) {
-        params.category = category.id;
+      const categories = await customFetch<WooCategory[]>('products/categories', {
+        per_page: 100,
+        hide_empty: false
+      });
+      if (categories) {
+        const category = categories.find(cat => cat.slug === categorySlug);
+        if (category) {
+          params.category = category.id;
+        }
       }
     }
 
-    const response = await woocommerce.get<WooProduct[]>('products', params);
-    const totalPages = parseInt(response.headers['x-wp-totalpages'] || '1', 10);
+    const response = await woocommerce.get<WooCommerceApiResponse<WooProduct[]>>('products', params);
+    const products = response.data.data || [];
+    const totalPages = parseInt(response.data.headers?.['x-wp-totalpages'] || '1', 10);
 
-    console.log(`[WooCommerce] Successfully fetched ${response.data.length} products`);
+    console.log(`[WooCommerce] Successfully fetched ${products.length} products`);
     return { 
-      products: response.data,
+      products,
       totalPages 
     };
   } catch (error) {
@@ -155,12 +171,12 @@ export async function getAllCategories(): Promise<WooCategory[]> {
     const categories = response.data;
 
     // Function to build category tree
-    function buildCategoryTree(categories: WooCategory[], parentId = 0): WooCategory[] {
-      return categories
-        .filter(category => category.parent === parentId)
-        .map(category => ({
+    function buildCategoryTree(cats: WooCategory[], parentId = 0): WooCategory[] {
+      return cats
+        .filter((category: WooCategory) => category.parent === parentId)
+        .map((category: WooCategory) => ({
           ...category,
-          children: buildCategoryTree(categories, category.id)
+          children: buildCategoryTree(cats, category.id)
         }));
     }
 
@@ -174,7 +190,7 @@ export async function getAllCategories(): Promise<WooCategory[]> {
   }
 }
 
-interface WooPage {
+export interface WooPage {
   id: number;
   title: { rendered: string };
   slug: string;
@@ -182,7 +198,7 @@ interface WooPage {
   status: string;
 }
 
-interface WooPost {
+export interface WooPost {
   id: number;
   title: { rendered: string };
   slug: string;
@@ -191,6 +207,11 @@ interface WooPost {
   date: string;
   featured_media: number;
   status: string;
+  _embedded?: {
+    'wp:featuredmedia'?: Array<{
+      source_url?: string;
+    }>;
+  };
 }
 
 // Function to get WordPress pages
@@ -203,7 +224,7 @@ export async function getPages(): Promise<WooPage[]> {
     }
     const pages = await response.json();
     console.log(`[WooCommerce] Successfully fetched ${pages.length} pages`);
-    return pages;
+    return pages as WooPage[];
   } catch (error) {
     console.error('[WooCommerce] Error fetching pages:', error);
     return [];
@@ -217,7 +238,7 @@ export async function getPosts(): Promise<WooPost[]> {
     if (!response.ok) {
       throw new Error(`Failed to fetch posts: ${response.statusText}`);
     }
-    return response.json();
+    return response.json() as Promise<WooPost[]>;
   } catch (error) {
     console.error('[WooCommerce] Error fetching posts:', error);
     return [];
@@ -227,17 +248,47 @@ export async function getPosts(): Promise<WooPost[]> {
 // Alias for getPosts to maintain compatibility
 export const getBlogPosts = getPosts;
 
+/**
+ * Creates a draft order in WooCommerce
+ * @param orderData Order data to create
+ * @returns Created order or null if failed
+ */
+export async function createDraftOrder(orderData: CreateDraftOrderRequest): Promise<WooOrder | null> {
+  try {
+    console.log('[WooCommerce] Creating draft order with data:', JSON.stringify(orderData, null, 2));
+    const response = await woocommerce.post<WooCommerceApiResponse<WooOrder>>('orders', {
+      ...orderData,
+      status: 'processing'  // Use processing for dropshipping workflow
+    });
+    
+    const order = response.data.data;
+    if (!order) {
+      throw new Error('No order data received from API');
+    }
+    
+    console.log(`[WooCommerce] Successfully created draft order ${order.id}`);
+    return order;
+  } catch (error) {
+    if (isWooCommerceError(error)) {
+      console.error('[WooCommerce] Error creating draft order:', error.message, '\nFull error:', error);
+    } else {
+      console.error('[WooCommerce] Unknown error creating draft order:', error);
+    }
+    return null;
+  }
+}
+
 export async function testConnection() {
   try {
     console.log('[WooCommerce] Testing connection...');
-    const response = await woocommerce.get('');
+    await woocommerce.get('');
     console.log('[WooCommerce] Successfully connected to WooCommerce API');
     return {
       success: true,
       message: 'Successfully connected to WooCommerce API'
     };
   } catch (error) {
-    console.error('[WooCommerce] Error testing connection:', error);
+    console.error('[WooCommerce] Connection test failed:', error);
     return {
       success: false,
       message: isWooCommerceError(error) ? error.message : 'Unknown error occurred'

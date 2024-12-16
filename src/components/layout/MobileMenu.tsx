@@ -172,7 +172,7 @@ export function MobileMenu({ categories, onClose }: MobileMenuProps) {
                     .map(item => (
                       <li key={item.title}>
                         <Link 
-                          href={`/${item.slug}`} 
+                          href={`/${item.title.toLowerCase().replace(/\s+/g, '-')}`} 
                           className="text-base text-gray-900 hover:text-purple-600"
                           onClick={onClose}
                         >

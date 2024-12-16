@@ -2,42 +2,57 @@
 
 import { useCart } from '@/context/CartContext';
 import type { WooProduct } from '@/lib/types';
+import { useState } from 'react';
 
 interface AddToCartButtonProps {
-  product: WooProduct;
+  productId: number;
+  variationId?: number;
+  disabled?: boolean;
   className?: string;
-  isProductPage?: boolean;
+  onAddToCart?: () => void;
 }
 
-export function AddToCartButton({ product, className = '', isProductPage = false }: AddToCartButtonProps) {
+export function AddToCartButton({ 
+  productId, 
+  variationId,
+  disabled = false,
+  className = '', 
+  onAddToCart
+}: AddToCartButtonProps) {
   const { addToCart } = useCart();
+  const [loading, setLoading] = useState(false);
 
   const handleClick = async () => {
+    if (loading || disabled) return;
+    
+    setLoading(true);
     try {
       await addToCart({
-        product_id: product.id,
-        name: product.name,
-        price: parseFloat(product.price),
-        quantity: 1,
-        image: product.images[0]?.src,
-        product: product // Pass the full product for options detection
+        product_id: productId,
+        variation_id: variationId,
+        quantity: 1
       });
+      onAddToCart?.();
     } catch (error) {
       console.error('Error adding to cart:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <button
       onClick={handleClick}
-      disabled={product.stock_status !== 'instock'}
+      disabled={disabled || loading}
       className={`${className} ${
-        product.stock_status === 'instock'
-          ? 'bg-purple-600 hover:bg-purple-700'
+        !disabled
+          ? loading
+            ? 'bg-purple-500 cursor-wait'
+            : 'bg-purple-600 hover:bg-purple-700'
           : 'bg-gray-400 cursor-not-allowed'
-      }`}
+      } w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500`}
     >
-      {product.stock_status === 'instock' ? 'Add to Cart' : 'Out of Stock'}
+      {loading ? 'Adding...' : 'Add to Cart'}
     </button>
   );
 }

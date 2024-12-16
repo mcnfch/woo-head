@@ -1,80 +1,144 @@
-import type { CartResponse, AddToCartInput } from '@/lib/types';
+import type { CartResponse, AddToCartInput, CartState, WooVariantAttribute } from '@/lib/types';
 
-export class CartService {
-  private static instance: CartService;
-  private initialized: boolean = false;
+export interface CartService {
+  addToCart: (input: AddToCartInput) => Promise<CartResponse>;
+  removeItem: (productId: number) => Promise<CartResponse>;
+  updateQuantity: (productId: number, quantity: number) => Promise<CartResponse>;
+  updateItemOptions: (productId: number, options: {
+    attributes?: WooVariantAttribute[];
+    variation_id?: number;
+    price?: string;
+    sku?: string;
+  }) => Promise<CartResponse>;
+  clearCart: () => Promise<CartResponse>;
+}
 
-  private constructor() {
-    this.initialized = true;
+class LocalCartService implements CartService {
+  private cart: CartState = {
+    items: [],
+    subtotal: 0,
+    total: 0
+  };
+
+  async addToCart(input: AddToCartInput): Promise<CartResponse> {
+    const existingItemIndex = this.cart.items.findIndex(
+      item => item.product_id === input.product_id && 
+             item.variation_id === input.variation_id
+    );
+
+    if (existingItemIndex > -1) {
+      const item = this.cart.items[existingItemIndex];
+      if (item) {
+        item.quantity += input.quantity;
+      }
+    } else {
+      this.cart.items.push({
+        product_id: input.product_id,
+        variation_id: input.variation_id,
+        quantity: input.quantity,
+        name: input.name || 'Product',
+        price: input.price || 0,
+        image: input.image,
+        attributes: input.attributes || [],
+        optionsRequired: false,
+        optionsSelected: Boolean(input.attributes?.length)
+      });
+    }
+
+    this.updateTotals();
+    
+    return {
+      success: true,
+      message: 'Item added to cart',
+      product_id: input.product_id,
+      quantity: input.quantity,
+      cart: this.cart
+    };
   }
 
-  static getInstance(): CartService {
-    if (!CartService.instance) {
-      CartService.instance = new CartService();
-    }
-    return CartService.instance;
+  async removeItem(productId: number): Promise<CartResponse> {
+    this.cart.items = this.cart.items.filter(item => item.product_id !== productId);
+    this.updateTotals();
+    
+    return {
+      success: true,
+      message: 'Item removed from cart',
+      product_id: productId,
+      quantity: 0,
+      cart: this.cart
+    };
   }
 
-  async addToCart(item: AddToCartInput): Promise<CartResponse> {
-    if (!this.initialized) {
-      throw new Error('Cart service not initialized');
+  async updateQuantity(productId: number, quantity: number): Promise<CartResponse> {
+    const item = this.cart.items.find(item => item.product_id === productId);
+    if (item) {
+      item.quantity = Math.max(1, quantity);
+      this.updateTotals();
     }
-
-    if (!item.product_id) {
-      throw new Error('Product ID is required');
-    }
-
-    try {
-      // Return success immediately since we're managing cart state in CartContext
-      return {
-        success: true,
-        message: 'Product added to cart',
-        product_id: item.product_id,
-        quantity: item.quantity,
-        variation_id: item.variation_id
-      };
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      throw error;
-    }
+    
+    return {
+      success: true,
+      message: 'Quantity updated',
+      product_id: productId,
+      quantity,
+      cart: this.cart
+    };
   }
 
-  async update(productId: number, quantity: number): Promise<CartResponse> {
-    if (!this.initialized) {
-      throw new Error('Cart service not initialized');
+  async updateItemOptions(productId: number, options: {
+    attributes?: WooVariantAttribute[];
+    variation_id?: number;
+    price?: string;
+    sku?: string;
+  }): Promise<CartResponse> {
+    const item = this.cart.items.find(item => item.product_id === productId);
+    if (item) {
+      if (options.attributes) {
+        item.attributes = options.attributes;
+        item.optionsSelected = options.attributes.length > 0;
+      }
+      if (options.variation_id) {
+        item.variation_id = options.variation_id;
+      }
+      if (options.price) {
+        item.price = parseFloat(options.price) || 0; // Ensure price is always a number
+      }
+      this.updateTotals();
     }
-
-    try {
-      // Return success immediately since we're managing cart state in CartContext
-      return {
-        success: true,
-        message: 'Cart updated successfully',
-        product_id: productId,
-        quantity
-      };
-    } catch (error) {
-      console.error('Error updating cart:', error);
-      throw error;
-    }
+    
+    return {
+      success: true,
+      message: 'Options updated',
+      product_id: productId,
+      quantity: item?.quantity || 0,
+      cart: this.cart
+    };
   }
 
-  async remove(productId: number): Promise<CartResponse> {
-    if (!this.initialized) {
-      throw new Error('Cart service not initialized');
-    }
+  async clearCart(): Promise<CartResponse> {
+    this.cart = {
+      items: [],
+      subtotal: 0,
+      total: 0
+    };
+    
+    return {
+      success: true,
+      message: 'Cart cleared',
+      product_id: 0,
+      quantity: 0,
+      cart: this.cart
+    };
+  }
 
-    try {
-      // Return success immediately since we're managing cart state in CartContext
-      return {
-        success: true,
-        message: 'Item removed from cart',
-        product_id: productId
-      };
-    } catch (error) {
-      console.error('Error removing from cart:', error);
-      throw error;
-    }
+  private updateTotals() {
+    const subtotal = this.cart.items.reduce((total, item) => {
+      return total + ((item.price || 0) * (item.quantity || 0)); // Handle undefined price and quantity
+    }, 0);
+    
+    this.cart.subtotal = subtotal;
+    this.cart.total = subtotal; // Add tax/shipping calculation here if needed
   }
 }
 
-export const cartService = CartService.getInstance();
+export const cartService = new LocalCartService();

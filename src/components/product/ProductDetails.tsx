@@ -1,12 +1,12 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import type { WooProduct, ProductVariation, ProductAttribute } from '@/lib/types';
 import { useCart } from '@/context/CartContext';
+import type { WooProduct, ProductVariation, ProductAttribute } from '@/lib/types';
+import Image from 'next/image';
+import Link from 'next/link';
 import { AddToCartButton } from './AddToCartButton';
 import { CartSlideOver } from '../cart/CartSlideOver';
-import { QuickAddModal } from '../cart/QuickAddModal';
 import { woocommerce } from '@/lib/woocommerce';
 
 interface ProductDetailsProps {
@@ -24,8 +24,6 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   const [isAddToCartEnabled, setIsAddToCartEnabled] = useState(false);
   const [cartSlideOverOpen, setCartSlideOverOpen] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState<WooProduct[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<WooProduct | null>(null);
-  const [quickAddModalOpen, setQuickAddModalOpen] = useState(false);
 
   // Check if all required attributes are selected
   useEffect(() => {
@@ -47,28 +45,23 @@ export function ProductDetails({ product }: ProductDetailsProps) {
     async function fetchRandomProducts() {
       try {
         const response = await woocommerce.get('products', {
-          per_page: 10, // Get 10 products to randomly select from
+          per_page: 4,
           exclude: [product.id]
         });
-        
-        // Randomly select 3 products
-        const shuffled = response.data
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 3);
-        
-        setRelatedProducts(shuffled);
+        if (response.data && Array.isArray(response.data)) {
+          setRelatedProducts(response.data);
+        }
       } catch (error) {
         console.error('Error fetching related products:', error);
       }
     }
-
     fetchRandomProducts();
   }, [product.id]);
 
-  const handleAttributeChange = (attributeName: string, value: string) => {
+  const handleAttributeChange = (name: string, value: string) => {
     setSelectedAttributes(prev => ({
       ...prev,
-      [attributeName]: value
+      [name]: value
     }));
   };
 
@@ -128,156 +121,120 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Product Image */}
-        <div className="relative aspect-square">
-          <Image
-            src={product.images[0]?.src || '/placeholder.jpg'}
-            alt={product.name}
-            fill
-            className="object-cover rounded-lg"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            priority
-          />
-        </div>
-
-        {/* Product Info */}
-        <div className="space-y-6">
-          <h1 className="text-3xl font-bold">{product.name}</h1>
-          
-          <div className="text-2xl font-semibold text-purple-600">
-            ${parseFloat(product.price).toFixed(2)}
-          </div>
-          
-          <div 
-            className="prose prose-sm"
-            dangerouslySetInnerHTML={{ __html: product.description }}
-          />
-          
-          {/* Product Attributes/Variations */}
-          {product.attributes && product.attributes.length > 0 && (
-            <div className="space-y-4">
-              {product.attributes.filter(attr => attr.variation).map((attribute, attrIndex) => (
-                <div key={`${product.id}-attr-${attrIndex}-${attribute.id}`} className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    {attribute.name}
-                  </label>
-                  <select
-                    value={selectedAttributes[attribute.name] || ''}
-                    onChange={(e) => handleAttributeChange(attribute.name, e.target.value)}
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md"
-                  >
-                    <option value="">Select {attribute.name}</option>
-                    {attribute.options?.map((option, optIndex) => (
-                      <option key={`${product.id}-attr-${attrIndex}-opt-${optIndex}`} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              ))}
+    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
+        {/* Image gallery */}
+        <div className="relative">
+          {product.images[0]?.src && (
+            <div className="w-full aspect-square rounded-lg overflow-hidden">
+              <Image
+                src={product.images[0].src}
+                alt={product.name}
+                width={600}
+                height={600}
+                className="w-full h-full object-center object-cover"
+              />
             </div>
           )}
-          
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <span className="font-semibold">SKU:</span>
-              <span>{product.sku}</span>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <span className="font-semibold">Stock Status:</span>
-              <span className={product.stock_status === 'instock' ? 'text-green-600' : 'text-red-600'}>
-                {product.stock_status === 'instock' ? 'In Stock' : 'Out of Stock'}
-              </span>
-            </div>
+        </div>
+
+        {/* Product info */}
+        <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
+          <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">{product.name}</h1>
+          <div className="mt-3">
+            <h2 className="sr-only">Product information</h2>
+            <p className="text-3xl text-gray-900">${parseFloat(product.price).toFixed(2)}</p>
           </div>
 
-          <button
-            onClick={handleAddToCart}
-            disabled={!isAddToCartEnabled || product.stock_status !== 'instock'}
-            className={`w-full py-3 px-4 rounded-md text-white font-medium transition-colors ${
-              isAddToCartEnabled && product.stock_status === 'instock'
-                ? 'bg-purple-600 hover:bg-purple-700'
-                : 'bg-gray-400 cursor-not-allowed'
-            }`}
-          >
-            {!isAddToCartEnabled ? 'Select Options' : product.stock_status === 'instock' ? 'Add to Cart' : 'Out of Stock'}
-          </button>
-        </div>
-      </div>
+          <div className="mt-6">
+            <h3 className="sr-only">Description</h3>
+            <div 
+              className="text-base text-gray-700 space-y-6"
+              dangerouslySetInnerHTML={{ __html: product.description }}
+            />
+          </div>
 
-      {/* Frequently Bought Together */}
-      {relatedProducts.length > 0 && (
-        <div className="mt-16 bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-2xl font-bold mb-6">Frequently Bought Together</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {relatedProducts.map((relatedProduct) => (
-              <div key={`related-${relatedProduct.id}`} className="flex flex-col items-center relative h-full">
-                <div className="flex flex-col items-center flex-grow w-full" style={{ minHeight: '300px' }}>
-                  <div className="relative w-40 h-40 mb-4">
-                    <Image
-                      src={relatedProduct.images[0]?.src || '/placeholder.jpg'}
-                      alt={relatedProduct.name}
-                      fill
-                      className="object-cover rounded-lg"
-                    />
-                  </div>
-                  <div className="flex flex-col items-center flex-grow">
-                    <h3 className="text-sm font-medium text-center mb-3 line-clamp-2 h-10">
-                      {relatedProduct.name}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-3">${parseFloat(relatedProduct.price).toFixed(2)}</p>
-                  </div>
-                </div>
-                <div className="mt-auto">
-                  <button
-                    onClick={() => {
-                      setSelectedProduct(relatedProduct);
-                      setQuickAddModalOpen(true);
-                    }}
-                    className="bg-purple-600 text-white px-4 py-2 rounded-md text-sm hover:bg-purple-700 transition-colors"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
+          <div className="mt-6">
+            {product.attributes?.map((attr) => (
+              <div key={attr.id} className="mb-4">
+                <label htmlFor={attr.name} className="block text-sm font-medium text-gray-700">
+                  {attr.name}
+                </label>
+                <select
+                  id={attr.name}
+                  name={attr.name}
+                  value={selectedAttributes[attr.name] || ''}
+                  onChange={(e) => handleAttributeChange(attr.name, e.target.value)}
+                  className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md"
+                >
+                  <option value="">Select {attr.name}</option>
+                  {attr.options.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               </div>
             ))}
           </div>
 
-          {/* Add All Section */}
-          <div className="mt-8 flex flex-col items-center border-t pt-6">
-            <p className="text-lg font-medium mb-4">
-              Bundle Price: ${(
-                parseFloat(product.price) +
-                relatedProducts.reduce((sum, p) => sum + parseFloat(p.price), 0)
-              ).toFixed(2)}
-            </p>
-            <button
-              onClick={handleAddAllToCart}
-              className="bg-purple-600 text-white px-8 py-3 rounded-md hover:bg-purple-700 transition-colors"
-            >
-              Add All to Cart
-            </button>
+          <div className="mt-6">
+            <AddToCartButton
+              productId={product.id}
+              variationId={selectedVariation?.id}
+              disabled={!isAddToCartEnabled}
+              className="w-full"
+              onAddToCart={() => setCartSlideOverOpen(true)}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Related products */}
+      {relatedProducts.length > 0 && (
+        <div className="mt-16">
+          <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">Frequently Bought Together</h2>
+          <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4">
+            {relatedProducts.map((relatedProduct) => (
+              <div key={relatedProduct.id} className="group relative">
+                {relatedProduct.images[0]?.src && (
+                  <div className="w-full aspect-square rounded-lg overflow-hidden bg-gray-200">
+                    <Image
+                      src={relatedProduct.images[0].src}
+                      alt={relatedProduct.name}
+                      width={300}
+                      height={300}
+                      className="w-full h-full object-center object-cover group-hover:opacity-75"
+                    />
+                  </div>
+                )}
+                <div className="mt-4 flex justify-between">
+                  <div>
+                    <h3 className="text-sm text-gray-700">
+                      <Link href={`/product/${relatedProduct.slug}`}>
+                        {relatedProduct.name}
+                      </Link>
+                    </h3>
+                  </div>
+                  <p className="text-sm font-medium text-gray-900">
+                    ${parseFloat(relatedProduct.price).toFixed(2)}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
 
-      {/* QuickAddModal for related products */}
-      {selectedProduct && (
-        <QuickAddModal
-          isOpen={quickAddModalOpen}
-          setIsOpen={setQuickAddModalOpen}
-          product={selectedProduct}
-          onAddToCart={() => {
-            setQuickAddModalOpen(false);
-            setCartSlideOverOpen(true);
-          }}
-        />
-      )}
+      <div className="mt-10">
+        <Link href="/cart" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+          View cart
+        </Link>
+        <Link href="/checkout" className="text-sm font-medium text-indigo-600 hover:text-indigo-500 ml-4">
+          Checkout
+        </Link>
+      </div>
 
-      {/* Cart Slide Over */}
       <CartSlideOver
         isOpen={cartSlideOverOpen}
         onClose={() => setCartSlideOverOpen(false)}

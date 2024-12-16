@@ -19,12 +19,23 @@ export const viewport = {
 export const metadata: Metadata = {
   title: {
     template: '%s | Festival Rave Gear',
-    default: 'Festival Rave Gear - Your Ultimate Festival Fashion Destination',
+    default: 'Festival Rave Gear',
   },
   description: 'Find the perfect festival and rave outfits, accessories, and gear for your next event.',
   keywords: ['festival', 'rave', 'clothing', 'accessories', 'fashion'],
   authors: [{ name: 'Festival Rave Gear' }],
-  robots: 'index, follow',
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+  alternates: {
+    canonical: 'https://staging.festivalravegear.com'
+  },
   icons: {
     icon: '/favicon.ico',
   },

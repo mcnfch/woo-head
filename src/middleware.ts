@@ -1,36 +1,73 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import compression from 'compression';
-import type { Request, Response } from 'express';
 
-const compressionMiddleware = compression();
+// Protected routes that require authentication
+const protectedPaths = [
+  '/profile',
+  '/account',
+  '/orders',
+];
 
-// Type definitions for the compression middleware
-type CompressionMiddleware = (
-  req: Request,
-  res: Response,
-  next: () => void
-) => void;
+// Public paths that should never redirect to login
+const publicPaths = [
+  '/login',
+  '/register',
+  '/forgot-password'
+];
 
-export function middleware(request: NextRequest) {
-  if (process.env.NODE_ENV === 'production') {
-    return new Promise((resolve) => {
-      (compressionMiddleware as CompressionMiddleware)(
-        request as unknown as Request,
-        NextResponse.next() as unknown as Response,
-        () => {
-          resolve(NextResponse.next());
-        }
-      );
-    });
+// System files that should never be routed to pages
+const systemFiles = [
+  '.env',
+  '.env.local',
+  '.gitignore',
+  'package.json',
+  'yarn.lock',
+  'tsconfig.json'
+];
+
+export async function middleware(request: NextRequest) {
+  const path = request.nextUrl.pathname;
+  
+  // Block access to system files
+  const fileName = path.split('/').pop();
+  if (fileName && systemFiles.includes(fileName)) {
+    return new NextResponse('Not Found', { status: 404 });
   }
+
+  // Don't redirect if the path is public
+  if (publicPaths.some(p => path.startsWith(p))) {
+    // If user is already logged in and trying to access login/register pages,
+    // redirect them to profile
+    const token = request.cookies.get('auth_token');
+    if (token) {
+      return NextResponse.redirect(new URL('/profile', request.url));
+    }
+    return NextResponse.next();
+  }
+
+  // Check for authentication on protected routes
+  if (protectedPaths.some(route => path.startsWith(route))) {
+    const token = request.cookies.get('auth_token');
+    
+    if (!token) {
+      const url = new URL('/login', request.url);
+      url.searchParams.set('from', path);
+      return NextResponse.redirect(url);
+    }
+  }
+  
   return NextResponse.next();
 }
 
 // Configure which paths should use this middleware
 export const config = {
   matcher: [
-    // Apply compression to all routes except static files and api routes
-    '/((?!_next/static|_next/image|favicon.ico|api).*)',
-  ],
-}; 
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/profile/:path*',
+    '/account/:path*',
+    '/orders/:path*',
+    '/login',
+    '/register',
+    '/forgot-password'
+  ]
+};

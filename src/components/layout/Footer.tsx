@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 const quickLinks = [
   { href: '/about-us', label: 'About Us' },
-  { href: '/geo', label: 'Geo' },
   { href: '/sustainability', label: 'Sustainability' },
   { href: '/shipping-returns', label: 'Shipping & Returns' },
   { href: '/contact-us', label: 'Contact Us' },
@@ -128,7 +127,7 @@ export function Footer() {
         {/* Copyright */}
         <div className="mt-8 pt-8 border-t border-gray-700">
           <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-            <p>© 2024 Festival Rave Gear | Powered by Next.js</p>
+            <p> 2024 Festival Rave Gear | Powered by Next.js</p>
             <Link href="/sitemap.xml" className="hover:text-purple-300">
               Sitemap
             </Link>

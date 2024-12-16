@@ -1,6 +1,7 @@
 'use client';
 
 import { CartProvider } from '@/context/CartContext';
+import { AuthProvider } from '@/context/AuthContext';
 import { Header } from './Header';
 import { Footer } from './Footer';
 import type { WooCategory } from '@/lib/types';
@@ -12,12 +13,14 @@ interface ClientLayoutProps {
 
 export function ClientLayout({ children, categories }: ClientLayoutProps) {
   return (
-    <CartProvider>
-      <div className="flex flex-col min-h-screen">
-        <Header categories={categories} />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-      </div>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <div className="flex flex-col min-h-screen">
+          <Header categories={categories} />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </div>
+      </CartProvider>
+    </AuthProvider>
   );
 }

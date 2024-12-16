@@ -68,6 +68,66 @@ src/
 └── utils/                # Utility functions
 ```
 
+## Mail Server Configuration
+
+The e-commerce platform uses Mailcow for handling all email communications. The mail server is configured at `mail.festivalravegear.com`.
+
+### Email Addresses
+
+- Primary Email: info@festivalravegear.com
+- Support Email: support@festivalravegear.com (alias forwarding to info@)
+
+### DNS Configuration
+
+The following DNS records are configured for email functionality:
+
+1. **MX Record**:
+   ```
+   festivalravegear.com. IN MX 10 mail.festivalravegear.com.
+   ```
+
+2. **SPF Record**:
+   ```
+   festivalravegear.com. IN TXT "v=spf1 mx a ip4:147.135.112.253 ip6:2604:2dc0:101:200::2694 ~all"
+   ```
+
+3. **DKIM Record**:
+   ```
+   dkim._domainkey.festivalravegear.com. IN TXT "v=DKIM1;k=rsa;t=s;s=email;p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwOA2bdrt/+GqX5byM0+WmGbEiv97NVszzUyIPyaT7ceo3TqzZ3gbJmY6cEc7WTZxJMnAG8we6mZO2jdETy3598unExBDT66u6ediFmsLVMoaSmaHBZBGCEk8R369WImTN898haUL7a0skk42t2M936HmkyF80696aeSOeT6VC/pPedYXZOi5M7uf7Sb7YTdK2b6hNE4N+yu0OxrdQZyUFDdOM4hu4UV6+Z4OcWsnl4n37RtdJl5ogb1h998A5otYBbC0zZqBjtzo+0TgenIYbj4OHloju1PMXyVvqgZV0rurrtYkCoDqSrfbNUs3LEoEAoWI6XX9cBWpp97/ObGzqDwIDAQAB"
+   ```
+
+### Email Client Configuration
+
+To connect an email client (like Outlook or Thunderbird), use these settings:
+
+#### IMAP Settings
+- Server: mail.festivalravegear.com
+- Port: 993
+- Security: SSL/TLS
+- Username: [your-email]@festivalravegear.com
+- Authentication: Normal Password
+
+#### SMTP Settings
+- Server: mail.festivalravegear.com
+- Port: 587
+- Security: STARTTLS
+- Username: [your-email]@festivalravegear.com
+- Authentication: Normal Password
+
+### Webmail Access
+
+Access webmail through SOGo at:
+```
+https://mail.festivalravegear.com/SOGo
+```
+
+### Important Notes
+
+1. All support@ emails are automatically forwarded to info@festivalravegear.com
+2. The mail server uses Let's Encrypt SSL certificates that auto-renew
+3. Both IPv4 (147.135.112.253) and IPv6 (2604:2dc0:101:200::2694) are configured for email delivery
+4. Email authentication is implemented via SPF and DKIM for improved deliverability
+
 ### Menu Configuration
 
 The `src/config/menu.json` controls the site's navigation structure:

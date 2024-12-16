@@ -27,16 +27,29 @@ export interface MobileMenuProps {
 
 export function MobileMenu({ categories, onClose }: MobileMenuProps) {
   const categoryMap = new Map<number, WooCategory[]>();
-  const rootCategories: WooCategory[] = [];
   const [expandedCategories, setExpandedCategories] = useState<Set<number>>(new Set());
 
-  // Filter out 'Uncategorized' and organize categories by relationships
+  // Get the visible product categories from menu configuration
+  const visibleMenuCategories = menuItems.menuItems
+    .filter(item => item.type === 'product' && item.visible)
+    .reduce((acc, item) => {
+      acc[item.title.toLowerCase()] = item;
+      return acc;
+    }, {} as Record<string, MenuItem>);
+
+  // Filter and organize categories based on menu configuration
+  const rootCategories: WooCategory[] = [];
   categories.forEach(category => {
     if (category.name.toLowerCase() === 'uncategorized') return;
     
+    const menuItem = visibleMenuCategories[category.name.toLowerCase()];
     if (category.parent === 0) {
-      rootCategories.push(category);
+      // Only include root categories that are in the menu config and visible
+      if (menuItem) {
+        rootCategories.push(category);
+      }
     } else {
+      // Always include child categories as they'll only show if parent is visible
       const children = categoryMap.get(category.parent) || [];
       children.push(category);
       categoryMap.set(category.parent, children);
@@ -45,9 +58,9 @@ export function MobileMenu({ categories, onClose }: MobileMenuProps) {
 
   // Sort root categories based on menu configuration order
   rootCategories.sort((a, b) => {
-    const aOrder = menuConfig[a.name.toLowerCase()] || 999;
-    const bOrder = menuConfig[b.name.toLowerCase()] || 999;
-    return aOrder - bOrder;
+    const aMenuItem = visibleMenuCategories[a.name.toLowerCase()];
+    const bMenuItem = visibleMenuCategories[b.name.toLowerCase()];
+    return (aMenuItem?.order ?? 999) - (bMenuItem?.order ?? 999);
   });
 
   const toggleCategory = (categoryId: number) => {

@@ -42,18 +42,14 @@ export function Header({ categories }: HeaderProps) {
     <header className="w-full">
       <div className="relative">
         {/* Banner Image */}
-        <div className="relative w-full h-[160px]">
+        <div className="relative w-full h-[200px]">
           <Image
             src="/images/frgheader.png"
             alt="Festival Rave Gear Banner"
             fill
             priority
-            quality={90}
+            className="object-cover"
             sizes="100vw"
-            style={{
-              objectFit: 'cover',
-              objectPosition: 'center',
-            }}
           />
 
           {/* Centered Logo */}
@@ -71,7 +67,7 @@ export function Header({ categories }: HeaderProps) {
           </div>
 
           {/* User and Cart Icons */}
-          <div className="absolute right-8 top-4 flex items-center space-x-4">
+          <div className="absolute right-4 sm:right-8 top-4 flex items-center space-x-2 sm:space-x-4">
             {/* User Icon */}
             <div className="relative">
               <button
@@ -128,11 +124,9 @@ export function Header({ categories }: HeaderProps) {
             </div>
 
             {/* Cart Icon */}
-            <CartIcon 
-              count={cartCount} 
-              isCartOpen={isCartOpen}
-              onCartClick={handleCartClick}
-            />
+            <div className="text-white">
+              <CartIcon count={cartCount} isCartOpen={isCartOpen} onCartClick={handleCartClick} />
+            </div>
           </div>
 
           {/* Mobile Menu Button */}

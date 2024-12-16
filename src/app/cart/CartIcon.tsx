@@ -2,25 +2,14 @@
 
 import { useCart } from '@/context/CartContext';
 import { ShoppingBag } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { CartSlideOver } from './CartSlideOver';
+import { useState } from 'react';
+import SlideOutCart from '@/components/cart/SlideOutCart';
 
 export default function CartIcon() {
   const { cart } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
   
   const itemCount = cart?.items?.reduce((total, item) => total + item.quantity, 0) || 0;
-
-  useEffect(() => {
-    const handleOpenCart = () => {
-      setIsCartOpen(true);
-    };
-
-    window.addEventListener('openCartSlider', handleOpenCart);
-    return () => {
-      window.removeEventListener('openCartSlider', handleOpenCart);
-    };
-  }, []);
 
   return (
     <>
@@ -33,7 +22,7 @@ export default function CartIcon() {
         )}
       </button>
       
-      <CartSlideOver isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <SlideOutCart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
 }

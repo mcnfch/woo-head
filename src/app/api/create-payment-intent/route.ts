@@ -20,11 +20,19 @@ export async function POST(
   request: NextRequest
 ) {
   try {
-    const { amount, currency = 'usd', orderId } = await request.json();
+    const body = await request.json();
+    const { amount, currency = 'usd', orderId } = body;
 
     if (!amount || amount < 1) {
       return NextResponse.json(
         { error: 'Invalid amount' },
+        { status: 400 }
+      );
+    }
+
+    if (!orderId) {
+      return NextResponse.json(
+        { error: 'Order ID is required' },
         { status: 400 }
       );
     }
@@ -34,7 +42,7 @@ export async function POST(
       amount,
       currency,
       metadata: {
-        orderId: orderId?.toString(),
+        orderId: orderId.toString(),
       },
       automatic_payment_methods: {
         enabled: true,
@@ -43,20 +51,20 @@ export async function POST(
       apiVersion: '2023-10-16'
     });
 
+    if (!paymentIntent || !paymentIntent.client_secret) {
+      throw new Error('Failed to create payment intent');
+    }
+
     return NextResponse.json({ 
       clientSecret: paymentIntent.client_secret,
       paymentIntentId: paymentIntent.id,
     });
   } catch (error) {
     console.error('Error creating payment intent:', error);
-    if (error instanceof Stripe.errors.StripeError) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: error.statusCode || 500 }
-      );
-    }
     return NextResponse.json(
-      { error: 'Failed to create payment intent' },
+      { 
+        error: error instanceof Error ? error.message : 'An error occurred while creating payment intent'
+      },
       { status: 500 }
     );
   }

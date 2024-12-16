@@ -13,7 +13,7 @@ interface CartSlideOverProps {
 }
 
 export function CartSlideOver({ isOpen, onClose }: CartSlideOverProps) {
-  const { cart, updateQuantity, removeItem } = useCart();
+  const { cart } = useCart();
   const panelRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -52,9 +52,7 @@ export function CartSlideOver({ isOpen, onClose }: CartSlideOverProps) {
                     <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                       <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                         <div className="flex items-start justify-between">
-                          <Dialog.Title className="text-lg font-medium text-gray-900">
-                            Shopping cart
-                          </Dialog.Title>
+                          <Dialog.Title className="text-lg font-medium text-gray-900">Shopping Cart</Dialog.Title>
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               type="button"
@@ -70,102 +68,75 @@ export function CartSlideOver({ isOpen, onClose }: CartSlideOverProps) {
 
                         <div className="mt-8">
                           <div className="flow-root">
-                            {!cart?.items || cart.items.length === 0 ? (
-                              <div className="text-center py-8">
-                                <p className="text-gray-500">Your cart is empty</p>
-                                <button
-                                  onClick={onClose}
-                                  className="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
-                                >
-                                  Continue Shopping
-                                </button>
-                              </div>
-                            ) : (
+                            {cart && cart.items.length > 0 ? (
                               <ul role="list" className="-my-6 divide-y divide-gray-200">
-                                {cart.items.map((item, index) => (
-                                  <li key={index} className="flex py-6">
-                                    {item.image && (
-                                      <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                        <Image
-                                          src={item.image}
-                                          alt={item.name}
-                                          width={96}
-                                          height={96}
-                                          className="h-full w-full object-cover object-center"
-                                        />
-                                      </div>
-                                    )}
+                                {cart.items.map((item) => (
+                                  <li key={item.product_id} className="flex py-6">
+                                    <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                      <Image
+                                        src={item.image || '/placeholder.jpg'}
+                                        alt={item.name}
+                                        width={96}
+                                        height={96}
+                                        className="h-full w-full object-cover object-center"
+                                      />
+                                    </div>
+
                                     <div className="ml-4 flex flex-1 flex-col">
                                       <div>
                                         <div className="flex justify-between text-base font-medium text-gray-900">
-                                          <h3>
-                                            <Link href={`/product/${item.product?.slug}`} onClick={onClose}>
-                                              {item.name}
-                                            </Link>
-                                          </h3>
-                                          <p className="ml-4">${item.price}</p>
+                                          <h3>{item.name}</h3>
+                                          <p className="ml-4">
+                                            ${typeof item.price === 'number' ? item.price.toFixed(2) : '0.00'}
+                                          </p>
                                         </div>
+                                        {item.attributes && item.attributes.length > 0 && (
+                                          <p className="mt-1 text-sm text-gray-500">
+                                            {item.attributes.map(attr => `${attr.name}: ${attr.option}`).join(', ')}
+                                          </p>
+                                        )}
                                       </div>
                                       <div className="flex flex-1 items-end justify-between text-sm">
-                                        <div className="flex items-center space-x-2">
-                                          <label htmlFor={`quantity-${index}`} className="sr-only">
-                                            Quantity
-                                          </label>
-                                          <select
-                                            id={`quantity-${index}`}
-                                            name={`quantity-${index}`}
-                                            value={item.quantity}
-                                            onChange={(e) => updateQuantity(item.product_id, parseInt(e.target.value))}
-                                            className="rounded-md border border-gray-300 text-left text-base font-medium text-gray-700 shadow-sm focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 sm:text-sm"
-                                          >
-                                            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                                              <option key={num} value={num}>
-                                                {num}
-                                              </option>
-                                            ))}
-                                          </select>
-                                        </div>
-                                        <div className="flex">
-                                          <button
-                                            type="button"
-                                            onClick={() => removeItem(item.product_id)}
-                                            className="font-medium text-purple-600 hover:text-purple-500"
-                                          >
-                                            Remove
-                                          </button>
-                                        </div>
+                                        <p className="text-gray-500">Qty {item.quantity}</p>
                                       </div>
                                     </div>
                                   </li>
                                 ))}
                               </ul>
+                            ) : (
+                              <div className="text-center py-12">
+                                <p className="text-gray-500">Your cart is empty</p>
+                              </div>
                             )}
                           </div>
                         </div>
                       </div>
 
-                      {cart?.items && cart.items.length > 0 && (
+                      {cart && cart.items.length > 0 && (
                         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                           <div className="flex justify-between text-base font-medium text-gray-900">
                             <p>Subtotal</p>
-                            <p>${cart.subtotal.toFixed(2)}</p>
+                            <p>${typeof cart.subtotal === 'number' ? cart.subtotal.toFixed(2) : '0.00'}</p>
                           </div>
                           <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-                          <div className="mt-6 space-y-3">
+                          <div className="mt-6">
                             <Link
                               href="/checkout"
-                              onClick={onClose}
                               className="flex items-center justify-center rounded-md border border-transparent bg-purple-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-purple-700"
-                            >
-                              Checkout
-                            </Link>
-                            <Link
-                              href="/cart"
                               onClick={onClose}
-                              className="flex items-center justify-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50"
                             >
-                              View Cart
+                              Checkout Now
                             </Link>
+                          </div>
+                          <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
+                            <button
+                              type="button"
+                              className="font-medium text-purple-600 hover:text-purple-500"
+                              onClick={onClose}
+                            >
+                              Continue Shopping
+                              <span aria-hidden="true"> &rarr;</span>
+                            </button>
                           </div>
                         </div>
                       )}

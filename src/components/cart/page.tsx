@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { Loader2, Minus, Plus, ShoppingCart } from 'lucide-react';
 import { woocommerce } from '@/lib/woocommerce';
 import type { WooVariantAttribute, WooProduct, WooVariation } from '@/lib/types';
+import { useRouter } from 'next/navigation';
 
 export default function CartPage() {
   const { cart, loading, error, updateQuantity, removeItem, updateItemOptions, canProceedToCheckout } = useCart();
@@ -15,6 +16,7 @@ export default function CartPage() {
   const [productVariations, setProductVariations] = useState<Record<number, WooVariation[]>>({});
   const [loadingProducts, setLoadingProducts] = useState<Record<number, boolean>>({});
   const [loadingVariations, setLoadingVariations] = useState<Record<number, boolean>>({});
+  const router = useRouter();
 
   // Fetch product details and variations for all cart items
   useEffect(() => {
@@ -99,7 +101,10 @@ export default function CartPage() {
   };
 
   const handleCheckout = () => {
-    // Implement checkout logic here
+    if (!canProceedToCheckout) {
+      return;
+    }
+    router.push('/checkout');
   };
 
   if (loading) {
@@ -246,22 +251,18 @@ export default function CartPage() {
           <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
             
           <div className="mt-6">
-            <Link
-              href={canProceedToCheckout ? '/checkout' : '#'}
-              className={`block w-full rounded-md py-3 px-4 text-base font-medium text-white text-center
+            <button
+              type="button"
+              onClick={handleCheckout}
+              disabled={!canProceedToCheckout}
+              aria-disabled={!canProceedToCheckout}
+              className={`w-full rounded-md py-3 px-4 text-base font-medium text-white
                 ${canProceedToCheckout 
                   ? 'bg-purple-600 hover:bg-purple-700' 
                   : 'bg-gray-300 cursor-not-allowed'}`}
-              onClick={(e) => {
-                if (!canProceedToCheckout) {
-                  e.preventDefault();
-                }
-              }}
-              aria-disabled={!canProceedToCheckout}
-              tabIndex={canProceedToCheckout ? 0 : -1}
             >
-              {canProceedToCheckout ? 'Proceed to Checkout' : 'Select Required Options'}
-            </Link>
+              Proceed to Checkout
+            </button>
           </div>
 
           <div className="mt-6 text-center">

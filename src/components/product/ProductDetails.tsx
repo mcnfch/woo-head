@@ -2,11 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
-import type { WooProduct, ProductVariation, ProductAttribute } from '@/lib/types';
+import type { WooProduct, ProductVariation, WooVariantAttribute } from '@/lib/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { AddToCartButton } from './AddToCartButton';
-import { CartSlideOver } from '../cart/CartSlideOver';
+import SlideOutCart from '../cart/SlideOutCart';
 import { woocommerce } from '@/lib/woocommerce';
 
 interface ProductDetailsProps {
@@ -22,8 +22,9 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   const [selectedAttributes, setSelectedAttributes] = useState<SelectedAttributes>({});
   const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(null);
   const [isAddToCartEnabled, setIsAddToCartEnabled] = useState(false);
-  const [cartSlideOverOpen, setCartSlideOverOpen] = useState(false);
+  const [slideOutCartOpen, setSlideOutCartOpen] = useState(false);
   const [relatedProducts, setRelatedProducts] = useState<WooProduct[]>([]);
+  const [quantity, setQuantity] = useState(1);
 
   // Check if all required attributes are selected
   useEffect(() => {
@@ -40,28 +41,33 @@ export function ProductDetails({ product }: ProductDetailsProps) {
     setIsAddToCartEnabled(hasAllRequired);
   }, [product.attributes, selectedAttributes]);
 
-  // Fetch random products for "Frequently Bought Together"
+  // Update selected variation when attributes change
   useEffect(() => {
-    async function fetchRandomProducts() {
-      try {
-        const response = await woocommerce.get('products', {
-          per_page: 4,
-          exclude: [product.id]
-        });
-        if (response.data && Array.isArray(response.data)) {
-          setRelatedProducts(response.data);
-        }
-      } catch (error) {
-        console.error('Error fetching related products:', error);
-      }
-    }
-    fetchRandomProducts();
-  }, [product.id]);
+    if (!product.variations || !product.attributes) return;
+
+    const variations = product.variations;
+    const matchingVariation = variations.find(variation => {
+      return variation.attributes?.every(varAttr => {
+        const selectedValue = selectedAttributes[varAttr.name];
+        return selectedValue === varAttr.option;
+      });
+    });
+
+    setSelectedVariation(matchingVariation || null);
+  }, [product.variations, product.attributes, selectedAttributes]);
 
   const handleAttributeChange = (name: string, value: string) => {
     setSelectedAttributes(prev => ({
       ...prev,
       [name]: value
+    }));
+  };
+
+  const getSelectedAttributesArray = (): WooVariantAttribute[] => {
+    return Object.entries(selectedAttributes).map(([name, option]) => ({
+      id: product.attributes?.find(attr => attr.name === name)?.id || 0,
+      name,
+      option
     }));
   };
 
@@ -71,16 +77,12 @@ export function ProductDetails({ product }: ProductDetailsProps) {
         product_id: product.id,
         name: product.name,
         price: parseFloat(product.price),
-        quantity: 1,
+        quantity: quantity,
         image: product.images[0]?.src,
         variation_id: selectedVariation?.id,
-        attributes: Object.entries(selectedAttributes).map(([name, option]) => ({
-          id: product.attributes?.find(attr => attr.name === name)?.id || 0,
-          name,
-          option
-        }))
+        attributes: getSelectedAttributesArray()
       });
-      setCartSlideOverOpen(true);
+      setSlideOutCartOpen(true);
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
@@ -96,11 +98,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
         quantity: 1,
         image: product.images[0]?.src,
         variation_id: selectedVariation?.id,
-        attributes: Object.entries(selectedAttributes).map(([name, option]) => ({
-          id: product.attributes?.find(attr => attr.name === name)?.id || 0,
-          name,
-          option
-        }))
+        attributes: getSelectedAttributesArray()
       });
 
       // Add related products
@@ -114,61 +112,55 @@ export function ProductDetails({ product }: ProductDetailsProps) {
         });
       }
 
-      setCartSlideOverOpen(true);
+      setSlideOutCartOpen(true);
     } catch (error) {
       console.error('Error adding products to cart:', error);
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
-      <div className="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
-        {/* Image gallery */}
-        <div className="relative">
-          {product.images[0]?.src && (
-            <div className="w-full aspect-square rounded-lg overflow-hidden">
-              <Image
-                src={product.images[0].src}
-                alt={product.name}
-                width={600}
-                height={600}
-                className="w-full h-full object-center object-cover"
-              />
-            </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="lg:grid lg:grid-cols-2 lg:gap-x-8">
+        {/* Product Image */}
+        <div className="relative aspect-square">
+          {product.images && product.images.length > 0 && (
+            <Image
+              src={product.images[0].src}
+              alt={product.images[0].alt || product.name}
+              fill
+              className="object-cover rounded-lg"
+            />
           )}
         </div>
 
-        {/* Product info */}
+        {/* Product Details */}
         <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
           <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">{product.name}</h1>
+          
           <div className="mt-3">
             <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl text-gray-900">${parseFloat(product.price).toFixed(2)}</p>
+            <p className="text-3xl text-gray-900">${product.price}</p>
           </div>
 
           <div className="mt-6">
-            <h3 className="sr-only">Description</h3>
-            <div 
-              className="text-base text-gray-700 space-y-6"
-              dangerouslySetInnerHTML={{ __html: product.description }}
-            />
+            <div className="text-base text-gray-700" dangerouslySetInnerHTML={{ __html: product.description }} />
           </div>
 
-          <div className="mt-6">
-            {product.attributes?.map((attr) => (
-              <div key={attr.id} className="mb-4">
-                <label htmlFor={attr.name} className="block text-sm font-medium text-gray-700">
-                  {attr.name}
+          {/* Product Attributes */}
+          <div className="mt-8">
+            {product.attributes?.map((attribute) => (
+              <div key={attribute.id} className="mb-4">
+                <label htmlFor={attribute.name} className="block text-sm font-medium text-gray-700">
+                  {attribute.name}
                 </label>
                 <select
-                  id={attr.name}
-                  name={attr.name}
-                  value={selectedAttributes[attr.name] || ''}
-                  onChange={(e) => handleAttributeChange(attr.name, e.target.value)}
+                  id={attribute.name}
+                  value={selectedAttributes[attribute.name] || ''}
+                  onChange={(e) => handleAttributeChange(attribute.name, e.target.value)}
                   className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md"
                 >
-                  <option value="">Select {attr.name}</option>
-                  {attr.options.map((option) => (
+                  <option value="">Select {attribute.name}</option>
+                  {attribute.options?.map((option) => (
                     <option key={option} value={option}>
                       {option}
                     </option>
@@ -178,13 +170,43 @@ export function ProductDetails({ product }: ProductDetailsProps) {
             ))}
           </div>
 
-          <div className="mt-6">
+          {/* Quantity Control */}
+          <div className="mt-8">
+            <label htmlFor="quantity" className="block text-sm font-medium text-gray-700">
+              Quantity
+            </label>
+            <div className="mt-1 flex rounded-md shadow-sm">
+              <button
+                type="button"
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
+              >
+                -
+              </button>
+              <div className="relative flex items-center justify-center w-20 border-t border-b border-gray-300 bg-white text-sm text-gray-700">
+                {quantity}
+              </div>
+              <button
+                type="button"
+                onClick={() => setQuantity(quantity + 1)}
+                className="relative inline-flex items-center px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          {/* Add to Cart Button */}
+          <div className="mt-8">
             <AddToCartButton
               productId={product.id}
               variationId={selectedVariation?.id}
+              product={product}
+              selectedAttributes={getSelectedAttributesArray()}
+              quantity={quantity}
               disabled={!isAddToCartEnabled}
+              onAddToCart={() => setSlideOutCartOpen(true)}
               className="w-full"
-              onAddToCart={() => setCartSlideOverOpen(true)}
             />
           </div>
         </div>
@@ -235,9 +257,9 @@ export function ProductDetails({ product }: ProductDetailsProps) {
         </Link>
       </div>
 
-      <CartSlideOver
-        isOpen={cartSlideOverOpen}
-        onClose={() => setCartSlideOverOpen(false)}
+      <SlideOutCart
+        isOpen={slideOutCartOpen}
+        onClose={() => setSlideOutCartOpen(false)}
       />
     </div>
   );

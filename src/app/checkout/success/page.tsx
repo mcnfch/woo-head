@@ -22,46 +22,52 @@ interface Order {
 
 export default function CheckoutSuccessPage() {
   const searchParams = useSearchParams();
-  const orderId = searchParams.get('order_id');
+  const paymentIntentId = searchParams.get('payment_intent');
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
-    // Clear cart when success page loads
-    const lastOrderId = localStorage.getItem('lastOrderId');
-    if (lastOrderId === orderId) {
-      localStorage.removeItem('lastOrderId');
-      localStorage.removeItem('cart');
-    }
-
-    const fetchOrder = async () => {
-      if (!orderId) {
-        setError('No order ID found');
+    const fetchOrderByPaymentIntent = async () => {
+      if (!paymentIntentId) {
+        setError('No payment information found');
         setLoading(false);
         return;
       }
 
       try {
-        console.log('Fetching order:', orderId);
-        const response = await fetch(`/api/v1?endpoint=orders.get&orderId=${orderId}`);
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.error || 'Failed to fetch order');
+        // First get the order ID from the payment intent
+        const paymentResponse = await fetch(`/api/payment-status/${paymentIntentId}`);
+        if (!paymentResponse.ok) {
+          throw new Error('Could not verify payment status');
         }
-        const orderData = await response.json();
-        console.log('Order data:', orderData);
+        const paymentData = await paymentResponse.json();
+        const orderId = paymentData.metadata?.orderId;
+        
+        if (!orderId) {
+          throw new Error('No order found for this payment');
+        }
+
+        // Then fetch the order details
+        const orderResponse = await fetch(`/api/orders/${orderId}`);
+        if (!orderResponse.ok) {
+          throw new Error('Could not fetch order details');
+        }
+        const orderData = await orderResponse.json();
         setOrder(orderData);
+        
+        // Clear cart on successful order fetch
+        localStorage.removeItem('cart');
       } catch (err) {
-        console.error('Error fetching order:', err);
+        console.error('Error processing order:', err);
         setError(err instanceof Error ? err.message : 'Failed to load order details');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchOrder();
-  }, [orderId]);
+    fetchOrderByPaymentIntent();
+  }, [paymentIntentId]);
 
   if (loading) {
     return (
@@ -99,53 +105,66 @@ export default function CheckoutSuccessPage() {
             Thank you for your order!
           </h1>
           <p className="mt-2 text-sm text-gray-600">
-            Order #{order.id} has been received and is being processed.
+            Order #{order.id}
           </p>
         </div>
 
-        <div className="mt-8 bg-white shadow rounded-lg p-6">
-          <div className="space-y-6">
-            <div>
-              <h3 className="text-lg font-medium text-gray-900">Order Details</h3>
-              <div className="mt-2 text-sm text-gray-600">
-                <p>Total: ${order.total}</p>
-                <p>Email: {order.billing.email}</p>
-                <p>Name: {order.billing.first_name} {order.billing.last_name}</p>
-              </div>
+        <div className="mt-8">
+          <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div className="px-4 py-5 sm:px-6">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">
+                Order Details
+              </h3>
             </div>
-
-            <div>
-              <h3 className="text-lg font-medium text-gray-900">Items</h3>
-              <ul className="mt-2 divide-y divide-gray-200">
-                {order.line_items.map((item, index) => (
-                  <li key={index} className="py-3">
-                    <div className="flex justify-between text-sm">
-                      <div>
-                        <p className="font-medium text-gray-900">{item.name}</p>
-                        <p className="text-gray-500">Quantity: {item.quantity}</p>
-                      </div>
-                      <p className="text-gray-900">${item.total}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+            <div className="border-t border-gray-200">
+              <dl>
+                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Name</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {order.billing.first_name} {order.billing.last_name}
+                  </dd>
+                </div>
+                <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Email</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    {order.billing.email}
+                  </dd>
+                </div>
+                <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                  <dt className="text-sm font-medium text-gray-500">Total</dt>
+                  <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                    ${order.total}
+                  </dd>
+                </div>
+              </dl>
             </div>
           </div>
-        </div>
 
-        <div className="mt-8 space-y-4">
-          <Link
-            href="/shop"
-            className="inline-block w-full px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-          >
-            Continue Shopping
-          </Link>
-          <Link
-            href="/account/orders"
-            className="inline-block w-full px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
-          >
-            View All Orders
-          </Link>
+          <div className="mt-8">
+            <h4 className="text-lg font-medium text-gray-900 mb-4">Items</h4>
+            <ul className="divide-y divide-gray-200">
+              {order.line_items.map((item, index) => (
+                <li key={index} className="py-4">
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{item.name}</p>
+                      <p className="text-sm text-gray-500">Quantity: {item.quantity}</p>
+                    </div>
+                    <p className="text-sm font-medium text-gray-900">${item.total}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-8 text-center">
+            <Link
+              href="/shop"
+              className="inline-block px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary hover:bg-primary/90"
+            >
+              Continue Shopping
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,1307 @@
+   ▲ Next.js 15.0.3
+   - Local:        http://localhost:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1468ms
+ ✓ Compiled /src/middleware in 194ms (91 modules)
+ ○ Compiling / ...
+ ⚠ ./src/components/layout/CartIcon.tsx
+Attempted import error: 'SlideOutCart' is not exported from '../cart/SlideOutCart' (imported as 'SlideOutCart').
+
+Import trace for requested module:
+./src/components/layout/CartIcon.tsx
+./src/components/layout/Header.tsx
+./src/components/layout/ClientLayout.tsx
+
+./src/components/layout/CartIcon.tsx
+Attempted import error: 'SlideOutCart' is not exported from '../cart/SlideOutCart' (imported as 'SlideOutCart').
+
+Import trace for requested module:
+./src/components/layout/CartIcon.tsx
+./src/components/layout/Header.tsx
+./src/components/layout/ClientLayout.tsx
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+React.jsx: type is invalid -- expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+ ⚠ ./src/components/layout/CartIcon.tsx
+Attempted import error: 'SlideOutCart' is not exported from '../cart/SlideOutCart' (imported as 'SlideOutCart').
+
+Import trace for requested module:
+./src/components/layout/CartIcon.tsx
+./src/components/layout/Header.tsx
+./src/components/layout/ClientLayout.tsx
+
+./src/components/layout/CartIcon.tsx
+Attempted import error: 'SlideOutCart' is not exported from '../cart/SlideOutCart' (imported as 'SlideOutCart').
+
+Import trace for requested module:
+./src/components/layout/CartIcon.tsx
+./src/components/layout/Header.tsx
+./src/components/layout/ClientLayout.tsx
+ GET / 200 in 3149ms
+ ⨯ next/dist/compiled/react-dom/cjs/react-dom-server.edge.development.js (5591:15) @ Error
+ ⨯ Internal error: Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+    at renderElement (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:135440)
+    at retryNode (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:140127)
+    at renderNodeDestructive (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:136532)
+    at renderNode (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:149248)
+    at renderChildrenArray (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:146711)
+    at retryNode (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:140521)
+    at renderNodeDestructive (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:136532)
+    at renderElement (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:128298)
+    at retryNode (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:140127)
+    at renderNodeDestructive (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:136532)
+    at finishFunctionComponent (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:67962)
+    at renderElement (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:83161)
+    at renderElement (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:135138)
+    at retryNode (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:140127)
+    at performWork (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:157971)
+    at Immediate._onImmediate (/opt/woo-next/nextjs-woo/node_modules/next/dist/compiled/next-server/app-page.runtime.dev.js:25:59278)
+    at process.processImmediate (node:internal/timers:485:21)
+    at process.callbackTrampoline (node:internal/async_hooks:130:17)
+digest: "3035548164"
+  5589 |           info +=
+  5590 |             " You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.";
+> 5591 |         throw Error(
+       |               ^
+  5592 |           "Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: " +
+  5593 |             ((null == type ? type : typeof type) + "." + info)
+  5594 |         );
+ ✓ Compiled / in 618ms (1120 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[WooCommerce] Successfully fetched 26 categories
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET / 200 in 438ms
+ ✓ Compiled in 185ms (516 modules)
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET / 200 in 175ms
+ ○ Compiling /[slug] ...
+ ✓ Compiled /[slug] in 714ms (1132 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[CategoryPage] Rendering category: Festival and Rave Hoodie Blankets
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+ GET /festival-rave-hoodie-blankets 200 in 1853ms
+ ✓ Compiled in 643ms (1146 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+[WooCommerce] Successfully fetched 26 categories
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[CategoryPage] Rendering category: Festival and Rave Hoodie Blankets
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /festival-rave-hoodie-blankets 200 in 697ms
+ ○ Compiling /cart ...
+ ✓ Compiled /cart in 662ms (1154 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /cart 200 in 739ms
+ ✓ Compiled in 595ms (1168 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 280ms
+ GET / 200 in 14ms
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[CategoryPage] Rendering category: Men's Festival Rave Footwear
+ GET /mens-festival-rave-footwear 200 in 463ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ ○ Compiling /product/[slug] ...
+ ✓ Compiled /product/[slug] in 575ms (1174 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 1364ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET / 200 in 277ms
+[WooCommerce] Fetching categories...
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Found product in cache: Op Art and Sacred Geometry Woman's Canvas Boots
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Found product in cache: Op Art and Sacred Geometry Woman's Canvas Boots
+[WooCommerce] Successfully fetched 26 categories
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 307ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Found product in cache: Op Art and Sacred Geometry Woman's Canvas Boots
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Found product in cache: Op Art and Sacred Geometry Woman's Canvas Boots
+[WooCommerce] Successfully fetched 26 categories
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 222ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+[WooCommerce] Successfully fetched 26 categories
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 322ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ ✓ Compiled in 902ms (1188 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+[WooCommerce] Successfully fetched 26 categories
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 290ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Found product in cache: Op Art and Sacred Geometry Woman's Canvas Boots
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Found product in cache: Op Art and Sacred Geometry Woman's Canvas Boots
+[WooCommerce] Successfully fetched 26 categories
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 319ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Found product in cache: Op Art and Sacred Geometry Woman's Canvas Boots
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Found product in cache: Op Art and Sacred Geometry Woman's Canvas Boots
+[WooCommerce] Successfully fetched 26 categories
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 210ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Found product in cache: Op Art and Sacred Geometry Woman's Canvas Boots
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Found product in cache: Op Art and Sacred Geometry Woman's Canvas Boots
+[WooCommerce] Successfully fetched 26 categories
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 345ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Found product in cache: Op Art and Sacred Geometry Woman's Canvas Boots
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Found product in cache: Op Art and Sacred Geometry Woman's Canvas Boots
+[WooCommerce] Successfully fetched 26 categories
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 219ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET / 200 in 17ms
+ GET / 200 in 17ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET / 200 in 186ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET / 200 in 164ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET / 200 in 172ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET / 200 in 166ms

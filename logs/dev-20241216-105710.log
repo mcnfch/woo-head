@@ -1,0 +1,58 @@
+   ▲ Next.js 15.0.3
+   - Local:        http://localhost:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1467ms
+ ○ Compiling /api/checkout/create-order ...
+ ✓ Compiled /api/checkout/create-order in 1118ms (369 modules)
+ ⨯ src/app/api/checkout/create-order/route.ts (5:9) @ eval
+ ⨯ Error: Missing WooCommerce API credentials
+    at eval (src/app/api/checkout/create-order/route.ts:5:8)
+    at (rsc)/./src/app/api/checkout/create-order/route.ts (/opt/woo-next/nextjs-woo/.next/server/app/api/checkout/create-order/route.js:207:1)
+    at __webpack_require__ (/opt/woo-next/nextjs-woo/.next/server/webpack-runtime.js:33:42)
+    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fcheckout%2Fcreate-order%2Froute&page=%2Fapi%2Fcheckout%2Fcreate-order%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fcheckout%2Fcreate-order%2Froute.ts&appDir=%2Fopt%2Fwoo-next%2Fnextjs-woo%2Fsrc%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2Fopt%2Fwoo-next%2Fnextjs-woo&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!:14:125)
+    at (rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fcheckout%2Fcreate-order%2Froute&page=%2Fapi%2Fcheckout%2Fcreate-order%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fcheckout%2Fcreate-order%2Froute.ts&appDir=%2Fopt%2Fwoo-next%2Fnextjs-woo%2Fsrc%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2Fopt%2Fwoo-next%2Fnextjs-woo&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D! (/opt/woo-next/nextjs-woo/.next/server/app/api/checkout/create-order/route.js:176:1)
+    at __webpack_require__ (/opt/woo-next/nextjs-woo/.next/server/webpack-runtime.js:33:42)
+    at __webpack_exec__ (/opt/woo-next/nextjs-woo/.next/server/app/api/checkout/create-order/route.js:217:39)
+    at <unknown> (/opt/woo-next/nextjs-woo/.next/server/app/api/checkout/create-order/route.js:218:329)
+    at __webpack_require__.X (/opt/woo-next/nextjs-woo/.next/server/webpack-runtime.js:121:21)
+    at <unknown> (/opt/woo-next/nextjs-woo/.next/server/app/api/checkout/create-order/route.js:218:47)
+    at Object.<anonymous> (/opt/woo-next/nextjs-woo/.next/server/app/api/checkout/create-order/route.js:221:3)
+    at call (node_modules/next/src/server/require-hook.ts:70:25)
+    at require (node_modules/next/src/server/require.ts:121:8)
+    at page (node_modules/next/src/server/load-components.ts:189:41)
+    at async DevServer.findPageComponentsImpl (node_modules/next/src/server/next-server.ts:779:27)
+    at async DevServer.findPageComponents (node_modules/next/src/server/dev/next-dev-server.ts:881:13)
+    at async DevServer.renderPageComponent (node_modules/next/src/server/base-server.ts:3584:19)
+    at async DevServer.renderToResponseImpl (node_modules/next/src/server/base-server.ts:3659:23)
+    at async DevServer.pipeImpl (node_modules/next/src/server/base-server.ts:1698:20)
+    at async NextNodeServer.handleCatchallRenderRequest (node_modules/next/src/server/next-server.ts:1034:6)
+    at async DevServer.handleRequestImpl (node_modules/next/src/server/base-server.ts:1462:8)
+    at async (node_modules/next/src/server/dev/next-dev-server.ts:514:13)
+    at async Span.traceAsyncFn (node_modules/next/src/trace/trace.ts:143:13)
+    at async DevServer.handleRequest (node_modules/next/src/server/dev/next-dev-server.ts:512:19)
+    at async invokeRender (node_modules/next/src/server/lib/router-server.ts:284:10)
+    at async handleRequest (node_modules/next/src/server/lib/router-server.ts:530:15)
+    at async requestHandlerImpl (node_modules/next/src/server/lib/router-server.ts:576:6)
+    at async Server.requestListener (node_modules/next/src/server/lib/start-server.ts:146:6)
+  3 |
+  4 | if (!process.env.WOOCOMMERCE_CONSUMER_KEY || !process.env.WOOCOMMERCE_CONSUMER_SECRET) {
+> 5 |   throw new Error('Missing WooCommerce API credentials');
+    |        ^
+  6 | }
+  7 |
+  8 | const api = new WooCommerceRestApi({ {
+  page: '/api/checkout/create-order'
+}
+  3 |
+  4 | if (!process.env.WOOCOMMERCE_CONSUMER_KEY || !process.env.WOOCOMMERCE_CONSUMER_SECRET) {
+> 5 |   throw new Error('Missing WooCommerce API credentials');
+    |         ^
+  6 | }
+  7 |
+  8 | const api = new WooCommerceRestApi({
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1250ms (608 modules)
+ POST /api/checkout/create-order 500 in 2714ms
+ ✓ Compiled in 142ms (53 modules)

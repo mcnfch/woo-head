@@ -246,22 +246,18 @@ export default function CartPage() {
           <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
             
           <div className="mt-6">
-            <Link
-              href={canProceedToCheckout ? '/checkout' : '#'}
-              className={`block w-full rounded-md py-3 px-4 text-base font-medium text-white text-center
+            <button
+              type="button"
+              onClick={handleCheckout}
+              disabled={!canProceedToCheckout}
+              aria-disabled={!canProceedToCheckout}
+              className={`w-full rounded-md py-3 px-4 text-base font-medium text-white
                 ${canProceedToCheckout 
                   ? 'bg-purple-600 hover:bg-purple-700' 
                   : 'bg-gray-300 cursor-not-allowed'}`}
-              onClick={(e) => {
-                if (!canProceedToCheckout) {
-                  e.preventDefault();
-                }
-              }}
-              aria-disabled={!canProceedToCheckout}
-              tabIndex={canProceedToCheckout ? 0 : -1}
             >
-              {canProceedToCheckout ? 'Proceed to Checkout' : 'Select Required Options'}
-            </Link>
+              Proceed to Checkout
+            </button>
           </div>
 
           <div className="mt-6 text-center">

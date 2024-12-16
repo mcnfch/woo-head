@@ -12,7 +12,7 @@ export interface SlideOutCartProps {
 }
 
 export default function SlideOutCart({ isOpen, onClose }: SlideOutCartProps) {
-  const { cart, loading, removeItem, updateQuantity, canProceedToCheckout } = useCart();
+  const { cart, loading, removeItem, updateQuantity } = useCart();
 
   const calculateTotal = (items: CartItem[]): number => {
     return items.reduce((total, item) => total + (item.price || 0) * item.quantity, 0);
@@ -51,58 +51,48 @@ export default function SlideOutCart({ isOpen, onClose }: SlideOutCartProps) {
                 ) : (
                   <div className="mt-8">
                     <div className="flow-root">
-                      <ul role="list" className="-my-6 divide-y divide-gray-200">
+                      <ul className="-my-6 divide-y divide-gray-200">
                         {cartItems.map((item) => (
-                          <li key={item.product_id} className="py-6 flex">
-                            <div className="relative flex-shrink-0 w-24 h-24 border border-gray-200 rounded-md overflow-hidden">
-                              {item.image ? (
+                          <li key={`${item.product_id}-${item.variation_id || ''}`} className="py-6 flex">
+                            {item.image && (
+                              <div className="flex-shrink-0 w-24 h-24 relative">
                                 <Image
-                                  src={item.image}
+                                  src={item.image || '/placeholder.jpg'}
                                   alt={item.name}
-                                  fill
-                                  className="object-cover object-center w-full h-full"
+                                  width={64}
+                                  height={64}
+                                  className="object-cover rounded"
                                 />
-                              ) : (
-                                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                                  <span className="text-gray-400">No image</span>
-                                </div>
-                              )}
-                            </div>
-
+                              </div>
+                            )}
                             <div className="ml-4 flex-1 flex flex-col">
                               <div>
                                 <div className="flex justify-between text-base font-medium text-gray-900">
-                                  <h3>
-                                    <Link href={`/product/${item.product?.slug || '#'}`}>
-                                      {item.name}
-                                    </Link>
-                                  </h3>
-                                  <p className="ml-4">{formatPrice(item.price || 0)}</p>
+                                  <h3>{item.name}</h3>
+                                  <p className="ml-4">{formatPrice((item.price || 0) * item.quantity)}</p>
                                 </div>
                                 {item.attributes && item.attributes.length > 0 && (
                                   <p className="mt-1 text-sm text-gray-500">
-                                    {item.attributes.map((attr) => `${attr.name}: ${attr.option}`).join(', ')}
+                                    {item.attributes.map((attr: { option: string }) => attr.option).join(' / ')}
                                   </p>
                                 )}
                               </div>
                               <div className="flex-1 flex items-end justify-between text-sm">
                                 <div className="flex items-center">
                                   <button
-                                    onClick={() => updateQuantity(item.product_id, Math.max(1, item.quantity - 1))}
-                                    className="text-gray-500 focus:outline-none focus:text-gray-600"
+                                    onClick={() => updateQuantity(item.product_id, Math.max(0, item.quantity - 1))}
+                                    className="px-2 py-1 border rounded-l"
                                   >
-                                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4" />
-                                    </svg>
+                                    -
                                   </button>
-                                  <span className="mx-2 text-gray-700">{item.quantity}</span>
+                                  <span className="px-4 py-1 border-t border-b">
+                                    {item.quantity}
+                                  </span>
                                   <button
                                     onClick={() => updateQuantity(item.product_id, item.quantity + 1)}
-                                    className="text-gray-500 focus:outline-none focus:text-gray-600"
+                                    className="px-2 py-1 border rounded-r"
                                   >
-                                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                    </svg>
+                                    +
                                   </button>
                                 </div>
                                 <div className="flex">
@@ -128,45 +118,24 @@ export default function SlideOutCart({ isOpen, onClose }: SlideOutCartProps) {
                 <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                   <div className="flex justify-between text-base font-medium text-gray-900">
                     <p>Subtotal</p>
-                    <p>{formatPrice(calculateTotal(cartItems))}</p>
+                    <p>{formatPrice(cart?.subtotal || 0)}</p>
                   </div>
-                  <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
-                  <div className="mt-6 space-y-4">
+                  <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout</p>
+                  <div className="mt-6 grid grid-cols-2 gap-4">
                     <Link
                       href="/cart"
-                      className="flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-purple-600 hover:bg-purple-700"
+                      className="flex items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 transition-colors"
                       onClick={onClose}
                     >
                       View Cart
                     </Link>
                     <Link
-                      href={canProceedToCheckout ? '/checkout' : '#'}
-                      className={`flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white ${
-                        canProceedToCheckout 
-                          ? 'bg-purple-600 hover:bg-purple-700' 
-                          : 'bg-gray-300 cursor-not-allowed'
-                      }`}
-                      onClick={(e) => {
-                        if (!canProceedToCheckout) {
-                          e.preventDefault();
-                        } else {
-                          onClose();
-                        }
-                      }}
-                      aria-disabled={!canProceedToCheckout}
-                      tabIndex={canProceedToCheckout ? 0 : -1}
-                    >
-                      {canProceedToCheckout ? 'Checkout Now' : 'Select Required Options'}
-                    </Link>
-                  </div>
-                  <div className="mt-6 flex justify-center text-sm text-center text-gray-500">
-                    <button
-                      type="button"
-                      className="text-purple-600 font-medium hover:text-purple-500"
+                      href="/checkout"
+                      className="flex items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-purple-700 transition-colors"
                       onClick={onClose}
                     >
-                      Continue Shopping<span aria-hidden="true"> &rarr;</span>
-                    </button>
+                      Checkout
+                    </Link>
                   </div>
                 </div>
               )}
@@ -177,3 +146,5 @@ export default function SlideOutCart({ isOpen, onClose }: SlideOutCartProps) {
     </div>
   );
 }
+
+// Removed local CartItem interface to avoid conflict

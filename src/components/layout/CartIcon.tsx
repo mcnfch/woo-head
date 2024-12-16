@@ -3,10 +3,7 @@
 import { useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-
-const SlideOutCart = dynamic(() => import('../cart/SlideOutCart'), {
-  loading: () => null
-});
+import SlideOutCart from '../cart/SlideOutCart';
 
 interface CartIconProps {
   count?: number;
@@ -15,31 +12,19 @@ interface CartIconProps {
 }
 
 export default function CartIcon({ count = 0, isCartOpen, onCartClick }: CartIconProps) {
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    onCartClick();
-  }, [onCartClick]);
-
   return (
     <>
-      <button onClick={handleClick} className="relative p-2 mr-8 block">
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          className="h-6 w-6 text-black hover:text-gray-600 transition-colors" 
-          fill="currentColor"
-          viewBox="0 0 24 24" 
-          stroke="none"
-        >
-          <path 
-            d="M20 6.5h-3v-2c0-2.2-1.8-4-4-4s-4 1.8-4 4v2H6c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-11c0-1.1-.9-2-2-2zm-9-2c0-1.1.9-2 2-2s2 .9 2 2v2h-4v-2z"
-          />
+      <button onClick={onCartClick} className="relative inline-flex items-center p-2">
+        <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
         </svg>
         {count > 0 && (
-          <span className="absolute -top-1 -right-1 bg-purple-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+          <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-medium text-white bg-purple-600 rounded-full">
             {count > 99 ? '99+' : count}
           </span>
         )}
       </button>
+      
       <SlideOutCart isOpen={isCartOpen} onClose={onCartClick} />
     </>
   );

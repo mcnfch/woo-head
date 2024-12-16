@@ -89,6 +89,8 @@ function ProductCardComponent({
       <div className="p-4 pt-0 mt-auto">
         <AddToCartButton
           productId={id}
+          product={product}
+          quantity={1}
           disabled={stockStatus !== 'instock'}
           className="w-full py-2 text-sm font-medium text-white rounded-md transition-colors"
         />

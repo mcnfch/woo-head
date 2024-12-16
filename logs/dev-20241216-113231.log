@@ -1,0 +1,55 @@
+   ▲ Next.js 15.0.3
+   - Local:        http://localhost:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1444ms
+ ✓ Compiled /src/middleware in 190ms (91 modules)
+ ○ Compiling / ...
+ ✓ Compiled / in 2.6s (1120 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ ✓ Compiled in 571ms (516 modules)
+ GET / 200 in 3234ms
+ ✓ Compiled in 562ms (1120 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET / 200 in 287ms
+ ✓ Compiled in 590ms (1120 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET / 200 in 304ms
+ ✓ Compiled in 299ms (1120 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET / 200 in 228ms

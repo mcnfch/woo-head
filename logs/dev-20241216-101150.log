@@ -1,0 +1,3766 @@
+   ▲ Next.js 15.0.3
+   - Local:        http://localhost:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1421ms
+ ✓ Compiled /src/middleware in 179ms (91 modules)
+ ○ Compiling /cart ...
+ ✓ Compiled /cart in 2.8s (1142 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ ✓ Compiled in 480ms (526 modules)
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 3362ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 184ms
+ ○ Compiling /[slug] ...
+ ✓ Compiled /[slug] in 555ms (1154 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[CategoryPage] Rendering category: Men's Festival Rave Footwear
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+ GET /mens-festival-rave-footwear 200 in 1531ms
+ ✓ Compiled /product/[slug] in 356ms (1174 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 1056ms
+ ✓ Compiled / in 283ms (1176 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET / 200 in 573ms
+ GET /cart 200 in 19ms
+ ✓ Compiled in 369ms (1176 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 283ms
+ ✓ Compiled in 443ms (1174 modules)
+ ✓ Compiled in 221ms (1174 modules)
+ ✓ Compiled in 237ms (1174 modules)
+ ✓ Compiled / in 173ms (656 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET / 200 in 259ms
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[CategoryPage] Rendering category: Men's Festival Rave Footwear
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /mens-festival-rave-footwear 200 in 490ms
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 177ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /cart 200 in 15ms
+ ✓ Compiled in 216ms (1176 modules)
+ ✓ Compiled in 1187ms (1194 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 266ms
+ ✓ Compiled in 998ms (1147 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Fetching categories...
+[WooCommerce] Fetching categories...
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 287ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 205ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 192ms
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 171ms
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 184ms
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 150ms
+ ✓ Compiled in 1328ms (1271 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Fetching categories...
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 1103ms
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 176ms
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 164ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Fetching categories...
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 169ms
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 170ms
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 151ms
+ ✓ Compiled in 408ms (1190 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 259ms
+ ✓ Compiled in 379ms (1190 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 229ms
+ ✓ Compiled in 414ms (1188 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 201ms
+ ✓ Compiled in 355ms (1174 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET / 200 in 87ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET / 200 in 354ms
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[CategoryPage] Rendering category: Men's Festival Rave Footwear
+ GET /mens-festival-rave-footwear 200 in 450ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 189ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /cart 200 in 23ms
+ ○ Compiling /shop ...
+ ✓ Compiled /shop in 682ms (1183 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /shop 200 in 766ms
+ GET / 200 in 13ms
+ GET /cart 200 in 17ms
+ ✓ Compiled in 348ms (536 modules)
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 196ms
+ ✓ Compiled in 201ms (536 modules)
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 175ms
+ ✓ Compiled in 183ms (536 modules)
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 178ms
+[WooCommerce] Fetching categories...
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 279ms
+ ○ Compiling /checkout ...
+ ✓ Compiled /checkout in 928ms (1218 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /checkout 200 in 1032ms
+ GET /cart 200 in 18ms
+ GET /checkout 200 in 10ms
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[CategoryPage] Rendering category: Festival and Rave Bucket Hats
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /festival-rave-hats 200 in 673ms
+ GET /cart 200 in 14ms
+ ✓ Compiled in 674ms (1217 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 300ms
+ GET /checkout 200 in 16ms
+ ○ Compiling /api/create-order ...
+ ✓ Compiled /api/create-order in 637ms (1218 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ POST /api/create-order 200 in 1046ms
+ ○ Compiling /checkout/success ...
+ ✓ Compiled /checkout/success in 882ms (1229 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /cart 200 in 981ms
+ GET /checkout/success?order_id=3352 200 in 1002ms
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[CategoryPage] Rendering category: Men's Festival Rave Footwear
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /mens-festival-rave-footwear 200 in 500ms
+ ○ Compiling /product/[slug] ...
+ ✓ Compiled /product/[slug] in 522ms (685 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 823ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /checkout 200 in 15ms
+ ✓ Compiled in 808ms (1234 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 347ms
+ ✓ Compiled in 601ms (1234 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 236ms
+ ✓ Compiled in 362ms (1234 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 197ms
+ GET /cart 200 in 19ms
+ GET /checkout 200 in 16ms
+ ✓ Compiled in 699ms (1236 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 229ms
+ ✓ Compiled / in 423ms (686 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET / 200 in 527ms
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[CategoryPage] Rendering category: Men's Festival Rave Footwear
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /mens-festival-rave-footwear 200 in 469ms
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 172ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /cart 200 in 21ms
+ GET /checkout 200 in 15ms
+ ○ Compiling /api/v1 ...
+ ✓ Compiled /api/v1 in 537ms (1234 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ POST /api/v1 200 in 881ms
+ ✓ Compiled in 598ms (1246 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 242ms
+ ✓ Compiled /api/checkout/draft-order in 297ms (1234 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[API] Received order request: {
+  "billing": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "email": "me@matt.forbush.biz",
+    "phone": "4155959076",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "shipping": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "line_items": [
+    {
+      "product_id": 63,
+      "quantity": 1,
+      "variation_id": 64,
+      "meta_data": [
+        {
+          "key": "Size",
+          "value": "US5 (EU35)"
+        }
+      ]
+    }
+  ],
+  "payment_method": "cod",
+  "payment_method_title": "Cash on Delivery",
+  "status": "processing"
+}
+[WooCommerce] Creating draft order with data: {
+  "status": "processing",
+  "billing": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US",
+    "email": "me@matt.forbush.biz",
+    "phone": "4155959076"
+  },
+  "shipping": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "line_items": [
+    {
+      "product_id": 63,
+      "quantity": 1,
+      "variation_id": 64,
+      "meta_data": [
+        {
+          "key": "Size",
+          "value": "US5 (EU35)"
+        }
+      ]
+    }
+  ],
+  "payment_method": "cod",
+  "payment_method_title": "Cash on Delivery"
+}
+[WooCommerce] Error creating draft order: No order data received from API 
+Full error: Error: No order data received from API
+    at createDraftOrder (src/lib/woocommerce.ts:266:12)
+    at async POST (src/app/api/checkout/draft-order/route.ts:53:20)
+    at async AppRouteRouteModule.do (webpack://next/dist/src/server/route-modules/app-route/module.ts:529:14)
+    at async AppRouteRouteModule.handle (webpack://next/dist/src/server/route-modules/app-route/module.ts:658:30)
+    at async doRender (node_modules/next/src/server/base-server.ts:2504:29)
+    at async responseGenerator (node_modules/next/src/server/base-server.ts:3027:21)
+    at async DevServer.renderToResponseWithComponentsImpl (node_modules/next/src/server/base-server.ts:3039:23)
+    at async DevServer.renderPageComponent (node_modules/next/src/server/base-server.ts:3597:15)
+    at async DevServer.renderToResponseImpl (node_modules/next/src/server/base-server.ts:3659:23)
+    at async DevServer.pipeImpl (node_modules/next/src/server/base-server.ts:1698:20)
+    at async NextNodeServer.handleCatchallRenderRequest (node_modules/next/src/server/next-server.ts:1034:6)
+    at async DevServer.handleRequestImpl (node_modules/next/src/server/base-server.ts:1462:8)
+    at async (node_modules/next/src/server/dev/next-dev-server.ts:514:13)
+    at async Span.traceAsyncFn (node_modules/next/src/trace/trace.ts:143:13)
+    at async DevServer.handleRequest (node_modules/next/src/server/dev/next-dev-server.ts:512:19)
+    at async invokeRender (node_modules/next/src/server/lib/router-server.ts:284:10)
+    at async handleRequest (node_modules/next/src/server/lib/router-server.ts:530:15)
+    at async requestHandlerImpl (node_modules/next/src/server/lib/router-server.ts:576:6)
+    at async Server.requestListener (node_modules/next/src/server/lib/start-server.ts:146:6)
+  264 |     const order = response.data.data;
+  265 |     if (!order) {
+> 266 |       throw new Error('No order data received from API');
+      |            ^
+  267 |     }
+  268 |     
+  269 |     console.log(`[WooCommerce] Successfully created draft order ${order.id}`);
+ POST /api/checkout/draft-order 201 in 644ms
+ GET /cart 200 in 45ms
+ ✓ Compiled in 781ms (1230 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /cart 200 in 271ms
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[CategoryPage] Rendering category: Men's Festival Rave Footwear
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /mens-festival-rave-footwear 200 in 492ms
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 178ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /cart 200 in 12ms
+ GET /checkout 200 in 14ms
+ ○ Compiling /api/create-payment-intent ...
+ ✓ Compiled /api/create-payment-intent in 644ms (1409 modules)
+ POST /api/create-payment-intent 200 in 1049ms
+ ✓ Compiled /checkout/success in 347ms (879 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout/success?payment_intent=pi_3QWbfuKjv4zJvSsv0wjYjy66&payment_intent_client_secret=pi_3QWbfuKjv4zJvSsv0wjYjy66_secret_LbDsrJxbZHigTXBjZ0zzp2dx7&redirect_status=succeeded 200 in 695ms
+ ✓ Compiled in 712ms (1229 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout/success?payment_intent=pi_3QWbfuKjv4zJvSsv0wjYjy66&payment_intent_client_secret=pi_3QWbfuKjv4zJvSsv0wjYjy66_secret_LbDsrJxbZHigTXBjZ0zzp2dx7&redirect_status=succeeded 200 in 293ms
+ ✓ Compiled in 613ms (1229 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+ ○ Compiling /_not-found ...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout/success?payment_intent=pi_3QWbfuKjv4zJvSsv0wjYjy66&payment_intent_client_secret=pi_3QWbfuKjv4zJvSsv0wjYjy66_secret_LbDsrJxbZHigTXBjZ0zzp2dx7&redirect_status=succeeded 200 in 442ms
+ ✓ Compiled /_not-found in 664ms (1218 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /api/payment-status/pi_3QWbfuKjv4zJvSsv0wjYjy66 404 in 991ms
+ ✓ Compiled in 184ms (553 modules)
+[WooCommerce] Fetching categories...
+ ✓ Compiled in 375ms (1323 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout/success?payment_intent=pi_3QWbfuKjv4zJvSsv0wjYjy66&payment_intent_client_secret=pi_3QWbfuKjv4zJvSsv0wjYjy66_secret_LbDsrJxbZHigTXBjZ0zzp2dx7&redirect_status=succeeded 200 in 481ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout/success?payment_intent=pi_3QWbfuKjv4zJvSsv0wjYjy66&payment_intent_client_secret=pi_3QWbfuKjv4zJvSsv0wjYjy66_secret_LbDsrJxbZHigTXBjZ0zzp2dx7&redirect_status=succeeded 200 in 265ms
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout/success?payment_intent=pi_3QWbfuKjv4zJvSsv0wjYjy66&payment_intent_client_secret=pi_3QWbfuKjv4zJvSsv0wjYjy66_secret_LbDsrJxbZHigTXBjZ0zzp2dx7&redirect_status=succeeded 200 in 158ms
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+=== FETCHING WOOCOMMERCE CATEGORIES ===
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+
+All WooCommerce categories:
+
+Category: Accessories
+  slug: "accessories"
+  id: 32
+  parent: 0
+
+Category: Festival and Rave Blankets
+  slug: "festival-rave-blankets"
+  id: 40
+  parent: 58
+
+Category: Festival and Rave Bucket Hats
+  slug: "festival-rave-hats"
+  id: 35
+  parent: 32
+
+Category: Festival and Rave Hoodie Blankets
+  slug: "festival-rave-hoodie-blankets"
+  id: 39
+  parent: 58
+
+Category: Festival and Rave Pashminas
+  slug: "festival-rave-pashmina"
+  id: 36
+  parent: 32
+
+Category: Festival and Rave Tapestries
+  slug: "festival-rave-tapestries"
+  id: 38
+  parent: 58
+
+Category: Festival Camping
+  slug: "camping-festival"
+  id: 58
+  parent: 0
+
+Category: Festival Rave Bags
+  slug: "festival-rave-bags"
+  id: 224
+  parent: 32
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms"
+  id: 42
+  parent: 30
+
+Category: Festival Rave Bottoms
+  slug: "festival-rave-bottoms-men"
+  id: 49
+  parent: 31
+
+Category: Festival Rave Dresses
+  slug: "festival-rave-dresses"
+  id: 43
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear"
+  id: 44
+  parent: 30
+
+Category: Festival Rave Outerwear
+  slug: "festival-rave-outerwear-men"
+  id: 50
+  parent: 31
+
+Category: Festival Rave Outfits
+  slug: "festival-rave-outfits"
+  id: 51
+  parent: 30
+
+Category: Festival Rave Sunglasses
+  slug: "festival-rave-sunglasses"
+  id: 37
+  parent: 32
+
+Category: Festival Rave Swimwear
+  slug: "festival-rave-swimwear"
+  id: 45
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops"
+  id: 41
+  parent: 30
+
+Category: Festival Rave Tops
+  slug: "festival-rave-tops-men"
+  id: 48
+  parent: 31
+
+Category: Groovy Gear
+  slug: "groovy-gear"
+  id: 34
+  parent: 0
+
+Category: Men
+  slug: "men"
+  id: 31
+  parent: 0
+
+Category: Men's Festival Rave Footwear
+  slug: "mens-festival-rave-footwear"
+  id: 47
+  parent: 57
+
+Category: Newly Dropped
+  slug: "newly-dropped"
+  id: 33
+  parent: 0
+
+Category: Shoes
+  slug: "shoes"
+  id: 57
+  parent: 0
+
+Category: Uncategorized
+  slug: "uncategorized"
+  id: 15
+  parent: 0
+
+Category: Women
+  slug: "women"
+  id: 30
+  parent: 0
+
+Category: Women's Festival Rave Footwear
+  slug: "womens-festival-rave-footwear"
+  id: 46
+  parent: 57
+[CategoryPage] Rendering category: Men's Festival Rave Footwear
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /mens-festival-rave-footwear 200 in 472ms
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:31:61)
+  29 |
+  30 | export default async function ProductPage({ params }: PageProps) {
+> 31 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  32 |
+  33 |   if (!product) {
+  34 |     notFound();
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+Error: Route "/product/[slug]" used `params.slug`. `params` should be awaited before using its properties. Learn more: https://nextjs.org/docs/messages/sync-dynamic-apis
+    at slug (src/app/product/[slug]/page.tsx:16:61)
+  14 |
+  15 | export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+> 16 |   const product = await productCache.getProductBySlug(params.slug);
+     |                                                             ^
+  17 |   
+  18 |   if (!product) {
+  19 |     return {
+[ProductCache] Looking up product with original slug: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Trying direct slug lookup: "op-art-and-sacred-geometry-womans-canvas-boots"
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+[ProductCache] Direct lookup returned 1 products
+[ProductCache] Found product: Op Art and Sacred Geometry Woman's Canvas Boots (op-art-and-sacred-geometry-womans-canvas-boots)
+[ProductCache] Found product by direct lookup: Op Art and Sacred Geometry Woman's Canvas Boots
+ GET /product/op-art-and-sacred-geometry-womans-canvas-boots 200 in 190ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /cart 200 in 30ms
+ ○ Compiling /checkout ...
+ ✓ Compiled /checkout in 621ms (687 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /checkout 200 in 725ms
+ ✓ Compiled /api/checkout/draft-order in 201ms (702 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[API] Received order request: {
+  "billing": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "email": "me@matt.forbush.biz",
+    "phone": "4155959076",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "shipping": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "line_items": [
+    {
+      "product_id": 63,
+      "quantity": 1,
+      "meta_data": [
+        {
+          "key": "Size",
+          "value": "US5 (EU35)"
+        }
+      ]
+    }
+  ],
+  "payment_method": "stripe",
+  "payment_method_title": "Credit Card (Stripe)",
+  "status": "pending"
+}
+[WooCommerce] Creating draft order with data: {
+  "status": "processing",
+  "billing": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US",
+    "email": "me@matt.forbush.biz",
+    "phone": "4155959076"
+  },
+  "shipping": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "line_items": [
+    {
+      "product_id": 63,
+      "quantity": 1,
+      "meta_data": [
+        {
+          "key": "Size",
+          "value": "US5 (EU35)"
+        }
+      ]
+    }
+  ],
+  "payment_method": "stripe",
+  "payment_method_title": "Credit Card (Stripe)"
+}
+[WooCommerce] Error creating draft order: No order data received from API 
+Full error: Error: No order data received from API
+    at createDraftOrder (src/lib/woocommerce.ts:266:12)
+    at async POST (src/app/api/checkout/draft-order/route.ts:53:20)
+    at async AppRouteRouteModule.do (webpack://next/dist/src/server/route-modules/app-route/module.ts:529:14)
+    at async AppRouteRouteModule.handle (webpack://next/dist/src/server/route-modules/app-route/module.ts:658:30)
+    at async doRender (node_modules/next/src/server/base-server.ts:2504:29)
+    at async responseGenerator (node_modules/next/src/server/base-server.ts:3027:21)
+    at async DevServer.renderToResponseWithComponentsImpl (node_modules/next/src/server/base-server.ts:3039:23)
+    at async DevServer.renderPageComponent (node_modules/next/src/server/base-server.ts:3597:15)
+    at async DevServer.renderToResponseImpl (node_modules/next/src/server/base-server.ts:3659:23)
+    at async DevServer.pipeImpl (node_modules/next/src/server/base-server.ts:1698:20)
+    at async NextNodeServer.handleCatchallRenderRequest (node_modules/next/src/server/next-server.ts:1034:6)
+    at async DevServer.handleRequestImpl (node_modules/next/src/server/base-server.ts:1462:8)
+    at async (node_modules/next/src/server/dev/next-dev-server.ts:514:13)
+    at async Span.traceAsyncFn (node_modules/next/src/trace/trace.ts:143:13)
+    at async DevServer.handleRequest (node_modules/next/src/server/dev/next-dev-server.ts:512:19)
+    at async invokeRender (node_modules/next/src/server/lib/router-server.ts:284:10)
+    at async handleRequest (node_modules/next/src/server/lib/router-server.ts:530:15)
+    at async requestHandlerImpl (node_modules/next/src/server/lib/router-server.ts:576:6)
+    at async Server.requestListener (node_modules/next/src/server/lib/start-server.ts:146:6)
+  264 |     const order = response.data.data;
+  265 |     if (!order) {
+> 266 |       throw new Error('No order data received from API');
+      |            ^
+  267 |     }
+  268 |     
+  269 |     console.log(`[WooCommerce] Successfully created draft order ${order.id}`);
+ POST /api/checkout/draft-order 201 in 613ms
+ ✓ Compiled in 748ms (1252 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 248ms
+[API] Received order request: {
+  "billing": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "email": "me@matt.forbush.biz",
+    "phone": "4155959076",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "shipping": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "line_items": [
+    {
+      "product_id": 63,
+      "quantity": 1,
+      "meta_data": [
+        {
+          "key": "Size",
+          "value": "US5 (EU35)"
+        }
+      ]
+    }
+  ],
+  "payment_method": "stripe",
+  "payment_method_title": "Credit Card (Stripe)",
+  "status": "pending"
+}
+[WooCommerce] Creating draft order with data: {
+  "status": "processing",
+  "billing": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US",
+    "email": "me@matt.forbush.biz",
+    "phone": "4155959076"
+  },
+  "shipping": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "line_items": [
+    {
+      "product_id": 63,
+      "quantity": 1,
+      "meta_data": [
+        {
+          "key": "Size",
+          "value": "US5 (EU35)"
+        }
+      ]
+    }
+  ],
+  "payment_method": "stripe",
+  "payment_method_title": "Credit Card (Stripe)"
+}
+[WooCommerce] Error creating draft order: No order data received from API 
+Full error: Error: No order data received from API
+    at createDraftOrder (src/lib/woocommerce.ts:266:12)
+    at async POST (src/app/api/checkout/draft-order/route.ts:53:20)
+    at async AppRouteRouteModule.do (webpack://next/dist/src/server/route-modules/app-route/module.ts:529:14)
+    at async AppRouteRouteModule.handle (webpack://next/dist/src/server/route-modules/app-route/module.ts:658:30)
+    at async doRender (node_modules/next/src/server/base-server.ts:2504:29)
+    at async responseGenerator (node_modules/next/src/server/base-server.ts:3027:21)
+    at async DevServer.renderToResponseWithComponentsImpl (node_modules/next/src/server/base-server.ts:3039:23)
+    at async DevServer.renderPageComponent (node_modules/next/src/server/base-server.ts:3597:15)
+    at async DevServer.renderToResponseImpl (node_modules/next/src/server/base-server.ts:3659:23)
+    at async DevServer.pipeImpl (node_modules/next/src/server/base-server.ts:1698:20)
+    at async NextNodeServer.handleCatchallRenderRequest (node_modules/next/src/server/next-server.ts:1034:6)
+    at async DevServer.handleRequestImpl (node_modules/next/src/server/base-server.ts:1462:8)
+    at async (node_modules/next/src/server/dev/next-dev-server.ts:514:13)
+    at async Span.traceAsyncFn (node_modules/next/src/trace/trace.ts:143:13)
+    at async DevServer.handleRequest (node_modules/next/src/server/dev/next-dev-server.ts:512:19)
+    at async invokeRender (node_modules/next/src/server/lib/router-server.ts:284:10)
+    at async handleRequest (node_modules/next/src/server/lib/router-server.ts:530:15)
+    at async requestHandlerImpl (node_modules/next/src/server/lib/router-server.ts:576:6)
+    at async Server.requestListener (node_modules/next/src/server/lib/start-server.ts:146:6)
+  264 |     const order = response.data.data;
+  265 |     if (!order) {
+> 266 |       throw new Error('No order data received from API');
+      |            ^
+  267 |     }
+  268 |     
+  269 |     console.log(`[WooCommerce] Successfully created draft order ${order.id}`);
+ POST /api/checkout/draft-order 201 in 286ms
+ ✓ Compiled in 407ms (1244 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 231ms
+[API] Received order request: {
+  "billing": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "email": "me@matt.forbush.biz",
+    "phone": "4155959076",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "shipping": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "line_items": [
+    {
+      "product_id": 63,
+      "quantity": 1,
+      "meta_data": [
+        {
+          "key": "Size",
+          "value": "US5 (EU35)"
+        }
+      ]
+    }
+  ],
+  "payment_method": "stripe",
+  "payment_method_title": "Credit Card (Stripe)",
+  "status": "pending"
+}
+[WooCommerce] Creating draft order with data: {
+  "status": "processing",
+  "billing": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US",
+    "email": "me@matt.forbush.biz",
+    "phone": "4155959076"
+  },
+  "shipping": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "line_items": [
+    {
+      "product_id": 63,
+      "quantity": 1,
+      "meta_data": [
+        {
+          "key": "Size",
+          "value": "US5 (EU35)"
+        }
+      ]
+    }
+  ],
+  "payment_method": "stripe",
+  "payment_method_title": "Credit Card (Stripe)"
+}
+[WooCommerce] Error creating draft order: No order data received from API 
+Full error: Error: No order data received from API
+    at createDraftOrder (src/lib/woocommerce.ts:266:12)
+    at async POST (src/app/api/checkout/draft-order/route.ts:53:20)
+    at async AppRouteRouteModule.do (webpack://next/dist/src/server/route-modules/app-route/module.ts:529:14)
+    at async AppRouteRouteModule.handle (webpack://next/dist/src/server/route-modules/app-route/module.ts:658:30)
+    at async doRender (node_modules/next/src/server/base-server.ts:2504:29)
+    at async responseGenerator (node_modules/next/src/server/base-server.ts:3027:21)
+    at async DevServer.renderToResponseWithComponentsImpl (node_modules/next/src/server/base-server.ts:3039:23)
+    at async DevServer.renderPageComponent (node_modules/next/src/server/base-server.ts:3597:15)
+    at async DevServer.renderToResponseImpl (node_modules/next/src/server/base-server.ts:3659:23)
+    at async DevServer.pipeImpl (node_modules/next/src/server/base-server.ts:1698:20)
+    at async NextNodeServer.handleCatchallRenderRequest (node_modules/next/src/server/next-server.ts:1034:6)
+    at async DevServer.handleRequestImpl (node_modules/next/src/server/base-server.ts:1462:8)
+    at async (node_modules/next/src/server/dev/next-dev-server.ts:514:13)
+    at async Span.traceAsyncFn (node_modules/next/src/trace/trace.ts:143:13)
+    at async DevServer.handleRequest (node_modules/next/src/server/dev/next-dev-server.ts:512:19)
+    at async invokeRender (node_modules/next/src/server/lib/router-server.ts:284:10)
+    at async handleRequest (node_modules/next/src/server/lib/router-server.ts:530:15)
+    at async requestHandlerImpl (node_modules/next/src/server/lib/router-server.ts:576:6)
+    at async Server.requestListener (node_modules/next/src/server/lib/start-server.ts:146:6)
+  264 |     const order = response.data.data;
+  265 |     if (!order) {
+> 266 |       throw new Error('No order data received from API');
+      |            ^
+  267 |     }
+  268 |     
+  269 |     console.log(`[WooCommerce] Successfully created draft order ${order.id}`);
+ POST /api/checkout/draft-order 201 in 366ms
+ ✓ Compiled in 743ms (1229 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 261ms
+ ✓ Compiled /api/checkout/draft-order in 355ms (693 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[API] Received order request: {
+  "billing": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "email": "me@matt.forbush.biz",
+    "phone": "4155959076",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "shipping": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "line_items": [
+    {
+      "product_id": 63,
+      "quantity": 1,
+      "meta_data": [
+        {
+          "key": "Size",
+          "value": "US5 (EU35)"
+        }
+      ]
+    }
+  ],
+  "payment_method": "stripe",
+  "payment_method_title": "Credit Card (Stripe)",
+  "status": "pending"
+}
+[WooCommerce] Creating draft order with data: {
+  "status": "processing",
+  "billing": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US",
+    "email": "me@matt.forbush.biz",
+    "phone": "4155959076"
+  },
+  "shipping": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "line_items": [
+    {
+      "product_id": 63,
+      "quantity": 1,
+      "meta_data": [
+        {
+          "key": "Size",
+          "value": "US5 (EU35)"
+        }
+      ]
+    }
+  ],
+  "payment_method": "stripe",
+  "payment_method_title": "Credit Card (Stripe)"
+}
+[WooCommerce] Error creating draft order: No order data received from API 
+Full error: Error: No order data received from API
+    at createDraftOrder (src/lib/woocommerce.ts:266:12)
+    at async POST (src/app/api/checkout/draft-order/route.ts:53:20)
+    at async AppRouteRouteModule.do (webpack://next/dist/src/server/route-modules/app-route/module.ts:529:14)
+    at async AppRouteRouteModule.handle (webpack://next/dist/src/server/route-modules/app-route/module.ts:658:30)
+    at async doRender (node_modules/next/src/server/base-server.ts:2504:29)
+    at async responseGenerator (node_modules/next/src/server/base-server.ts:3027:21)
+    at async DevServer.renderToResponseWithComponentsImpl (node_modules/next/src/server/base-server.ts:3039:23)
+    at async DevServer.renderPageComponent (node_modules/next/src/server/base-server.ts:3597:15)
+    at async DevServer.renderToResponseImpl (node_modules/next/src/server/base-server.ts:3659:23)
+    at async DevServer.pipeImpl (node_modules/next/src/server/base-server.ts:1698:20)
+    at async NextNodeServer.handleCatchallRenderRequest (node_modules/next/src/server/next-server.ts:1034:6)
+    at async DevServer.handleRequestImpl (node_modules/next/src/server/base-server.ts:1462:8)
+    at async (node_modules/next/src/server/dev/next-dev-server.ts:514:13)
+    at async Span.traceAsyncFn (node_modules/next/src/trace/trace.ts:143:13)
+    at async DevServer.handleRequest (node_modules/next/src/server/dev/next-dev-server.ts:512:19)
+    at async invokeRender (node_modules/next/src/server/lib/router-server.ts:284:10)
+    at async handleRequest (node_modules/next/src/server/lib/router-server.ts:530:15)
+    at async requestHandlerImpl (node_modules/next/src/server/lib/router-server.ts:576:6)
+    at async Server.requestListener (node_modules/next/src/server/lib/start-server.ts:146:6)
+  264 |     const order = response.data.data;
+  265 |     if (!order) {
+> 266 |       throw new Error('No order data received from API');
+      |            ^
+  267 |     }
+  268 |     
+  269 |     console.log(`[WooCommerce] Successfully created draft order ${order.id}`);
+ POST /api/checkout/draft-order 201 in 794ms
+ GET / 200 in 46ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET / 200 in 295ms
+ ✓ Compiled /cart in 305ms (701 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /cart 200 in 440ms
+ GET /checkout 200 in 16ms
+[API] Received order request: {
+  "billing": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "email": "me@matt.forbush.biz",
+    "phone": "4155959076",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "shipping": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "line_items": [
+    {
+      "product_id": 63,
+      "quantity": 1,
+      "meta_data": [
+        {
+          "key": "Size",
+          "value": "US5 (EU35)"
+        }
+      ]
+    }
+  ],
+  "payment_method": "stripe",
+  "payment_method_title": "Credit Card (Stripe)",
+  "status": "pending"
+}
+[WooCommerce] Creating draft order with data: {
+  "status": "processing",
+  "billing": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US",
+    "email": "me@matt.forbush.biz",
+    "phone": "4155959076"
+  },
+  "shipping": {
+    "first_name": "Matt",
+    "last_name": "Forbush",
+    "address_1": "1348 Passenger St. Apt 328",
+    "address_2": "",
+    "city": "Chattanooga",
+    "state": "TN",
+    "postcode": "37408",
+    "country": "US"
+  },
+  "line_items": [
+    {
+      "product_id": 63,
+      "quantity": 1,
+      "meta_data": [
+        {
+          "key": "Size",
+          "value": "US5 (EU35)"
+        }
+      ]
+    }
+  ],
+  "payment_method": "stripe",
+  "payment_method_title": "Credit Card (Stripe)"
+}
+[WooCommerce] Error creating draft order: No order data received from API 
+Full error: Error: No order data received from API
+    at createDraftOrder (src/lib/woocommerce.ts:266:12)
+    at async POST (src/app/api/checkout/draft-order/route.ts:53:20)
+    at async AppRouteRouteModule.do (webpack://next/dist/src/server/route-modules/app-route/module.ts:529:14)
+    at async AppRouteRouteModule.handle (webpack://next/dist/src/server/route-modules/app-route/module.ts:658:30)
+    at async doRender (node_modules/next/src/server/base-server.ts:2504:29)
+    at async responseGenerator (node_modules/next/src/server/base-server.ts:3027:21)
+    at async DevServer.renderToResponseWithComponentsImpl (node_modules/next/src/server/base-server.ts:3039:23)
+    at async DevServer.renderPageComponent (node_modules/next/src/server/base-server.ts:3597:15)
+    at async DevServer.renderToResponseImpl (node_modules/next/src/server/base-server.ts:3659:23)
+    at async DevServer.pipeImpl (node_modules/next/src/server/base-server.ts:1698:20)
+    at async NextNodeServer.handleCatchallRenderRequest (node_modules/next/src/server/next-server.ts:1034:6)
+    at async DevServer.handleRequestImpl (node_modules/next/src/server/base-server.ts:1462:8)
+    at async (node_modules/next/src/server/dev/next-dev-server.ts:514:13)
+    at async Span.traceAsyncFn (node_modules/next/src/trace/trace.ts:143:13)
+    at async DevServer.handleRequest (node_modules/next/src/server/dev/next-dev-server.ts:512:19)
+    at async invokeRender (node_modules/next/src/server/lib/router-server.ts:284:10)
+    at async handleRequest (node_modules/next/src/server/lib/router-server.ts:530:15)
+    at async requestHandlerImpl (node_modules/next/src/server/lib/router-server.ts:576:6)
+    at async Server.requestListener (node_modules/next/src/server/lib/start-server.ts:146:6)
+  264 |     const order = response.data.data;
+  265 |     if (!order) {
+> 266 |       throw new Error('No order data received from API');
+      |            ^
+  267 |     }
+  268 |     
+  269 |     console.log(`[WooCommerce] Successfully created draft order ${order.id}`);
+ POST /api/checkout/draft-order 201 in 344ms
+ ✓ Compiled in 332ms (551 modules)
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 180ms
+ ✓ Compiled in 517ms (1229 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 261ms
+ ✓ Compiled in 173ms (551 modules)
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 175ms
+ ✓ Compiled in 349ms (551 modules)
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 199ms
+[WooCommerce] Fetching categories...
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 372ms
+ ✓ Compiled /cart in 451ms (686 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ GET /cart 200 in 543ms
+ GET /checkout 200 in 16ms
+ ✓ Compiled in 219ms (551 modules)
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 333ms
+ ✓ Compiled in 603ms (1305 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 619ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 167ms
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 159ms
+ ✓ Compiled in 614ms (1228 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 194ms
+ ✓ Compiled /api/checkout/create-order in 223ms (1229 modules)
+ ⨯ src/app/api/checkout/create-order/route.ts (5:9) @ eval
+ ⨯ Error: Missing WooCommerce API credentials
+    at eval (src/app/api/checkout/create-order/route.ts:5:8)
+    at (rsc)/./src/app/api/checkout/create-order/route.ts (/opt/woo-next/nextjs-woo/.next/server/app/api/checkout/create-order/route.js:207:1)
+    at __webpack_require__ (/opt/woo-next/nextjs-woo/.next/server/webpack-runtime.js:33:43)
+    at eval (webpack-internal:///(rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fcheckout%2Fcreate-order%2Froute&page=%2Fapi%2Fcheckout%2Fcreate-order%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fcheckout%2Fcreate-order%2Froute.ts&appDir=%2Fopt%2Fwoo-next%2Fnextjs-woo%2Fsrc%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2Fopt%2Fwoo-next%2Fnextjs-woo&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!:14:125)
+    at (rsc)/./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2Fapi%2Fcheckout%2Fcreate-order%2Froute&page=%2Fapi%2Fcheckout%2Fcreate-order%2Froute&appPaths=&pagePath=private-next-app-dir%2Fapi%2Fcheckout%2Fcreate-order%2Froute.ts&appDir=%2Fopt%2Fwoo-next%2Fnextjs-woo%2Fsrc%2Fapp&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&rootDir=%2Fopt%2Fwoo-next%2Fnextjs-woo&isDev=true&tsconfigPath=tsconfig.json&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D! (/opt/woo-next/nextjs-woo/.next/server/app/api/checkout/create-order/route.js:176:1)
+    at __webpack_require__ (/opt/woo-next/nextjs-woo/.next/server/webpack-runtime.js:33:43)
+    at __webpack_exec__ (/opt/woo-next/nextjs-woo/.next/server/app/api/checkout/create-order/route.js:217:39)
+    at <unknown> (/opt/woo-next/nextjs-woo/.next/server/app/api/checkout/create-order/route.js:218:329)
+    at __webpack_require__.X (/opt/woo-next/nextjs-woo/.next/server/webpack-runtime.js:168:21)
+    at <unknown> (/opt/woo-next/nextjs-woo/.next/server/app/api/checkout/create-order/route.js:218:47)
+    at Object.<anonymous> (/opt/woo-next/nextjs-woo/.next/server/app/api/checkout/create-order/route.js:221:3)
+    at call (node_modules/next/src/server/require-hook.ts:70:25)
+    at require (node_modules/next/src/server/require.ts:121:8)
+    at page (node_modules/next/src/server/load-components.ts:189:41)
+    at async DevServer.findPageComponentsImpl (node_modules/next/src/server/next-server.ts:779:27)
+    at async DevServer.findPageComponents (node_modules/next/src/server/dev/next-dev-server.ts:881:13)
+    at async DevServer.renderPageComponent (node_modules/next/src/server/base-server.ts:3584:19)
+    at async DevServer.renderToResponseImpl (node_modules/next/src/server/base-server.ts:3659:23)
+    at async DevServer.pipeImpl (node_modules/next/src/server/base-server.ts:1698:20)
+    at async NextNodeServer.handleCatchallRenderRequest (node_modules/next/src/server/next-server.ts:1034:6)
+    at async DevServer.handleRequestImpl (node_modules/next/src/server/base-server.ts:1462:8)
+    at async (node_modules/next/src/server/dev/next-dev-server.ts:514:13)
+    at async Span.traceAsyncFn (node_modules/next/src/trace/trace.ts:143:13)
+    at async DevServer.handleRequest (node_modules/next/src/server/dev/next-dev-server.ts:512:19)
+    at async invokeRender (node_modules/next/src/server/lib/router-server.ts:284:10)
+    at async handleRequest (node_modules/next/src/server/lib/router-server.ts:530:15)
+    at async requestHandlerImpl (node_modules/next/src/server/lib/router-server.ts:576:6)
+    at async Server.requestListener (node_modules/next/src/server/lib/start-server.ts:146:6)
+  3 |
+  4 | if (!process.env.WOOCOMMERCE_CONSUMER_KEY || !process.env.WOOCOMMERCE_CONSUMER_SECRET) {
+> 5 |   throw new Error('Missing WooCommerce API credentials');
+    |        ^
+  6 | }
+  7 |
+  8 | const api = new WooCommerceRestApi({ {
+  page: '/api/checkout/create-order'
+}
+  3 |
+  4 | if (!process.env.WOOCOMMERCE_CONSUMER_KEY || !process.env.WOOCOMMERCE_CONSUMER_SECRET) {
+> 5 |   throw new Error('Missing WooCommerce API credentials');
+    |         ^
+  6 | }
+  7 |
+  8 | const api = new WooCommerceRestApi({
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1131ms (1467 modules)
+ POST /api/checkout/create-order 500 in 1780ms
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 848ms
+[WooCommerce] Successfully fetched 26 categories
+ GET /checkout 200 in 209ms
+ ○ Compiling /_not-found ...
+ ✓ Compiled /_not-found in 768ms (1453 modules)
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+[WooCommerce] API Configuration: {
+  url: 'https://woo.festivalravegear.com',
+  hasKey: true,
+  hasSecret: true
+}
+[WooCommerce] Initializing API with URL: https://woo.festivalravegear.com
+ POST /api/checkout/draft-order 404 in 1156ms
+[WooCommerce] Fetching categories...
+[WooCommerce] Successfully fetched 26 categories
+ POST /api/checkout/draft-order 404 in 175ms

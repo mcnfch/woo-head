@@ -75,7 +75,7 @@ const Navigation = memo(function Navigation({ categories }: NavigationProps) {
       <div className="container mx-auto">
         <div className="flex justify-center items-center h-12">
           <div className="flex space-x-8">
-            <StaticLink title="New Arrivals" href="/product-category/new-arrivals" />
+            <StaticLink title="Newly Dropped" href="/product-category/newly-dropped" />
             {menuCategories.map((category) => {
               const subcategories = getSubcategories(category.id);
               return subcategories.length > 0 ? (

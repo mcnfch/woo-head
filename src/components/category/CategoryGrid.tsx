@@ -23,7 +23,7 @@ export function CategoryGrid({ categories }: CategoryGridProps) {
 
             return (
               <div key={category.id} className="relative group">
-                <Link href={category.href} className="block">
+                <Link href={`/product-category/${category.id}`} className="block">
                   <div className="relative aspect-[0.6762] overflow-hidden rounded-lg">
                     <Image
                       src={category.product.images[0]?.src || '/images/placeholder.jpg'}

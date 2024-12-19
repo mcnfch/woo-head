@@ -43,37 +43,19 @@ export default async function Page({ params }: PageProps) {
   const { slug } = params;
   
   try {
-    // Log the attempt
-    console.log(`\n[CategoryPage] Attempting to fetch category: "${slug}"`);
-    
     const categories = await categoryCache.getAllCategories();
-    
-    // Debug: Log all categories with more details
-    console.log('\nAll available categories:');
-    categories.forEach(cat => {
-      console.log(`Category: "${cat.name}"`);
-      console.log(`  slug: "${cat.slug}"`);
-      console.log(`  id: ${cat.id}`);
-      console.log(`  parent: ${cat.parent}`);
-      console.log(`  count: ${cat.count}`);
-    });
-    
     const category = categories.find(cat => cat.slug === slug);
-    
+      
     if (!category) {
-      console.log(`[CategoryPage] Category not found: "${slug}"`);
       return <NoProductsFound categoryName={slug} />;
     }
 
-    console.log(`[CategoryPage] Found category: ${category.name} (id: ${category.id})`);
     const { products } = await getProducts(category.slug);
 
     if (!products?.length) {
-      console.log(`[CategoryPage] No products found for category: ${category.name}`);
       return <NoProductsFound categoryName={category.name} />;
     }
 
-    console.log(`[CategoryPage] Found ${products.length} products for category: ${category.name}`);
     return (
       <div>
         <CategoryHero category={category} />

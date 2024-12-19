@@ -16,7 +16,16 @@ export const revalidate = 0;
 
 // Helper function to convert menu title to slug
 function titleToSlug(title: string): string {
-  return title.toLowerCase().replace(/\s+/g, '-');
+  const slugMap = {
+    'New Arrivals': 'new-arrivals',
+    'Accessories': 'accessories',
+    'Women': 'women',
+    'Men': 'men',
+    'Shoes': 'shoes',
+    'Festival Camping': 'camping-festival',
+    'Newly Dropped': 'newly-dropped'
+  };
+  return slugMap[title] || title.toLowerCase().replace(/\s+/g, '-');
 }
 
 export default async function Home() {
@@ -73,9 +82,19 @@ export default async function Home() {
     <main>
       <GreetingSection />
       <CategoryGrid categories={menuItems.map(item => ({
-        id: titleToSlug(item.title),
+        id: item.title === 'Newly Dropped' ? 'newly-dropped' :
+            item.title === 'Accessories' ? 'accessories' :
+            item.title === 'Women' ? 'women' :
+            item.title === 'Men' ? 'men' :
+            item.title === 'Shoes' ? 'shoes' :
+            'camping-festival',
         name: item.title,
-        href: `/category/${titleToSlug(item.title)}`,
+        href: `/product-category/${item.title === 'Newly Dropped' ? 'newly-dropped' :
+               item.title === 'Accessories' ? 'accessories' :
+               item.title === 'Women' ? 'women' :
+               item.title === 'Men' ? 'men' :
+               item.title === 'Shoes' ? 'shoes' :
+               'camping-festival'}`,
         product: categoryProducts[titleToSlug(item.title)]
       }))} />
     </main>

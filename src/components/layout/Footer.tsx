@@ -9,6 +9,7 @@ const quickLinks = [
   { href: '/about-us', label: 'About Us' },
   { href: '/sustainability', label: 'Sustainability' },
   { href: '/shipping-returns', label: 'Shipping & Returns' },
+  { href: '/refunds-and-returns', label: 'Refunds & Returns' },
   { href: '/contact-us', label: 'Contact Us' },
   { href: '/blog', label: 'Blog' },
 ];
@@ -58,7 +59,7 @@ export function Footer({ categories }: FooterProps) {
               {footerCategories.map((category) => (
                 <li key={category.id}>
                   <Link 
-                    href={`/product-category/${category.slug}`} 
+                    href={`/product-category/${category.name.toLowerCase().replace(/\s+/g, '-')}`}
                     className="text-gray-300 hover:text-purple-300"
                   >
                     {category.name}

@@ -124,7 +124,7 @@ export function MobileMenu({ categories, onClose }: MobileMenuProps) {
                       <li key={category.id} className="space-y-3">
                         <div className="flex items-center justify-between">
                           <Link
-                            href={`/${category.slug}`}
+                            href={`/product-category/${category.slug}`}
                             className="text-base text-gray-900 hover:text-purple-600"
                             onClick={onClose}
                           >
@@ -144,7 +144,7 @@ export function MobileMenu({ categories, onClose }: MobileMenuProps) {
                             {children.map((child) => (
                               <li key={child.id}>
                                 <Link
-                                  href={`/${child.slug}`}
+                                  href={`/product-category/${child.slug}`}
                                   className="text-sm text-gray-600 hover:text-purple-600"
                                   onClick={onClose}
                                 >

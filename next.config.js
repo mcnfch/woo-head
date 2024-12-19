@@ -70,17 +70,17 @@ const nextConfig = {
     return [
       {
         source: '/category/:path*',
-        destination: '/:path*',
+        destination: '/product-category/:path*',
         permanent: true,
       },
       {
         source: '/women/:path*',
-        destination: '/:path*',
+        destination: '/product-category/women/:path*',
         permanent: true,
       },
       {
         source: '/accessories/:path*',
-        destination: '/:path*',
+        destination: '/product-category/accessories/:path*',
         permanent: true,
       }
     ];

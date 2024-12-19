@@ -1,23 +1,31 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 interface FormData {
+  name: string;
   inquiryType: string;
   orderNumber?: string;
   subject: string;
   priority: string;
   email: string;
+  message: string;
 }
 
 export default function ContactPage() {
+  const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
+    name: '',
     inquiryType: '',
     orderNumber: '',
     subject: '',
     priority: '',
-    email: ''
+    email: '',
+    message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   const inquiryTypes = [
     'Order Status',
@@ -73,58 +81,113 @@ export default function ContactPage() {
     'Urgent'
   ];
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
     
-    // Here you would typically send the data to your backend
-    console.log('Form submitted:', formData);
+    setIsSubmitting(true);
+    setError('');
     
-    // Example of what to send to backend:
-    const _message = `
-      Inquiry Type: ${formData.inquiryType}
-      ${formData.orderNumber ? `Order Number: ${formData.orderNumber}` : ''}
-      Subject: ${formData.subject}
-      Priority: ${formData.priority}
-    `;
+    try {
+      console.log('Submitting form data:', formData);
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: `
+Priority: ${formData.priority}
+Type: ${formData.inquiryType}
+${formData.orderNumber ? `Order Number: ${formData.orderNumber}` : ''}
+Subject: ${formData.subject}
 
-    // TODO: Add your API call here
-    alert('Thank you for your inquiry. We will respond shortly.');
+Message:
+${formData.message}
+          `.trim()
+        }),
+      });
+
+      const data = await response.json();
+      console.log('Response from server:', data);
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send message');
+      }
+
+      // Wait for a moment to ensure the email is sent
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Then redirect
+      router.push('/contact-us/success');
+    } catch (error) {
+      console.error('Form submission error:', error);
+      setError('Failed to send message. Please try again later.');
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <h1 className="text-3xl font-bold mb-8 text-center">Contact Us</h1>
       
-      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-8 rounded-lg shadow-md">
+      <form onSubmit={handleSubmit} className="space-y-6 backdrop-blur-sm bg-white/70 p-8 rounded-lg shadow-xl">
+        {error && (
+          <div className="p-4 rounded-md bg-red-50 text-red-800">
+            {error}
+          </div>
+        )}
+
+        <div>
+          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+            Your Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleInputChange}
+            required
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+          />
+        </div>
+
         {/* Email Field */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
             Email Address*
           </label>
           <input
             type="email"
+            id="email"
+            name="email"
             required
-            className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
             value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            onChange={handleInputChange}
             placeholder="your@email.com"
           />
         </div>
 
         {/* Inquiry Type */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="inquiryType" className="block text-sm font-medium text-gray-700">
             Type of Inquiry*
           </label>
           <select
+            id="inquiryType"
+            name="inquiryType"
             required
-            className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
             value={formData.inquiryType}
-            onChange={(e) => setFormData({
-              ...formData,
-              inquiryType: e.target.value,
-              subject: '' // Reset subject when inquiry type changes
-            })}
+            onChange={handleInputChange}
           >
             <option value="">Select inquiry type</option>
             {inquiryTypes.map((type) => (
@@ -136,14 +199,16 @@ export default function ContactPage() {
         {/* Order Number (conditional) */}
         {formData.inquiryType === 'Order Status' && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="orderNumber" className="block text-sm font-medium text-gray-700">
               Order Number
             </label>
             <input
               type="text"
-              className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"
+              id="orderNumber"
+              name="orderNumber"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
               value={formData.orderNumber}
-              onChange={(e) => setFormData({ ...formData, orderNumber: e.target.value })}
+              onChange={handleInputChange}
               placeholder="Enter your order number"
             />
           </div>
@@ -152,14 +217,16 @@ export default function ContactPage() {
         {/* Subject (dependent on inquiry type) */}
         {formData.inquiryType && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="subject" className="block text-sm font-medium text-gray-700">
               Subject*
             </label>
             <select
+              id="subject"
+              name="subject"
               required
-              className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
               value={formData.subject}
-              onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+              onChange={handleInputChange}
             >
               <option value="">Select subject</option>
               {subjects[formData.inquiryType as keyof typeof subjects].map((subject) => (
@@ -171,14 +238,16 @@ export default function ContactPage() {
 
         {/* Priority */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="priority" className="block text-sm font-medium text-gray-700">
             Priority*
           </label>
           <select
+            id="priority"
+            name="priority"
             required
-            className="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-purple-500 focus:border-purple-500"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
             value={formData.priority}
-            onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+            onChange={handleInputChange}
           >
             <option value="">Select priority</option>
             {priorities.map((priority) => (
@@ -187,13 +256,31 @@ export default function ContactPage() {
           </select>
         </div>
 
+        {/* Message Field */}
+        <div>
+          <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+            Message*
+          </label>
+          <textarea
+            id="message"
+            name="message"
+            required
+            rows={4}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+            value={formData.message}
+            onChange={handleInputChange}
+            placeholder="Please provide details about your inquiry..."
+          />
+        </div>
+
         <button
           type="submit"
-          className="w-full bg-purple-600 text-white py-3 px-4 rounded-md hover:bg-purple-700 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+          disabled={isSubmitting}
+          className="w-full bg-purple-600 text-white py-3 px-4 rounded-md hover:bg-purple-700 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Submit Inquiry
+          {isSubmitting ? 'Sending...' : 'Submit Inquiry'}
         </button>
       </form>
     </div>
   );
-} 
+}

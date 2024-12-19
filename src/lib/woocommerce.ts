@@ -131,6 +131,11 @@ export async function getProducts(categorySlug?: string): Promise<{ products: Wo
     }
 
     const response = await woocommerce.get<WooProduct[]>('products', params);
+    console.log('[WooCommerce] API Response:', {
+      params,
+      totalProducts: response.data.length,
+      headers: response.headers
+    });
     const totalPages = parseInt(response.headers['x-wp-totalpages'] || '1', 10);
 
     console.log(`[WooCommerce] Successfully fetched ${response.data.length} products`);

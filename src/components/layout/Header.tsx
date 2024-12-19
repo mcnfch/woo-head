@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import type { WooCategory } from '@/lib/types';
-import { Navigation } from './Navigation';
+import Navigation from './Navigation';
 
 const MobileMenu = dynamic(() => import('./MobileMenu').then(mod => mod.MobileMenu), {
   loading: () => <div className="w-10 h-10 animate-pulse bg-gray-200 rounded-full" />
@@ -44,7 +44,7 @@ export function Header({ categories }: HeaderProps) {
         {/* Banner Image */}
         <div className="relative w-full h-[160px]">
           <Image
-            src="/images/frgheader.png"
+            src="/images/frgheader2.0.webp"
             alt="Festival Rave Gear Banner"
             fill
             priority
@@ -56,22 +56,40 @@ export function Header({ categories }: HeaderProps) {
             }}
           />
 
-          {/* Centered Logo */}
-          <div className="absolute left-1/2 transform -translate-x-1/2" style={{ top: '10px' }}>
-            <Link href="/" className="block">
+          {/* Welcome Text and Logo Container */}
+          <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+            {/* Welcome Text */}
+            <div className="text-white font-orbitron flex flex-col items-center" style={{ letterSpacing: '4px' }}>
+              <div className="text-[18px] sm:text-[24px] font-bold leading-none">
+                WELCOME TO
+              </div>
+            </div>
+            
+            {/* Logo */}
+            <Link href="/" className="block mt-2">
               <Image
-                src="/images/FRGLogo.png"
+                src="/images/FRG-logo.png"
                 alt="Festival Rave Gear Logo"
-                width={140}
-                height={140}
+                width={280}
+                height={280}
                 priority
                 quality={90}
               />
             </Link>
+
+            {/* Cycling Messages */}
+            <div className="text-white font-orbitron text-center mt-2 h-6 overflow-hidden">
+              <div className="animate-cycle-text">
+                <div className="h-6">Peace Begins with Us</div>
+                <div className="h-6">Love is the Loudest Frequency</div>
+                <div className="h-6">Unity is the Spark, the Beat is the Flame</div>
+                <div className="h-6">Respect Builds Bridges, Music Crosses Them</div>
+              </div>
+            </div>
           </div>
 
           {/* User and Cart Icons */}
-          <div className="absolute right-8 top-4 flex items-center space-x-4">
+          <div className="fixed right-2 top-4 flex items-center justify-end w-24">
             {/* User Icon */}
             <div className="relative">
               <button

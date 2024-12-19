@@ -26,8 +26,8 @@ export function OrderSummary() {
       <h2 className="text-lg font-medium text-gray-900">Order Summary</h2>
       <div className="mt-6 flow-root">
         <ul className="-my-4 divide-y divide-gray-200">
-          {cartItems.map((item) => (
-            <li key={`${item.product_id}-${item.variation_id || ''}`} className="flex py-4">
+          {cartItems.map((item, index) => (
+            <li key={`${item.product_id}-${item.variation_id || index}`} className="flex py-4">
               {item.image && (
                 <div className="flex-shrink-0 w-16 h-16 relative">
                   <Image

@@ -4,7 +4,7 @@ import type { WooProduct } from '@/types/woocommerce';
 
 const ITEMS_PER_PAGE = 100;
 
-class ProductCache {
+export class ProductCache {
   private cache: NodeCache;
   private static instance: ProductCache;
 
@@ -82,6 +82,21 @@ class ProductCache {
 
       if (products && products.length > 0) {
         const product = products[0];
+        
+        // Load variations if product is variable
+        if (product.type === 'variable') {
+          try {
+            const { data: variations } = await woocommerce.get(`products/${product.id}/variations`, {
+              per_page: 100, // Get all variations
+              status: 'publish'
+            });
+            product.variations = variations;
+            console.log(`[ProductCache] Loaded ${variations.length} variations for product ${product.name}`);
+          } catch (error) {
+            console.error(`[ProductCache] Error loading variations:`, error);
+          }
+        }
+        
         console.log(`[ProductCache] Found product by direct lookup: ${product.name}`);
         this.cache.set(cacheKey, product);
         return product;

@@ -17,8 +17,8 @@ export function ClientLayout({ children, categories }: ClientLayoutProps) {
       <CartProvider>
         <div className="flex flex-col min-h-screen">
           <Header categories={categories} />
-          <main className="flex-grow">{children}</main>
-          <Footer />
+          <main className="flex-grow mb-16">{children}</main>
+          <Footer categories={categories} />
         </div>
       </CartProvider>
     </AuthProvider>

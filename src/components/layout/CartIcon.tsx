@@ -22,10 +22,10 @@ export default function CartIcon({ count = 0, isCartOpen, onCartClick }: CartIco
 
   return (
     <>
-      <button onClick={handleClick} className="relative p-2 mr-8 block">
+      <button onClick={handleClick} className="relative p-2 ml-2">
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
-          className="h-6 w-6 text-black hover:text-gray-600 transition-colors" 
+          className="h-6 w-6 text-white hover:text-gray-200 transition-colors" 
           fill="currentColor"
           viewBox="0 0 24 24" 
           stroke="none"

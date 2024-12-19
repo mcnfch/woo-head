@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from 'next/font/google';
+import { Orbitron } from 'next/font/google';
 import "./globals.css";
 import { ClientLayout } from '@/components/layout/ClientLayout';
 import { getCategories } from '@/lib/woocommerce';
@@ -9,6 +10,12 @@ const inter = Inter({
   display: 'swap',
   preload: true,
   variable: '--font-inter',
+});
+
+const orbitron = Orbitron({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-orbitron',
 });
 
 export const viewport = {
@@ -62,11 +69,9 @@ export default async function RootLayout({
   const categories = await getCategories();
 
   return (
-    <html lang="en" className={inter.variable}>
-      <body className={inter.className}>
-        <ClientLayout categories={categories}>
-          {children}
-        </ClientLayout>
+    <html lang="en">
+      <body className={`${inter.variable} ${orbitron.variable}`}>
+        <ClientLayout categories={categories}>{children}</ClientLayout>
       </body>
     </html>
   );

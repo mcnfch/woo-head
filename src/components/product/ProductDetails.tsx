@@ -5,9 +5,15 @@ import Image from 'next/image';
 import type { WooProduct, ProductVariation, ProductAttribute } from '@/lib/types';
 import { useCart } from '@/context/CartContext';
 import { AddToCartButton } from './AddToCartButton';
-import { CartSlideOver } from '../cart/CartSlideOver';
 import { QuickAddModal } from '../cart/QuickAddModal';
 import { woocommerce } from '@/lib/woocommerce';
+import dynamic from 'next/dynamic';
+import { ClientGallery } from './ClientGallery';
+import SlideOutCart from '../cart/SlideOutCart';
+
+const SlideOutCartDynamic = dynamic(() => import('../cart/SlideOutCart'), {
+  ssr: false,
+});
 
 interface ProductDetailsProps {
   product: WooProduct;
@@ -19,52 +25,68 @@ interface SelectedAttributes {
 
 export function ProductDetails({ product }: ProductDetailsProps) {
   const { addToCart } = useCart();
-  const [selectedAttributes, setSelectedAttributes] = useState<SelectedAttributes>({});
+  const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string>>({});
   const [selectedVariation, setSelectedVariation] = useState<ProductVariation | null>(null);
   const [isAddToCartEnabled, setIsAddToCartEnabled] = useState(false);
+  const [currentImages, setCurrentImages] = useState(product.images);
   const [cartSlideOverOpen, setCartSlideOverOpen] = useState(false);
+  const [forcedImageIndex, setForcedImageIndex] = useState<number | undefined>(undefined);
   const [relatedProducts, setRelatedProducts] = useState<WooProduct[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<WooProduct | null>(null);
   const [quickAddModalOpen, setQuickAddModalOpen] = useState(false);
 
-  // Check if all required attributes are selected
+  // Initialize single-option attributes and handle shipping/country selection
   useEffect(() => {
-    if (!product.attributes || product.attributes.length === 0) {
-      setIsAddToCartEnabled(true);
-      return;
-    }
+    if (!product.attributes) return;
 
-    const requiredAttributes = product.attributes.filter(attr => attr.variation);
-    const hasAllRequired = requiredAttributes.every(attr => 
-      selectedAttributes[attr.name] && selectedAttributes[attr.name] !== ''
-    );
-
-    setIsAddToCartEnabled(hasAllRequired);
-  }, [product.attributes, selectedAttributes]);
-
-  // Fetch random products for "Frequently Bought Together"
-  useEffect(() => {
-    async function fetchRandomProducts() {
-      try {
-        const response = await woocommerce.get('products', {
-          per_page: 10, // Get 10 products to randomly select from
-          exclude: [product.id]
-        });
-        
-        // Randomly select 3 products
-        const shuffled = response.data
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 3);
-        
-        setRelatedProducts(shuffled);
-      } catch (error) {
-        console.error('Error fetching related products:', error);
+    const initialAttributes: SelectedAttributes = {};
+    product.attributes.forEach(attr => {
+      // Handle single-option attributes
+      if (attr.variation && attr.options && attr.options.length === 1) {
+        initialAttributes[attr.name] = attr.options[0];
       }
+      
+      // Handle shipping/country selection
+      if (attr.variation && attr.options && attr.options.length > 0) {
+        const attrNameLower = attr.name.toLowerCase();
+        const isShippingOrCountry = attrNameLower.includes('shipping') || 
+                                  attrNameLower.includes('country') ||
+                                  attrNameLower.includes('location');
+        
+        if (isShippingOrCountry) {
+          const hasUSOption = attr.options.some(opt => {
+            const optLower = opt.toLowerCase();
+            return optLower.includes('united states') || 
+                   optLower.includes('us') || 
+                   optLower === 'usa' ||
+                   optLower === 'u.s.' ||
+                   optLower === 'u.s.a.';
+          });
+
+          if (hasUSOption) {
+            const usOption = attr.options.find(opt => {
+              const optLower = opt.toLowerCase();
+              return optLower.includes('united states') || 
+                     optLower.includes('us') || 
+                     optLower === 'usa' ||
+                     optLower === 'u.s.' ||
+                     optLower === 'u.s.a.';
+            });
+            initialAttributes[attr.name] = usOption!;
+          }
+        }
+      }
+    });
+
+    if (Object.keys(initialAttributes).length > 0) {
+      setSelectedAttributes(prev => ({
+        ...prev,
+        ...initialAttributes
+      }));
     }
+  }, [product.attributes]);
 
-    fetchRandomProducts();
-  }, [product.id]);
-
+  // Handle attribute changes
   const handleAttributeChange = (attributeName: string, value: string) => {
     setSelectedAttributes(prev => ({
       ...prev,
@@ -72,14 +94,90 @@ export function ProductDetails({ product }: ProductDetailsProps) {
     }));
   };
 
+  // Effect to update selected variation and images when attributes change
+  useEffect(() => {
+    const hasAllRequired = product.attributes?.every(attr => 
+      !attr.variation || selectedAttributes[attr.name]
+    ) ?? false;
+
+    // If all attributes are selected, find the matching variation
+    if (hasAllRequired && Array.isArray(product.variations) && product.variations.length > 0) {
+      try {
+        // Find matching variation
+        const matchingVariation = product.variations.find(variation => {
+          if (!variation.attributes) return false;
+          return variation.attributes.every(attr => 
+            selectedAttributes[attr.name] === attr.option
+          );
+        });
+
+        if (matchingVariation) {
+          setSelectedVariation(matchingVariation);
+          // Update images based on variation
+          if (matchingVariation.image && matchingVariation.image.src) {
+            // First try to find this image in the product gallery
+            const galleryImage = product.images.find(img => 
+              img.id === matchingVariation.image.id || 
+              img.src === matchingVariation.image.src
+            );
+
+            if (galleryImage) {
+              // If the variation image is in the gallery, show all product images
+              // but make sure the variation image is first
+              const reorderedImages = [
+                galleryImage,
+                ...product.images.filter(img => img.id !== galleryImage.id)
+              ];
+              setCurrentImages(reorderedImages);
+              // Force the gallery to show the variation image
+              setForcedImageIndex(0);
+            } else {
+              // If it's a unique variation image, show it first followed by product images
+              const variationImage = {
+                id: matchingVariation.image.id,
+                src: matchingVariation.image.src,
+                name: matchingVariation.image.name || '',
+                alt: matchingVariation.image.alt || `${product.name} - ${matchingVariation.attributes.map(attr => attr.option).join(' ')}`,
+                date_created: matchingVariation.image.date_created || '',
+                date_created_gmt: matchingVariation.image.date_created_gmt || '',
+                date_modified: matchingVariation.image.date_modified || '',
+                date_modified_gmt: matchingVariation.image.date_modified_gmt || ''
+              };
+              setCurrentImages([variationImage, ...product.images]);
+              // Force the gallery to show the variation image
+              setForcedImageIndex(0);
+            }
+          } else {
+            // If no variation image, show product images
+            setCurrentImages(product.images);
+            setForcedImageIndex(undefined);
+          }
+        } else {
+          setSelectedVariation(null);
+          setCurrentImages(product.images);
+          setForcedImageIndex(undefined);
+        }
+      } catch (error) {
+        console.error('Error finding variation:', error);
+        setSelectedVariation(null);
+        setCurrentImages(product.images);
+        setForcedImageIndex(undefined);
+      }
+    } else {
+      setSelectedVariation(null);
+      setCurrentImages(product.images);
+      setForcedImageIndex(undefined);
+    }
+  }, [product.attributes, selectedAttributes, product.variations, product.images]);
+
   const handleAddToCart = async () => {
     try {
       await addToCart({
         product_id: product.id,
         name: product.name,
-        price: parseFloat(product.price),
+        price: parseFloat(selectedVariation?.price || product.price),
         quantity: 1,
-        image: product.images[0]?.src,
+        image: currentImages[0]?.src,
         variation_id: selectedVariation?.id,
         attributes: Object.entries(selectedAttributes).map(([name, option]) => ({
           id: product.attributes?.find(attr => attr.name === name)?.id || 0,
@@ -87,86 +185,83 @@ export function ProductDetails({ product }: ProductDetailsProps) {
           option
         }))
       });
+
       setCartSlideOverOpen(true);
     } catch (error) {
       console.error('Error adding to cart:', error);
     }
   };
 
-  const handleAddAllToCart = async () => {
-    try {
-      // Add current product
-      await addToCart({
-        product_id: product.id,
-        name: product.name,
-        price: parseFloat(product.price),
-        quantity: 1,
-        image: product.images[0]?.src,
-        variation_id: selectedVariation?.id,
-        attributes: Object.entries(selectedAttributes).map(([name, option]) => ({
-          id: product.attributes?.find(attr => attr.name === name)?.id || 0,
-          name,
-          option
-        }))
-      });
+  // Filter out single-option attributes and US shipping/country options
+  const getVisibleAttributes = () => {
+    if (!product.attributes) return [];
+    return product.attributes.filter(attr => {
+      if (!attr.variation) return false;
+      if (!attr.options || attr.options.length <= 1) return false;
 
-      // Add related products
-      for (const relatedProduct of relatedProducts) {
-        await addToCart({
-          product_id: relatedProduct.id,
-          name: relatedProduct.name,
-          price: parseFloat(relatedProduct.price),
-          quantity: 1,
-          image: relatedProduct.images[0]?.src
+      // Hide shipping/country attributes if US is an option
+      const attrNameLower = attr.name.toLowerCase();
+      const isShippingOrCountry = attrNameLower.includes('shipping') || 
+                                attrNameLower.includes('country') ||
+                                attrNameLower.includes('location');
+      
+      if (isShippingOrCountry) {
+        const hasUSOption = attr.options.some(opt => {
+          const optLower = opt.toLowerCase();
+          return optLower.includes('united states') || 
+                 optLower.includes('us') || 
+                 optLower === 'usa' ||
+                 optLower === 'u.s.' ||
+                 optLower === 'u.s.a.';
         });
+        return !hasUSOption;
       }
 
-      setCartSlideOverOpen(true);
-    } catch (error) {
-      console.error('Error adding products to cart:', error);
-    }
+      return true;
+    });
   };
+
+  const visibleAttributes = getVisibleAttributes();
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Product Image */}
-        <div className="relative aspect-square">
-          <Image
-            src={product.images[0]?.src || '/placeholder.jpg'}
-            alt={product.name}
-            fill
-            className="object-cover rounded-lg"
-            sizes="(max-width: 768px) 100vw, 50vw"
-            priority
-          />
+        {/* Product Gallery */}
+        <div className="relative">
+          <ClientGallery images={currentImages} forcedIndex={forcedImageIndex} />
         </div>
 
         {/* Product Info */}
-        <div className="space-y-6">
-          <h1 className="text-3xl font-bold">{product.name}</h1>
+        <div className="space-y-6 bg-white rounded-lg shadow-sm p-6 md:p-8">
+          <h1 className="text-3xl font-bold text-gray-900">{product.name}</h1>
           
           <div className="text-2xl font-semibold text-purple-600">
-            ${parseFloat(product.price).toFixed(2)}
+            ${parseFloat(selectedVariation?.price || product.price).toFixed(2)}
           </div>
-          
-          <div 
-            className="prose prose-sm"
-            dangerouslySetInnerHTML={{ __html: product.description }}
-          />
-          
-          {/* Product Attributes/Variations */}
-          {product.attributes && product.attributes.length > 0 && (
-            <div className="space-y-4">
-              {product.attributes.filter(attr => attr.variation).map((attribute, attrIndex) => (
-                <div key={`${product.id}-attr-${attrIndex}-${attribute.id}`} className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+
+          {/* Only show attributes with multiple options */}
+          {visibleAttributes.length > 0 && (
+            <div className="flex flex-wrap gap-6 items-end mt-8">
+              {visibleAttributes.map((attribute, attrIndex) => (
+                <div key={`${product.id}-attr-${attrIndex}-${attribute.id}`} className="flex-1 min-w-[240px]">
+                  <label className="block text-base font-semibold text-gray-800 mb-2">
                     {attribute.name}
                   </label>
                   <select
                     value={selectedAttributes[attribute.name] || ''}
                     onChange={(e) => handleAttributeChange(attribute.name, e.target.value)}
-                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md"
+                    className="block w-full px-4 py-3 text-lg border-2 border-gray-300 
+                      focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent 
+                      rounded-lg bg-white shadow-sm 
+                      hover:border-purple-300 transition-colors
+                      appearance-none cursor-pointer"
+                    style={{
+                      backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'right 1rem center',
+                      backgroundSize: '1.5rem',
+                      paddingRight: '3rem'
+                    }}
                   >
                     <option value="">Select {attribute.name}</option>
                     {attribute.options?.map((option, optIndex) => (
@@ -179,109 +274,44 @@ export function ProductDetails({ product }: ProductDetailsProps) {
               ))}
             </div>
           )}
-          
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <span className="font-semibold">SKU:</span>
-              <span>{product.sku}</span>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <span className="font-semibold">Stock Status:</span>
-              <span className={product.stock_status === 'instock' ? 'text-green-600' : 'text-red-600'}>
-                {product.stock_status === 'instock' ? 'In Stock' : 'Out of Stock'}
-              </span>
-            </div>
+
+          {/* Add to Cart Button */}
+          <div className="mt-8">
+            <button
+              onClick={handleAddToCart}
+              disabled={!isAddToCartEnabled}
+              className={`w-full py-4 px-8 text-lg font-semibold rounded-lg shadow-sm
+                ${isAddToCartEnabled 
+                  ? 'bg-purple-600 text-white hover:bg-purple-700 focus:ring-2 focus:ring-offset-2 focus:ring-purple-500' 
+                  : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
+            >
+              Add to Cart
+            </button>
           </div>
 
-          <button
-            onClick={handleAddToCart}
-            disabled={!isAddToCartEnabled || product.stock_status !== 'instock'}
-            className={`w-full py-3 px-4 rounded-md text-white font-medium transition-colors ${
-              isAddToCartEnabled && product.stock_status === 'instock'
-                ? 'bg-purple-600 hover:bg-purple-700'
-                : 'bg-gray-400 cursor-not-allowed'
-            }`}
-          >
-            {!isAddToCartEnabled ? 'Select Options' : product.stock_status === 'instock' ? 'Add to Cart' : 'Out of Stock'}
-          </button>
+          {/* Product Description */}
+          {product.description && (
+            <div className="mt-8 prose prose-lg max-w-none">
+              <div dangerouslySetInnerHTML={{ __html: product.description }} />
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Frequently Bought Together */}
-      {relatedProducts.length > 0 && (
-        <div className="mt-16 bg-white p-6 rounded-lg shadow-sm">
-          <h2 className="text-2xl font-bold mb-6">Frequently Bought Together</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {relatedProducts.map((relatedProduct) => (
-              <div key={`related-${relatedProduct.id}`} className="flex flex-col items-center relative h-full">
-                <div className="flex flex-col items-center flex-grow w-full" style={{ minHeight: '300px' }}>
-                  <div className="relative w-40 h-40 mb-4">
-                    <Image
-                      src={relatedProduct.images[0]?.src || '/placeholder.jpg'}
-                      alt={relatedProduct.name}
-                      fill
-                      className="object-cover rounded-lg"
-                    />
-                  </div>
-                  <div className="flex flex-col items-center flex-grow">
-                    <h3 className="text-sm font-medium text-center mb-3 line-clamp-2 h-10">
-                      {relatedProduct.name}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-3">${parseFloat(relatedProduct.price).toFixed(2)}</p>
-                  </div>
-                </div>
-                <div className="mt-auto">
-                  <button
-                    onClick={() => {
-                      setSelectedProduct(relatedProduct);
-                      setQuickAddModalOpen(true);
-                    }}
-                    className="bg-purple-600 text-white px-4 py-2 rounded-md text-sm hover:bg-purple-700 transition-colors"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Add All Section */}
-          <div className="mt-8 flex flex-col items-center border-t pt-6">
-            <p className="text-lg font-medium mb-4">
-              Bundle Price: ${(
-                parseFloat(product.price) +
-                relatedProducts.reduce((sum, p) => sum + parseFloat(p.price), 0)
-              ).toFixed(2)}
-            </p>
-            <button
-              onClick={handleAddAllToCart}
-              className="bg-purple-600 text-white px-8 py-3 rounded-md hover:bg-purple-700 transition-colors"
-            >
-              Add All to Cart
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* QuickAddModal for related products */}
-      {selectedProduct && (
-        <QuickAddModal
-          isOpen={quickAddModalOpen}
-          setIsOpen={setQuickAddModalOpen}
-          product={selectedProduct}
-          onAddToCart={() => {
-            setQuickAddModalOpen(false);
-            setCartSlideOverOpen(true);
-          }}
-        />
-      )}
-
       {/* Cart Slide Over */}
-      <CartSlideOver
+      <SlideOutCart 
         isOpen={cartSlideOverOpen}
         onClose={() => setCartSlideOverOpen(false)}
       />
+
+      {/* Quick Add Modal */}
+      {quickAddModalOpen && selectedProduct && (
+        <QuickAddModal
+          open={quickAddModalOpen}
+          setOpen={setQuickAddModalOpen}
+          product={selectedProduct}
+        />
+      )}
     </div>
   );
 }

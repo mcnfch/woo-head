@@ -32,6 +32,8 @@ export interface WooVariation {
   sale_price: string;
   stock_status: string;
   sku: string;
+  image: WooImage;
+  images: WooImage[];
 }
 
 export interface WooProduct {

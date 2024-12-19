@@ -9,11 +9,48 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  background-image: url('/images/Blue_Neon_Circuit.png');
+  background-repeat: repeat;
+  background-attachment: fixed;
+  background-size: auto;
+  background-position: top left;
 }
 
 .header-main {
   @apply relative bg-white border-b;
+}
+
+@keyframes cycleText {
+  0%, 20% {
+    transform: translateY(0);
+  }
+  25%, 45% {
+    transform: translateY(-24px);
+  }
+  50%, 70% {
+    transform: translateY(-48px);
+  }
+  75%, 95% {
+    transform: translateY(-72px);
+  }
+  100% {
+    transform: translateY(-96px);
+  }
+}
+
+.animate-cycle-text {
+  animation: cycleText 16s infinite;
+  animation-timing-function: ease-in-out;
+}
+
+/* Custom heading sizes */
+.category-heading {
+  font-size: 1.1em;
+}
+
+/* Shop now button custom padding */
+.shop-now-button {
+  padding: 0 5px;
 }
 
 /* Add more custom styles as needed */

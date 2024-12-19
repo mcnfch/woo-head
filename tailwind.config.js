@@ -10,6 +10,7 @@ module.exports = {
       fontFamily: {
         sans: ['var(--font-geist-sans)'],
         mono: ['var(--font-geist-mono)'],
+        orbitron: ['var(--font-orbitron)'],
       },
       keyframes: {
         'slide-in': {

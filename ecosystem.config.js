@@ -5,6 +5,7 @@ module.exports = {
     args: 'start',
     instances: 'max',
     exec_mode: 'cluster',
+    instance_var: 'nextjs-woo',
     autorestart: true,
     watch: false,
     max_memory_restart: '1G',
@@ -19,4 +20,4 @@ module.exports = {
       HOST: '0.0.0.0'
     }
   }]
-} 
+}

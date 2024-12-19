@@ -149,8 +149,8 @@ export default function CartPage() {
       <div className="mt-8">
         <div className="flow-root">
           <ul role="list" className="-my-6 divide-y divide-gray-200">
-            {cart.items.map((item) => (
-              <li key={item.product_id} className="py-6">
+            {cart.items.map((item, itemIndex) => (
+              <li key={`${item.product_id}-${item.variation_id || itemIndex}`} className="py-6">
                 <div className="flex items-start space-x-4">
                   <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                     <Image
@@ -171,12 +171,12 @@ export default function CartPage() {
                       </div>
                       
                       {/* Product Options Dropdown */}
-                      {productDetails[item.product_id]?.attributes?.map((attribute) => {
+                      {productDetails[item.product_id]?.attributes?.map((attribute, attrIndex) => {
                         const currentValue = item.attributes?.find(attr => attr.name === attribute.name)?.option || '';
                         const isDefaultSelected = !currentValue;
                         
                         return (
-                          <div key={`${item.product_id}-${attribute.id}`} className="mt-4">
+                          <div key={`${item.product_id}-${item.variation_id || itemIndex}-attr-${attrIndex}`} className="mt-4">
                             <label 
                               htmlFor={`${item.product_id}-${attribute.name}`}
                               className="block text-sm font-medium text-gray-700"
@@ -190,8 +190,8 @@ export default function CartPage() {
                               className="mt-1 block w-full rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
                             >
                               <option value="">Select {attribute.name}</option>
-                              {attribute.options?.map((option) => (
-                                <option key={`${item.product_id}-${attribute.id}-${option}`} value={option}>
+                              {attribute.options?.map((option, optIndex) => (
+                                <option key={`${item.product_id}-${item.variation_id || itemIndex}-attr-${attrIndex}-opt-${optIndex}`} value={option}>
                                   {option}
                                 </option>
                               ))}
@@ -246,18 +246,17 @@ export default function CartPage() {
           <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
             
           <div className="mt-6">
-            <button
-              type="button"
-              onClick={handleCheckout}
-              disabled={!canProceedToCheckout}
-              aria-disabled={!canProceedToCheckout}
-              className={`w-full rounded-md py-3 px-4 text-base font-medium text-white
+            <Link
+              href="/checkout"
+              className={`w-full rounded-md py-3 px-4 text-base font-medium text-white inline-flex items-center justify-center
                 ${canProceedToCheckout 
                   ? 'bg-purple-600 hover:bg-purple-700' 
-                  : 'bg-gray-300 cursor-not-allowed'}`}
+                  : 'bg-gray-300 pointer-events-none'}`}
+              aria-disabled={!canProceedToCheckout}
+              tabIndex={canProceedToCheckout ? 0 : -1}
             >
               Proceed to Checkout
-            </button>
+            </Link>
           </div>
 
           <div className="mt-6 text-center">

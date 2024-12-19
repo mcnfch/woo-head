@@ -224,6 +224,20 @@ export async function getPosts(): Promise<WooPost[]> {
   }
 }
 
+// Function to get a single blog post by ID
+export async function getBlogPost(id: number): Promise<WooPost | null> {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_WOOCOMMERCE_URL}/wp-json/wp/v2/posts/${id}`);
+    if (!response.ok) {
+      return null;
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching blog post:', error);
+    return null;
+  }
+}
+
 // Alias for getPosts to maintain compatibility
 export const getBlogPosts = getPosts;
 

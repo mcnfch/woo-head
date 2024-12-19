@@ -24,7 +24,7 @@ interface CartContextType {
   addToCart: (input: AddToCartInput) => Promise<void>;
   updateQuantity: (productId: number, quantity: number) => void;
   updateItemOptions: (productId: number, input: UpdateItemOptionsInput) => void;
-  removeItem: (productId: number) => void;
+  removeItem: (productId: number, variationId?: number, attributes?: WooVariantAttribute[]) => void;
   clearCart: () => void;
   canProceedToCheckout: boolean;
 }
@@ -126,10 +126,29 @@ export function CartProvider({ children }: { children: ReactNode }) {
           };
         }
 
-        const existingItemIndex = prevCart.items.findIndex(
-          item => item.product_id === input.product_id &&
-                 item.variation_id === input.variation_id
-        );
+        // Check if an identical item (including all attributes) already exists
+        const existingItemIndex = prevCart.items.findIndex(item => {
+          // First check product and variation IDs
+          const basicMatch = item.product_id === input.product_id &&
+                           item.variation_id === input.variation_id;
+          
+          if (!basicMatch) return false;
+
+          // Then check if all attributes match
+          const itemAttrs = item.attributes || [];
+          const inputAttrs = input.attributes || [];
+          
+          // If attribute counts don't match, they're different
+          if (itemAttrs.length !== inputAttrs.length) return false;
+
+          // Check if all attributes match exactly
+          return inputAttrs.every(inputAttr => 
+            itemAttrs.some(itemAttr => 
+              itemAttr.name === inputAttr.name && 
+              itemAttr.option === inputAttr.option
+            )
+          );
+        });
 
         if (existingItemIndex > -1) {
           const updatedItems = [...prevCart.items];
@@ -228,10 +247,40 @@ export function CartProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const removeItem = useCallback((productId: number) => {
+  const removeItem = useCallback((productId: number, variationId?: number, attributes?: WooVariantAttribute[]) => {
     setCart(prevCart => {
       if (!prevCart) return null;
-      const updatedItems = prevCart.items.filter(item => item.product_id !== productId);
+
+      const updatedItems = prevCart.items.filter(item => {
+        // If variation ID is provided, use it for matching
+        if (variationId) {
+          return item.product_id !== productId || item.variation_id !== variationId;
+        }
+        
+        // If attributes are provided, match based on attributes
+        if (attributes?.length) {
+          const itemAttrs = item.attributes || [];
+          
+          // If attribute counts don't match, keep the item
+          if (itemAttrs.length !== attributes.length) {
+            return true;
+          }
+
+          // Check if all attributes match exactly
+          const attributesMatch = attributes.every(attr => 
+            itemAttrs.some(itemAttr => 
+              itemAttr.name === attr.name && 
+              itemAttr.option === attr.option
+            )
+          );
+
+          return item.product_id !== productId || !attributesMatch;
+        }
+
+        // If no variation ID or attributes provided, only match by product ID
+        return item.product_id !== productId;
+      });
+
       const newSubtotal = updatedItems.reduce((total, item) => total + (item.price * item.quantity), 0);
       return {
         ...prevCart,

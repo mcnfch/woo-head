@@ -1,28 +1,27 @@
 import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { draftMode } from 'next/headers';
-
 import { categoryCache } from '@/lib/cache/categoryCache';
-import { productCache } from '@/lib/cache/productCache';
+import { getProducts } from '@/lib/woocommerce';
 import ProductGrid from '@/components/product/ProductGrid';
 import { CategoryHero } from '@/components/category/CategoryHero';
 import { NoProductsFound } from '@/components/product/NoProductsFound';
 
 interface PageProps {
-  params: Promise<{
+  params: {
     slug: string;
-  }>;
+  };
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const resolvedParams = await params;
-  const { slug } = resolvedParams;
+  const { slug } = params;
   
   try {
     const categories = await categoryCache.getAllCategories();
-    const category = categories.find(cat => cat.slug === slug);
+    const category = categories.find(cat => {
+      console.log(`Comparing category slug: "${cat.slug}" with requested: "${slug}"`);
+      return cat.slug === slug;
+    });
     
     if (category) {
       return {
@@ -41,41 +40,48 @@ export async function generateMetadata({
 }
 
 export default async function Page({ params }: PageProps) {
-  const resolvedParams = await params;
-  const { slug } = resolvedParams;
+  const { slug } = params;
   
   try {
+    // Log the attempt
+    console.log(`\n[CategoryPage] Attempting to fetch category: "${slug}"`);
+    
     const categories = await categoryCache.getAllCategories();
     
-    // Debug: Log all categories and the current slug
-    console.log('\nAttempting to match slug:', slug);
-    console.log('\nAvailable categories:');
+    // Debug: Log all categories with more details
+    console.log('\nAll available categories:');
     categories.forEach(cat => {
-      console.log(`- ${cat.name} (slug: ${cat.slug})`);
+      console.log(`Category: "${cat.name}"`);
+      console.log(`  slug: "${cat.slug}"`);
+      console.log(`  id: ${cat.id}`);
+      console.log(`  parent: ${cat.parent}`);
+      console.log(`  count: ${cat.count}`);
     });
     
     const category = categories.find(cat => cat.slug === slug);
     
     if (!category) {
-      console.log(`[CategoryPage] Category not found: ${slug}`);
+      console.log(`[CategoryPage] Category not found: "${slug}"`);
       return <NoProductsFound categoryName={slug} />;
     }
 
-    console.log(`[CategoryPage] Rendering category: ${category.name}`);
-    const { products } = await productCache.getProductsByCategory(category.slug);
+    console.log(`[CategoryPage] Found category: ${category.name} (id: ${category.id})`);
+    const { products } = await getProducts(category.slug);
 
+    if (!products?.length) {
+      console.log(`[CategoryPage] No products found for category: ${category.name}`);
+      return <NoProductsFound categoryName={category.name} />;
+    }
+
+    console.log(`[CategoryPage] Found ${products.length} products for category: ${category.name}`);
     return (
       <div>
         <CategoryHero category={category} />
-        {products && products.length > 0 ? (
-          <ProductGrid products={products} />
-        ) : (
-          <NoProductsFound categoryName={category.name} />
-        )}
+        <ProductGrid products={products} />
       </div>
     );
   } catch (error) {
-    console.error(`[CategoryPage] Error rendering category page for slug: ${slug}`, error);
+    console.error(`[CategoryPage] Error rendering category page for slug: "${slug}"`, error);
     return <NoProductsFound categoryName={slug} />;
   }
 }

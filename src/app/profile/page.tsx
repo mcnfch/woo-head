@@ -67,7 +67,10 @@ export default function ProfilePage() {
     setUpdateSuccess(false);
     
     try {
-      await wooCommerceApi.updateAddress(user?.id || 0, data, copyBillingToShipping);
+      if (!user?.id) {
+        throw new Error('Please log in to update your billing address');
+      }
+      await wooCommerceApi.updateAddress(user.id, data, copyBillingToShipping);
       setBillingAddress(data);
       if (copyBillingToShipping) {
         setShippingAddress(data);
@@ -86,7 +89,10 @@ export default function ProfilePage() {
     setUpdateSuccess(false);
     
     try {
-      await wooCommerceApi.updateAddress(user?.id || 0, data, false);
+      if (!user?.id) {
+        throw new Error('Please log in to update your shipping address');
+      }
+      await wooCommerceApi.updateAddress(user.id, data, false);
       setShippingAddress(data);
       setUpdateSuccess(true);
     } catch (err: any) {

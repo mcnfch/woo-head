@@ -6,12 +6,14 @@ interface CategoryHeroProps {
 
 export function CategoryHero({ category }: CategoryHeroProps) {
   return (
-    <div className="bg-gradient-to-r from-purple-900 to-purple-700 py-12 mb-8">
+    <div className="bg-white/80 backdrop-blur-sm py-12 mb-8">
       <div className="container mx-auto px-4">
-        <h1 className="text-4xl font-bold text-white mb-4">{category.name}</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-4 font-orbitron tracking-[4px]">
+          {category.name.toUpperCase()}
+        </h1>
         {category.description && (
           <div 
-            className="text-purple-100 prose prose-invert max-w-none"
+            className="text-gray-600 prose max-w-none"
             dangerouslySetInnerHTML={{ __html: category.description }}
           />
         )}

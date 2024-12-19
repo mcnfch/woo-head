@@ -1,20 +1,12 @@
 'use client';
 
+import { memo } from 'react';
 import Link from 'next/link';
 import type { WooCategory } from '@/lib/types';
-import type { WooPage } from '@/lib/woocommerce';
-import menuConfig from '@/config/menu.json';
+import { filterAndSortCategories } from '@/lib/utils/categoryUtils';
 
 interface NavigationProps {
   categories: WooCategory[];
-  pages: WooPage[];
-}
-
-interface MenuItem {
-  title: string;
-  type: 'product' | 'non-product';
-  visible: boolean;
-  order: number;
 }
 
 interface DropdownProps {
@@ -22,7 +14,7 @@ interface DropdownProps {
   items: WooCategory[];
 }
 
-function Dropdown({ title, items }: DropdownProps) {
+const Dropdown = memo(function Dropdown({ title, items }: DropdownProps) {
   if (!items || items.length === 0) return null;
 
   return (
@@ -43,7 +35,7 @@ function Dropdown({ title, items }: DropdownProps) {
           {items.map((item) => (
             <Link
               key={item.slug}
-              href={`/${item.slug}`}
+              href={`/product-category/${item.slug}`}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-100 hover:text-purple-900 rounded-md"
             >
               {item.name}
@@ -53,85 +45,53 @@ function Dropdown({ title, items }: DropdownProps) {
       </div>
     </div>
   );
+});
+
+interface StaticLinkProps {
+  title: string;
+  href: string;
 }
 
-function StaticLink({ title, href }: { title: string; href: string }) {
+const StaticLink = memo(function StaticLink({ title, href }: StaticLinkProps) {
   return (
     <Link href={href} className="text-white hover:text-purple-200 transition-colors px-3 py-2 text-sm font-medium">
       {title}
     </Link>
   );
-}
+});
 
-export function Navigation({ categories }: NavigationProps) {
-  // Build a map of parent categories to their children
-  const categoryMap = new Map<number, WooCategory[]>();
-  const rootCategories = new Map<string, WooCategory>();
-  
-  // First, organize all categories by their relationships
-  categories.forEach(category => {
-    if (category.parent === 0) {
-      rootCategories.set(category.name, category);
-    } else {
-      const children = categoryMap.get(category.parent) || [];
-      children.push(category);
-      categoryMap.set(category.parent, children);
-    }
+const Navigation = memo(function Navigation({ categories }: NavigationProps) {
+  const menuCategories = filterAndSortCategories(categories, {
+    parentOnly: true,
+    forFooter: false
   });
 
-  // Get menu items and sort by order
-  const menuItems = menuConfig.menuItems
-    .filter(item => {
-      if (item.type === 'non-product') return item.visible;
-      return item.visible;
-    })
-    .sort((a, b) => a.order - b.order);
+  const getSubcategories = (parentId: number) => {
+    return categories.filter(cat => cat.parent === parentId);
+  };
 
   return (
     <nav className="bg-[#32143e] w-full">
       <div className="container mx-auto">
         <div className="flex justify-center items-center h-12">
           <div className="flex space-x-8">
-            {menuItems.map((item) => {
-              if (item.type === 'product') {
-                // Find the matching root category by name
-                const rootCategory = rootCategories.get(item.title);
-                
-                if (!rootCategory) {
-                  console.log(`No matching category found for menu item: ${item.title}`);
-                  return null;
-                }
-                
-                // Get all child categories for this root category
-                const children = categoryMap.get(rootCategory.id) || [];
-                
-                if (children.length > 0) {
-                  return (
-                    <Dropdown
-                      key={rootCategory.slug}
-                      title={rootCategory.name}
-                      items={children.sort((a, b) => a.name.localeCompare(b.name))}
-                    />
-                  );
-                }
-                
-                return (
-                  <StaticLink
-                    key={rootCategory.slug}
-                    title={rootCategory.name}
-                    href={`/${rootCategory.slug}`}
-                  />
-                );
-              }
-              
-              // For non-product items (like "About", "Contact", etc.)
-              const href = item.type === 'non-product' && 'slug' in item ? `/${item.slug}` : `/${item.title.toLowerCase()}`;
-              return (
-                <StaticLink
-                  key={item.title}
-                  title={item.title}
-                  href={href}
+            <StaticLink title="New Arrivals" href="/product-category/new-arrivals" />
+            {menuCategories.map((category) => {
+              const subcategories = getSubcategories(category.id);
+              return subcategories.length > 0 ? (
+                <Dropdown
+                  key={category.slug}
+                  title={category.name}
+                  items={subcategories}
                 />
+              ) : (
+                <Link
+                  key={category.slug}
+                  href={`/product-category/${category.slug}`}
+                  className="text-white hover:text-purple-200 transition-colors px-3 py-2 text-sm font-medium"
+                >
+                  {category.name}
+                </Link>
               );
             })}
           </div>
@@ -139,4 +99,6 @@ export function Navigation({ categories }: NavigationProps) {
       </div>
     </nav>
   );
-}
+});
+
+export default Navigation;

@@ -14,11 +14,12 @@ export default function ShopPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const fetchedProducts = await getProducts();
-        setProducts(fetchedProducts);
+        const result = await getProducts();
+        setProducts(result.products || []);
         setIsLoading(false);
       } catch (error) {
         console.error('Error fetching products:', error);
+        setProducts([]);
         setIsLoading(false);
       }
     };
@@ -27,16 +28,18 @@ export default function ShopPage() {
   }, []);
 
   const sortProducts = (productsToSort: WooProduct[]): WooProduct[] => {
+    if (!productsToSort?.length) return [];
+    
     const sortedProducts = [...productsToSort];
 
     switch (sortBy) {
       case 'price-asc':
         return sortedProducts.sort((a, b) => 
-          parseFloat(a.price) - parseFloat(b.price)
+          parseFloat(a.price || '0') - parseFloat(b.price || '0')
         );
       case 'price-desc':
         return sortedProducts.sort((a, b) => 
-          parseFloat(b.price) - parseFloat(a.price)
+          parseFloat(b.price || '0') - parseFloat(a.price || '0')
         );
       case 'name-asc':
         return sortedProducts.sort((a, b) => 
@@ -56,15 +59,34 @@ export default function ShopPage() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl font-orbitron">Loading products...</div>
+      </div>
+    );
   }
 
   const sortedProducts = sortProducts(products);
 
+  if (!sortedProducts.length) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="bg-white/80 backdrop-blur-sm rounded-lg p-8 shadow-lg max-w-2xl mx-4 text-center">
+          <h2 className="text-3xl font-orbitron mb-4 tracking-wider">
+            No Products Found
+          </h2>
+          <p className="text-gray-700 text-lg mb-6">
+            We couldn't find any products at the moment. Please check back later.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <main className="min-h-screen bg-gray-50">
       <ShopHeader 
-        totalProducts={products.length} 
+        totalProducts={sortedProducts.length} 
         onSort={handleSort}
         currentSort={sortBy}
       />
@@ -87,4 +109,4 @@ export default function ShopPage() {
       </div>
     </main>
   );
-} 
+}

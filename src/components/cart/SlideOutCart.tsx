@@ -1,10 +1,12 @@
 'use client';
 
 import { useCart } from '@/context/CartContext';
-import type { CartItem } from '@/lib/types';
+import type { CartItem, WooProduct, WooVariation, WooVariantAttribute } from '@/lib/types';
 import { formatPrice } from '@/lib/utils';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { woocommerce } from '@/lib/woocommerce';
 
 export interface SlideOutCartProps {
   isOpen: boolean;
@@ -12,10 +14,78 @@ export interface SlideOutCartProps {
 }
 
 export default function SlideOutCart({ isOpen, onClose }: SlideOutCartProps) {
-  const { cart, loading, removeItem, updateQuantity } = useCart();
+  const { cart, loading, removeItem, updateQuantity, updateItemOptions, canProceedToCheckout } = useCart();
+  const [productDetails, setProductDetails] = useState<Record<number, WooProduct>>({});
+  const [productVariations, setProductVariations] = useState<Record<number, WooVariation[]>>({});
 
-  const calculateTotal = (items: CartItem[]): number => {
-    return items.reduce((total, item) => total + (item.price || 0) * item.quantity, 0);
+  // Fetch product details and variations for all cart items
+  useEffect(() => {
+    if (!cart?.items.length) return;
+
+    cart.items.forEach(async (item) => {
+      if (!productDetails[item.product_id]) {
+        try {
+          const productResponse = await woocommerce.get(`products/${item.product_id}`);
+          setProductDetails(prev => ({
+            ...prev,
+            [item.product_id]: productResponse.data
+          }));
+
+          if (productResponse.data.type === 'variable') {
+            const variationsResponse = await woocommerce.get(`products/${item.product_id}/variations`);
+            setProductVariations(prev => ({
+              ...prev,
+              [item.product_id]: variationsResponse.data
+            }));
+          }
+        } catch (error) {
+          console.error('Error fetching product details:', error);
+        }
+      }
+    });
+  }, [cart?.items]);
+
+  const handleOptionChange = async (productId: number, attributeName: string, value: string) => {
+    const item = cart?.items.find(i => i.product_id === productId);
+    if (!item) return;
+
+    const product = productDetails[productId];
+    if (!product) return;
+
+    const attribute = product.attributes.find(attr => attr.name === attributeName);
+    if (!attribute) return;
+
+    const currentAttributes = item.attributes || [];
+    const newAttributes: WooVariantAttribute[] = [
+      ...currentAttributes.filter(attr => attr.name !== attributeName),
+      { id: attribute.id, name: attributeName, option: value }
+    ];
+
+    // Find matching variation
+    const variations = productVariations[productId] || [];
+    const matchingVariation = variations.find(variation => {
+      return variation.attributes.every(varAttr => {
+        const selectedAttr = newAttributes.find(attr => attr.name === varAttr.name);
+        return selectedAttr && selectedAttr.option === varAttr.option;
+      });
+    });
+
+    // Update item options
+    if (value && value !== '') {
+      updateItemOptions(productId, {
+        attributes: newAttributes,
+        variation_id: matchingVariation?.id,
+        price: matchingVariation?.price,
+        sku: matchingVariation?.sku
+      });
+    } else {
+      updateItemOptions(productId, {
+        attributes: currentAttributes.filter(attr => attr.name !== attributeName),
+        variation_id: undefined,
+        price: item.price?.toString(),
+        sku: item.sku
+      });
+    }
   };
 
   if (!isOpen) return null;
@@ -52,8 +122,8 @@ export default function SlideOutCart({ isOpen, onClose }: SlideOutCartProps) {
                   <div className="mt-8">
                     <div className="flow-root">
                       <ul className="-my-6 divide-y divide-gray-200">
-                        {cartItems.map((item) => (
-                          <li key={`${item.product_id}-${item.variation_id || ''}`} className="py-6 flex">
+                        {cartItems.map((item, index) => (
+                          <li key={`${item.product_id}-${item.variation_id || index}`} className="py-6 flex">
                             {item.image && (
                               <div className="flex-shrink-0 w-24 h-24 relative">
                                 <Image
@@ -76,8 +146,43 @@ export default function SlideOutCart({ isOpen, onClose }: SlideOutCartProps) {
                                     {item.attributes.map((attr: { option: string }) => attr.option).join(' / ')}
                                   </p>
                                 )}
+
+                                {/* Product Options Dropdown */}
+                                {productDetails[item.product_id]?.attributes?.map((attribute, attrIndex) => {
+                                  const currentValue = item.attributes?.find(attr => attr.name === attribute.name)?.option || '';
+                                  const isDefaultSelected = !currentValue;
+                                  
+                                  return (
+                                    <div key={`${item.product_id}-${item.variation_id || index}-attr-${attrIndex}`} className="mt-4">
+                                      <label 
+                                        htmlFor={`${item.product_id}-${attribute.name}`}
+                                        className="block text-sm font-medium text-gray-700"
+                                      >
+                                        {attribute.name}
+                                      </label>
+                                      <select
+                                        id={`${item.product_id}-${attribute.name}`}
+                                        value={currentValue}
+                                        onChange={(e) => handleOptionChange(item.product_id, attribute.name, e.target.value)}
+                                        className="mt-1 block w-full rounded-md border-gray-300 focus:border-purple-500 focus:ring-purple-500 sm:text-sm"
+                                      >
+                                        <option value="">Select {attribute.name}</option>
+                                        {attribute.options?.map((option, optIndex) => (
+                                          <option key={`${item.product_id}-${item.variation_id || index}-attr-${attrIndex}-opt-${optIndex}`} value={option}>
+                                            {option}
+                                          </option>
+                                        ))}
+                                      </select>
+                                      {isDefaultSelected && (
+                                        <p className="mt-1 text-sm text-red-600">
+                                          Please select a {attribute.name.toLowerCase()}
+                                        </p>
+                                      )}
+                                    </div>
+                                  );
+                                })}
                               </div>
-                              <div className="flex-1 flex items-end justify-between text-sm">
+                              <div className="flex-1 flex items-end justify-between text-sm mt-4">
                                 <div className="flex items-center">
                                   <button
                                     onClick={() => updateQuantity(item.product_id, Math.max(0, item.quantity - 1))}
@@ -98,7 +203,11 @@ export default function SlideOutCart({ isOpen, onClose }: SlideOutCartProps) {
                                 <div className="flex">
                                   <button
                                     type="button"
-                                    onClick={() => removeItem(item.product_id)}
+                                    onClick={() => removeItem(
+                                      item.product_id,
+                                      item.variation_id,
+                                      item.attributes
+                                    )}
                                     className="font-medium text-purple-600 hover:text-purple-500"
                                   >
                                     Remove
@@ -131,7 +240,12 @@ export default function SlideOutCart({ isOpen, onClose }: SlideOutCartProps) {
                     </Link>
                     <Link
                       href="/checkout"
-                      className="flex items-center justify-center rounded-md border border-transparent bg-purple-600 px-4 py-3 text-base font-medium text-white shadow-sm hover:bg-purple-700 transition-colors"
+                      className={`flex items-center justify-center rounded-md border border-transparent px-4 py-3 text-base font-medium shadow-sm transition-colors
+                        ${canProceedToCheckout 
+                          ? 'bg-purple-600 text-white hover:bg-purple-700' 
+                          : 'bg-gray-300 text-gray-500 cursor-not-allowed pointer-events-none'}`}
+                      aria-disabled={!canProceedToCheckout}
+                      tabIndex={canProceedToCheckout ? 0 : -1}
                       onClick={onClose}
                     >
                       Checkout
